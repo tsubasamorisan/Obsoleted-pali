@@ -71,7 +71,8 @@ class MainPage(webapp2.RequestHandler):
 
 class AboutPage(webapp2.RequestHandler):
   def get(self):
-    result = u"""<br /><br />The dictionary come from <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">Pali-Chinese-English Dictionary</a>. The version is "Pali Dict Linux Web Ver 1.0". This site is still under development so errors may be encountered. If any questions or suggestions, please <a href="/contact">contact me</a>.
+    result = u"""<br /><br />
+<p style="padding-left:30px; padding-right:30px">The dictionary come from <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">Pali-Chinese-English Dictionary</a>. The version is "Pali Dict Linux Web Ver 1.0". This site is still under development so errors may be encountered. If any questions or suggestions, please <a href="/contact">contact me</a>.</p>
               """
     template_values = {
       'google_analytic' : google_analytic_code,
@@ -86,7 +87,17 @@ class AboutPage(webapp2.RequestHandler):
 
 class LinkPage(webapp2.RequestHandler):
   def get(self):
-    result = u"""<br /><br />Under Construction!"""
+    result = u"""<br /><br />
+<div align="left" style="padding-left:30px; padding-right:30px">
+Source Code : <a href="http://code.google.com/p/pali/">pali</a> project on Google Code<br />
+Dictionary : from "Pali Dict Linux Web Ver 1.0" on <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">Pali-Chinese-English Dictionary</a><br />
+<br />
+Other links about Buddhism:<br />
+<a href="http://www.theravadacn.org/DhammaIndex2.htm">覺醒之翼</a><br />
+<a href="http://www.wpp-branches.net/cn/index.php">巴蓬寺分院</a><br />
+<a href="http://www.dhamma.net.cn/">覺悟之路</a><br />
+</div>
+              """
     template_values = {
       'google_analytic' : google_analytic_code,
       'right_ads'       : google_right_ad_code,
