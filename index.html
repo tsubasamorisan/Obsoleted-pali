@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Pāli Dictionary (巴利辭典)</title>
+    <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
+    <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
+
+    <style type="text/css">
+      table.curvedEdges { border:10px solid #98FB98;-webkit-border-radius:13px;-moz-border-radius:13px;border-radius:13px; }
+      table.curvedEdges td, table.curvedEdges th {  }
+    </style>
+    <style>
+      table.floating-menu {position:fixed;background:#66FFFF;border:0px solid #ffcc00;width:100%;height:30px;z-index:100;}
+      div.floating-menu a, div.floating-menu h3 {display:inline;margin:0 0.5em}
+    </style>
+
+    {{ google_analytic }}
+  </head> 
+  <body OnLoad="document.getElementById('inputWord').focus();">
+
+    <table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing:20px">
+      <td align="left" style="padding-left:20px">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/link">Link</a>
+        <a href="/contact">Contact</a>
+      </td>
+
+      <td align="right" style="padding-right:20px">
+<div id="google_translate_element"></div><script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    multilanguagePage: true,
+    gaTrack: true,
+    gaId: 'UA-32179549-1',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+      </td>
+    </tr></table>
+
+    <table class="curvedEdges" align="center" cellspacing="0" style="margin-top:32px; width:75%; height:600px">
+
+      <tr height=50" bgcolor="#fff4c8">
+        <th colspan="2" style="padding-top:18px; padding-bottom:0px">
+          <h1 align="center" style="color:olive;">Pāli Dictionary (巴利辭典)</h1>
+        </th>
+      </tr>
+
+      <tr>
+        <td height="50" align="left" style="border-bottom:1px dotted black; padding:10px;">{{ upper_ads }}</td>
+        <td width="160" align="right" valign="top" rowspan="2" style="padding-top:10px">{{ right_ads }}</td>
+      </tr>
+
+      <tr>
+        <td valign="top" align="left">
+
+          <center>
+          <br /><br />
+          <form action="/lookup" method="post">
+            <div>
+              <input id="inputWord" type="text" name="word" value="">
+              <input type="submit" value="Search">
+            </div>
+          </form>
+          </center>
+
+          <center>
+            {{ result  }}
+          </center>
+
+        </td>
+
+      </tr>
+
+    </table>
+  </body>
+</html>
