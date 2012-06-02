@@ -5,19 +5,19 @@
     <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
     <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
 
-    <style type="text/css">
-      table.curvedEdges { border:10px solid #98FB98;-webkit-border-radius:13px;-moz-border-radius:13px;border-radius:13px; }
-      table.curvedEdges td, table.curvedEdges th {  }
-    </style>
-    <style>
-      table.floating-menu {position:fixed;background:#66FFFF;border:0px solid #ffcc00;width:100%;height:30px;z-index:100;}
-      table.floating-menu a, table.floating-menu h3 {display:inline;margin:0 0.5em}
-    </style>
+    <link rel="stylesheet" href="static/palidict.css" type="text/css">
+
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="static/palidict.js"></script>
 
     {{ google_analytic }}
   </head> 
-  <body OnLoad="document.getElementById('inputWord').focus();">
+  <body OnLoad="document.getElementById('PaliInput').focus();">
 
+    <!-- top fixed menu bar -->
     <table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing:20px">
       <td align="left" style="padding-left:20px">
         <a href="/">Home</a>
@@ -27,17 +27,7 @@
       </td>
 
       <td align="right" style="padding-right:20px">
-<div id="google_translate_element"></div><script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    multilanguagePage: true,
-    gaTrack: true,
-    gaId: 'UA-32179549-1',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        {{ google_translate }}
       </td>
     </table>
 
@@ -49,6 +39,7 @@ function googleTranslateElementInit() {
         </th>
       </tr>
 
+      <!-- show google ads -->
       <tr>
         <td height="50" align="left" style="border-bottom:1px dotted black; padding:10px;">{{ upper_ads }}</td>
         <td width="160" align="right" valign="top" rowspan="2" style="padding-top:10px">{{ right_ads }}</td>
@@ -59,12 +50,71 @@ function googleTranslateElementInit() {
 
           <center>
           <br /><br />
+          <!-- input pāli word -->
           <form action="/lookup" method="post">
             <div>
-              <input id="inputWord" type="text" name="word" value="">
+              <input id="PaliInput" type="text" name="word" value="">
               <input type="submit" value="Search">
             </div>
           </form>
+
+          <a id="displayText" href="javascript:toggle();" style="position:relative; left:100px; font-size:small;">Show Pāli Keypad</a>
+
+
+<div id="keyboard"> 
+
+<div id="row1">
+<input name="q" type="button" value="q" />
+<input name="w" type="button" value="w" />
+<input name="e" type="button" value="e" />
+<input name="r" type="button" value="r" />
+<input name="t" type="button" value="t" />
+<input name="y" type="button" value="y" />
+<input name="u" type="button" value="u" />
+<input name="i" type="button" value="i" />
+<input name="o" type="button" value="o" />
+<input name="p" type="button" value="p" />
+</div>
+
+<div id="row2">
+<input name="a" type="button" value="a" />
+<input name="s" type="button" value="s" />
+<input name="d" type="button" value="d" />
+<input name="f" type="button" value="f" />
+<input name="g" type="button" value="g" />
+<input name="h" type="button" value="h" />
+<input name="j" type="button" value="j" />
+<input name="k" type="button" value="k" />
+<input name="l" type="button" value="l" />
+</div>
+ 
+<div id="row3">
+<input name="z" type="button" value="z" />
+<input name="x" type="button" value="x" />
+<input name="c" type="button" value="c" />
+<input name="v" type="button" value="v" />
+<input name="b" type="button" value="b" />
+<input name="n" type="button" value="n" />
+<input name="m" type="button" value="m" />
+</div>
+ 
+<div id="row4">
+<input name="ā" type="button" value="ā" />
+<input name="ḍ" type="button" value="ḍ" />
+<input name="ī" type="button" value="ī" />
+<input name="ḷ" type="button" value="ḷ" />
+<input name="ṃ" type="button" value="ṃ" />
+<input name="ñ" type="button" value="ñ" />
+<input name="ṇ" type="button" value="ṇ" />
+<input name="ṭ" type="button" value="ṭ" />
+<input name="ū" type="button" value="ū" />
+<input name="ŋ" type="button" value="ŋ" />
+<input name="ṅ" type="button" value="ṅ" />
+</div>
+
+</div>
+
+
           </center>
 
           <center>

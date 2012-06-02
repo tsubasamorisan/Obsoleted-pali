@@ -26,6 +26,20 @@ google_analytic_code = u"""
 </script>
 """
 
+google_translate_code = u"""
+<div id="google_translate_element"></div><script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    multilanguagePage: true,
+    gaTrack: true,
+    gaId: 'UA-32179549-1',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+"""
+
 google_upper_ad_code = u"""
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-0436733829999264";
@@ -59,10 +73,11 @@ class MainPage(webapp2.RequestHandler):
   def get(self):
     result = ""
     template_values = {
-      'google_analytic' : google_analytic_code,
-      'right_ads'       : google_right_ad_code,
-      'upper_ads'       : google_upper_ad_code,
-      'result'   : result,
+      'google_analytic'  : google_analytic_code,
+      'google_translate' : google_translate_code,
+      'right_ads'        : google_right_ad_code,
+      'upper_ads'        : google_upper_ad_code,
+      'result'           : result,
     }
 
     template = jinja_environment.get_template('index.html')
@@ -75,10 +90,11 @@ class AboutPage(webapp2.RequestHandler):
 <p style="padding-left:30px; padding-right:30px">The dictionary come from <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">Pali-Chinese-English Dictionary</a>. The version is "Pali Dict Linux Web Ver 1.0". This site is still under development so errors may be encountered. If any questions or suggestions, please <a href="/contact">contact me</a>.</p>
               """
     template_values = {
-      'google_analytic' : google_analytic_code,
-      'right_ads'       : google_right_ad_code,
-      'upper_ads'       : google_upper_ad_code,
-      'result'   : result,
+      'google_analytic'  : google_analytic_code,
+      'google_translate' : google_translate_code,
+      'right_ads'        : google_right_ad_code,
+      'upper_ads'        : google_upper_ad_code,
+      'result'           : result,
     }
 
     template = jinja_environment.get_template('index.html')
@@ -99,10 +115,11 @@ Other links about Buddhism:<br />
 </div>
               """
     template_values = {
-      'google_analytic' : google_analytic_code,
-      'right_ads'       : google_right_ad_code,
-      'upper_ads'       : google_upper_ad_code,
-      'result'   : result,
+      'google_analytic'  : google_analytic_code,
+      'google_translate' : google_translate_code,
+      'right_ads'        : google_right_ad_code,
+      'upper_ads'        : google_upper_ad_code,
+      'result'           : result,
     }
 
     template = jinja_environment.get_template('index.html')
@@ -113,10 +130,11 @@ class ContactPage(webapp2.RequestHandler):
   def get(self):
     result = u"""<br /><br />My Email : <img src="/static/mail.png" />"""
     template_values = {
-      'google_analytic' : google_analytic_code,
-      'right_ads'       : google_right_ad_code,
-      'upper_ads'       : google_upper_ad_code,
-      'result'   : result,
+      'google_analytic'  : google_analytic_code,
+      'google_translate' : google_translate_code,
+      'right_ads'        : google_right_ad_code,
+      'upper_ads'        : google_upper_ad_code,
+      'result'           : result,
     }
 
     template = jinja_environment.get_template('index.html')
@@ -131,10 +149,11 @@ class Lookup(webapp2.RequestHandler):
     word = cgi.escape(self.request.get('word'))
     result = lookup(word)
     template_values = {
-      'google_analytic' : google_analytic_code,
-      'right_ads'       : google_right_ad_code,
-      'upper_ads'       : google_upper_ad_code,
-      'result'   : result,
+      'google_analytic'  : google_analytic_code,
+      'google_translate' : google_translate_code,
+      'right_ads'        : google_right_ad_code,
+      'upper_ads'        : google_upper_ad_code,
+      'result'           : result,
     }
 
     template = jinja_environment.get_template('index.html')

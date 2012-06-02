@@ -1,0 +1,30 @@
+table.curvedEdges {
+  border:10px solid #98FB98;
+  -webkit-border-radius:13px;
+  -moz-border-radius:13px;
+  border-radius:13px;
+}
+
+table.curvedEdges td, table.curvedEdges th {  }
+
+table.floating-menu {
+  position:fixed;
+  background:#66FFFF;
+  border:0px solid #ffcc00;
+  width:100%;
+  height:30px;
+  z-index:100;
+}
+
+table.floating-menu a, table.floating-menu h3 {
+  display:inline;margin:0 0.5em
+}
+
+#keyboard {
+  position: absolute;
+  display: none; 
+  border: 1px solid #ccc;  
+  padding: 10px;
+  cursor: move;
+  z-index: 20; 
+}
