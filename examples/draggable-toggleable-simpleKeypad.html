@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Simple Keypad Example</title>
+
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+      function numClicked(e) {
+        document.getElementById("PaliInput").value += e.value;
+        document.getElementById("PaliInput").focus();
+      }
+
+      $(document).ready(function() {
+        <!-- make keypad draggable -->
+        $("#keyboard").draggable();
+      });
+
+      <!-- make keypad show if hidden, hide if shown -->
+      function toggle() {
+        var kb = document.getElementById("keyboard");
+        var dt = document.getElementById("displayText");
+        if(kb.style.display == "inline") {
+          kb.style.display = "none";
+          dt.innerHTML = "Show Pāli Keypad";
+        }
+        else {
+          kb.style.display = "inline";
+          dt.innerHTML = "Hide Pāli Keypad";
+        }
+      } 
+    </script>
+
+  </head>
+  <body>
+    <center>
+      <form action="/lookup" method="post" style="position:absolute; left:30px;">
+        <div>
+          <input id="PaliInput" type="text" name="word" value="">
+          <input type="submit" value="Search">
+        </div>
+      </form>
+      <br /><br />
+      <a id="displayText" href="javascript:toggle();" style="position:absolute; left:30px; font-size:small;">Hide Pāli Keypad</a>
+
+      <div id="keyboard" style="position: absolute;display: inline; top:80px; left:30px; border: 1px solid #ccc; padding: 10px; cursor: move;"> 
+        <div id="row1">
+          <input name="7" type="button" value="7" onclick="numClicked(this)"/>
+          <input name="8" type="button" value="8" onclick="numClicked(this)"/>
+          <input name="9" type="button" value="9" onclick="numClicked(this)"/>
+        </div>
+
+        <div id="row2">
+          <input name="4" type="button" value="4" onclick="numClicked(this)"/>
+          <input name="5" type="button" value="5" onclick="numClicked(this)"/>
+          <input name="6" type="button" value="6" onclick="numClicked(this)"/>
+        </div>
+ 
+        <div id="row3">
+          <input name="1" type="button" value="1" onclick="numClicked(this)"/>
+          <input name="2" type="button" value="2" onclick="numClicked(this)"/>
+          <input name="3" type="button" value="3" onclick="numClicked(this)"/>
+        </div>
+      </div>
+  </body>
+</html>

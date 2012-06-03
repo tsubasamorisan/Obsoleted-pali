@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Simple Keypad Example</title>
+
+    <script type="text/javascript">
+      function numClicked(e) {
+        document.getElementById("PaliInput").value += e.value;
+        document.getElementById("PaliInput").focus();
+      }
+    </script>
+
+  </head>
+  <body>
+    <center>
+      <form action="/lookup" method="post" style="position:absolute; left:30px;">
+        <div>
+          <input id="PaliInput" type="text" name="word" value="">
+          <input type="submit" value="Search">
+        </div>
+      </form>
+
+      <div id="keyboard" style="position: absolute; top:80px; left:30px; border: 1px solid #ccc; padding: 10px; cursor: move;"> 
+        <div id="row1">
+          <input name="7" type="button" value="7" onclick="numClicked(this)"/>
+          <input name="8" type="button" value="8" onclick="numClicked(this)"/>
+          <input name="9" type="button" value="9" onclick="numClicked(this)"/>
+        </div>
+
+        <div id="row2">
+          <input name="4" type="button" value="4" onclick="numClicked(this)"/>
+          <input name="5" type="button" value="5" onclick="numClicked(this)"/>
+          <input name="6" type="button" value="6" onclick="numClicked(this)"/>
+        </div>
+ 
+        <div id="row3">
+          <input name="1" type="button" value="1" onclick="numClicked(this)"/>
+          <input name="2" type="button" value="2" onclick="numClicked(this)"/>
+          <input name="3" type="button" value="3" onclick="numClicked(this)"/>
+        </div>
+      </div>
+  </body>
+</html>
