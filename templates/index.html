@@ -1,130 +1,52 @@
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Pāli Dictionary (巴利辭典)</title>
-    <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
-    <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Pāli Dictionary (巴利辭典)</title>
+  <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
+  <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
 
-    <link rel="stylesheet" href="static/palidict.css" type="text/css">
+  <link rel="stylesheet" href="static/palidict.css" type="text/css">
 
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-    <script type="text/javascript" src="static/palidict.js"></script>
+  <script type="text/javascript" src="static/palidict.js"></script>
 
-    {{ google_analytic }}
-  </head> 
-  <body OnLoad="document.getElementById('PaliInput').focus();">
+  {% include "google_analytics_code" %}
+</head> 
+<body OnLoad="document.getElementById('PaliInput').focus();">
+  {% include "topFixedMenu.html" %}
+  <table class="curvedEdges" align="center" cellspacing="0" style="margin-top:32px; width:75%; height:600px">
+  <tr height=50" bgcolor="#fff4c8">
+    <th colspan="2" style="padding-top:18px; padding-bottom:0px"><h1 align="center" style="color:olive;">Pāli Dictionary (巴利辭典)</h1></th>
+  </tr>
 
-    <!-- top fixed menu bar -->
-    <table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing:20px">
-      <td align="left" style="padding-left:20px">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/link">Link</a>
-        <a href="/contact">Contact</a>
-      </td>
+  <tr>
+    <td height="50" align="left" style="border-bottom:1px dotted black; padding:10px;">{% include "google_upper_ad_code" %}</td>
+    <td width="160" align="right" valign="top" rowspan="2" style="padding-top:10px">{% include "google_right_ad_code" %}</td>
+  </tr>
 
-      <td align="right" style="padding-right:20px">
-        {{ google_translate }}
-      </td>
-    </table>
+  <tr>
+    <td valign="top" align="left">
 
-    <table class="curvedEdges" align="center" cellspacing="0" style="margin-top:32px; width:75%; height:600px">
+    <center>
+      <br /><br />
+      <!-- input pāli word -->
+      <form action="/lookup" method="post">
+        <div>
+          <input id="PaliInput" type="text" name="word" value="">
+          <input type="submit" value="Search">
+        </div>
+      </form>
 
-      <tr height=50" bgcolor="#fff4c8">
-        <th colspan="2" style="padding-top:18px; padding-bottom:0px">
-          <h1 align="center" style="color:olive;">Pāli Dictionary (巴利辭典)</h1>
-        </th>
-      </tr>
+      <a id="displayText" href="javascript:toggle();" style="position:relative; left:100px; font-size:small;">Show Pāli Keypad</a>
+      {% include "keyboard.html" %}
+    </center>
 
-      <!-- show google ads -->
-      <tr>
-        <td height="50" align="left" style="border-bottom:1px dotted black; padding:10px;">{{ upper_ads }}</td>
-        <td width="160" align="right" valign="top" rowspan="2" style="padding-top:10px">{{ right_ads }}</td>
-      </tr>
-
-      <tr>
-        <td valign="top" align="left">
-
-          <center>
-          <br /><br />
-          <!-- input pāli word -->
-          <form action="/lookup" method="post">
-            <div>
-              <input id="PaliInput" type="text" name="word" value="">
-              <input type="submit" value="Search">
-            </div>
-          </form>
-
-          <a id="displayText" href="javascript:toggle();" style="position:relative; left:100px; font-size:small;">Show Pāli Keypad</a>
-
-
-<div id="keyboard"> 
-
-<div id="row1">
-<input name="q" type="button" value="q" />
-<input name="w" type="button" value="w" />
-<input name="e" type="button" value="e" />
-<input name="r" type="button" value="r" />
-<input name="t" type="button" value="t" />
-<input name="y" type="button" value="y" />
-<input name="u" type="button" value="u" />
-<input name="i" type="button" value="i" />
-<input name="o" type="button" value="o" />
-<input name="p" type="button" value="p" />
-</div>
-
-<div id="row2">
-<input name="a" type="button" value="a" />
-<input name="s" type="button" value="s" />
-<input name="d" type="button" value="d" />
-<input name="f" type="button" value="f" />
-<input name="g" type="button" value="g" />
-<input name="h" type="button" value="h" />
-<input name="j" type="button" value="j" />
-<input name="k" type="button" value="k" />
-<input name="l" type="button" value="l" />
-</div>
- 
-<div id="row3">
-<input name="z" type="button" value="z" />
-<input name="x" type="button" value="x" />
-<input name="c" type="button" value="c" />
-<input name="v" type="button" value="v" />
-<input name="b" type="button" value="b" />
-<input name="n" type="button" value="n" />
-<input name="m" type="button" value="m" />
-</div>
- 
-<div id="row4">
-<input name="ā" type="button" value="ā" />
-<input name="ḍ" type="button" value="ḍ" />
-<input name="ī" type="button" value="ī" />
-<input name="ḷ" type="button" value="ḷ" />
-<input name="ṃ" type="button" value="ṃ" />
-<input name="ñ" type="button" value="ñ" />
-<input name="ṇ" type="button" value="ṇ" />
-<input name="ṭ" type="button" value="ṭ" />
-<input name="ū" type="button" value="ū" />
-<input name="ŋ" type="button" value="ŋ" />
-<input name="ṅ" type="button" value="ṅ" />
-</div>
-
-</div>
-
-
-          </center>
-
-          <center>
-            {{ result  }}
-          </center>
-
-        </td>
-
-      </tr>
-
-    </table>
-  </body>
+    <center>{{ result  }}</center>
+    </td>
+  </tr>
+  </table>
+</body>
 </html>
