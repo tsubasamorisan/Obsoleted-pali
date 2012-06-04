@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# http://code.activestate.com/recipes/510399-byte-to-hex-and-hex-to-byte-string-conversion/
-# http://stackoverflow.com/questions/606191/convert-byte-array-to-python-string
-
 import xml.dom.minidom
 from google.appengine.ext import ndb
 from convertstr import HexStringToString
@@ -66,8 +63,5 @@ def lookup(word):
   paliword = PaliWord.get_by_id(word)
   if (paliword):
     return decodeXML(paliword.xmlfilename, paliword.xmlfiledata.encode('utf8'))
-    return decodeXML(paliword.xmlfilename, paliword.xmlfiledata)
   else:
     return u'查無此字(No Such Word)'
-
-  return u'App Error'
