@@ -12,7 +12,7 @@ import jinja2
 from dictionary import decodeXML, storeToNDB
 
 jinja_environment = jinja2.Environment(
-  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+  loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
 
 
 class AdminPage(webapp2.RequestHandler):

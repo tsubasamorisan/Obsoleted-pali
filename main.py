@@ -8,7 +8,7 @@ from google.appengine.api import users
 from dictionary import lookup
 
 jinja_environment = jinja2.Environment(
-  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+  loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
 
 google_analytic_code = u"""
 <script type="text/javascript">
