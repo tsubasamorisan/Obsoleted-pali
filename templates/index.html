@@ -36,11 +36,10 @@
       <form action="/lookup" method="post">
         <div>
           <input id="PaliInput" type="text" name="word" value="">
-          <input type="submit" value="Search">
+          <input type="submit" value="Search"><sub><a id="displayText" href="javascript:toggle();">Show Pāli Keypad</a></sub>
         </div>
       </form>
 
-      <a id="displayText" href="javascript:toggle();" style="position:relative; left:100px; font-size:small;">Show Pāli Keypad</a>
       {% include "keyboard.html" %}
     </center>
 
