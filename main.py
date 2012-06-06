@@ -28,13 +28,7 @@ class Lookup(webapp2.RequestHandler):
 
   def post(self):
     word = cgi.escape(self.request.get('word'))
-    result = lookup(word)
-    template_values = {
-      'result'           : result,
-    }
-
-    template = jinja_environment.get_template('index.html')
-    self.response.out.write(template.render(template_values))
+    self.response.out.write(lookup(word))
 
 
 app = webapp2.WSGIApplication([('/', MainPage),

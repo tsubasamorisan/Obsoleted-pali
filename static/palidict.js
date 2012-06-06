@@ -42,3 +42,28 @@ function showContact() {
 "%3Cbr%20/%3E%3Cbr%20/%3EMy%20Email%20%3A%20%3Cimg%20src%3D%22/static/mail.png%22%20/%3E"
 );
 }
+
+function lookup() {
+//document.getElementById('result').innerHTML = document.getElementById('PaliInput').value;
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    //document.getElementById('').innerHTML=xmlhttp.status;
+    //document.getElementById('').innerHTML=xmlhttp.statusText;
+    document.getElementById('result').innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("POST","/lookup",true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
+}
