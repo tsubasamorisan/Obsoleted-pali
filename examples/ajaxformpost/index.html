@@ -1,0 +1,37 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>AJAX HTML Form POST example</title>
+  <script type="text/javascript" language="javascript">
+    function ajaxformpost() {
+      var xmlhttp;
+      if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+      }
+      else {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+          document.getElementById('result').innerHTML=
+            "status: " + xmlhttp.status +
+            "<br />statusText: " + xmlhttp.statusText +
+            "<br />server response: <br />" +xmlhttp.responseText;
+        }
+      }
+      xmlhttp.open("POST","/",true);
+      xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xmlhttp.send("input1=" + encodeURI(document.getElementById('input1').value) +
+                   "&input2=" + encodeURI(document.getElementById('input2').value));
+    }
+  </script>
+</head> 
+<body>
+  <form action="javascript:ajaxformpost();">
+     <input id="input1" type="text" value="">
+     <input id="input2" type="text" value="">
+     <input type="submit" value="Submit">
+  </form>
+  <div id="result"></div>
+</body>
+</html>
