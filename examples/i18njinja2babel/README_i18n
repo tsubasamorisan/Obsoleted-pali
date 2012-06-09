@@ -1,0 +1,25 @@
+# http://webapp-improved.appspot.com/tutorials/i18n.html
+# http://stackoverflow.com/questions/8471455/how-to-enable-trans-tag-for-jinja-templates
+# https://github.com/ametaireau/pelican/issues/92
+# http://stackoverflow.com/questions/8410078/i18n-from-webapp2-extras-usage
+
+1) Download Babel and pytz (or gaepytz). Untar them and copy babel/ and pytz to app dir.
+   (also install Babel and pytz)
+
+2) mkdir ./locale
+
+3) $ pybabel extract -F ./babel.cfg -o ./locale/messages.pot ./
+
+4) $ pybabel init -l en_US -d ./locale -i ./locale/messages.pot
+   $ pybabel init -l zh_TW -d ./locale -i ./locale/messages.pot
+
+   Then translate .po files
+
+5) $ pybabel compile -f -d ./locale
+
+6) http://localhost:8080/                <= en_US version, default
+   http://localhost:8080/?locale=zh_TW   <= zh_TW version
+
+PS: For updates:
+   $ pybabel update -l en_US -d ./locale/ -i ./locale/messages.pot
+   $ pybabel update -l zh_TW -d ./locale/ -i ./locale/messages.pot
