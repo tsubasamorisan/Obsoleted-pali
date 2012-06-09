@@ -5,14 +5,21 @@ import webapp2
 import jinja2
 import os, cgi
 from google.appengine.api import users
+from webapp2_extras import i18n
 from dictionary import lookup
 
 jinja_environment = jinja2.Environment(
-  loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
+  loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
+  extensions=['jinja2.ext.i18n'])
+
+jinja_environment.install_gettext_translations(i18n)
 
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
+    locale = self.request.GET.get('locale', 'en_US')
+    i18n.get_i18n().set_locale(locale)
+
     result = ""
     template_values = {
       'result'           : result,
