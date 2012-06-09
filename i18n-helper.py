@@ -17,7 +17,7 @@ if __name__ == '__main__':
     sys.exit(1)
 
   if sys.argv[1] == "pot":
-    os.system('xgettext --from-code=UTF-8 --keyword=_ --output=locale/messages.pot `find ./templates -name "*.html"`')
+    os.system('xgettext --from-code=UTF-8 --keyword=_ --output=locale/messages.pot `find ./templates -name "*.html"` static/palidict.js')
     os.system('sed -i "s/charset=CHARSET/charset=utf-8/g" locale/messages.pot')
     sys.exit(0)
 
