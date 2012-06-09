@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-09 09:20+0800\n"
+"POT-Creation-Date: 2012-06-09 10:31+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
@@ -17,6 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
+
+#: templates/info.html:3
+msgid "The dictionary come from"
+msgstr "字典來自"
+
+#: templates/info.html:3 templates/info.html:26
+msgid "Pali-Chinese-English Dictionary"
+msgstr "巴利語-漢語-英語 字典"
+
+#: templates/info.html:3
+msgid "The version is"
+msgstr "版本是"
+
+#: templates/info.html:3
+msgid "This site is still under development"
+msgstr "本站仍在開發中"
+
+#: templates/info.html:3
+msgid "so errors may be encountered"
+msgstr "所以可能會遭遇錯誤"
+
+#: templates/info.html:3
+msgid "If any questions or suggestions"
+msgstr "如果有任何問題或建議"
+
+#: templates/info.html:3
+msgid "please"
+msgstr "請"
+
+#: templates/info.html:3
+msgid "contact me"
+msgstr "聯絡我"
+
+#: templates/info.html:9
+msgid "Pāli Dictionary"
+msgstr "巴利文字典"
+
+#: templates/info.html:25
+msgid "Source Code"
+msgstr "原始碼"
+
+#: templates/info.html:25
+msgid "project on Google Code"
+msgstr "Google Code專案"
+
+#: templates/info.html:26
+msgid "Dictionary"
+msgstr "字典"
+
+#: templates/info.html:26
+msgid "from"
+msgstr "從"
+
+#: templates/info.html:26
+msgid "on"
+msgstr "在"
+
+#: templates/info.html:30
+msgid "My Email"
+msgstr "我的電子郵件地址"
 
 #: templates/topFixedMenu.html:3
 msgid "Home"

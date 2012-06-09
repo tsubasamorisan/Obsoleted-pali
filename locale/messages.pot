@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
@@ -9,88 +9,86 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-09 10:31+0800\n"
-"PO-Revision-Date: 2012-06-09 09:21+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: zh_CN <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
 
 #: templates/info.html:3
 msgid "The dictionary come from"
-msgstr "字典来自"
+msgstr ""
 
 #: templates/info.html:3 templates/info.html:26
 msgid "Pali-Chinese-English Dictionary"
-msgstr "巴利语-汉语-英语 字典"
+msgstr ""
 
 #: templates/info.html:3
 msgid "The version is"
-msgstr "版本是"
+msgstr ""
 
 #: templates/info.html:3
 msgid "This site is still under development"
-msgstr "本站仍在开发中"
+msgstr ""
 
 #: templates/info.html:3
 msgid "so errors may be encountered"
-msgstr "所以可能会遭遇错误"
+msgstr ""
 
 #: templates/info.html:3
 msgid "If any questions or suggestions"
-msgstr "如果有任何问题或建议"
+msgstr ""
 
 #: templates/info.html:3
 msgid "please"
-msgstr "请"
+msgstr ""
 
 #: templates/info.html:3
 msgid "contact me"
-msgstr "联络我"
+msgstr ""
 
 #: templates/info.html:9
 msgid "Pāli Dictionary"
-msgstr "巴利文字典"
+msgstr ""
 
 #: templates/info.html:25
 msgid "Source Code"
-msgstr "原始码"
+msgstr ""
 
 #: templates/info.html:25
 msgid "project on Google Code"
-msgstr "Google Code专桉"
+msgstr ""
 
 #: templates/info.html:26
 msgid "Dictionary"
-msgstr "字典"
+msgstr ""
 
 #: templates/info.html:26
 msgid "from"
-msgstr "从"
+msgstr ""
 
 #: templates/info.html:26
 msgid "on"
-msgstr "在"
+msgstr ""
 
 #: templates/info.html:30
 msgid "My Email"
-msgstr "我的电子邮件地址"
+msgstr ""
 
 #: templates/topFixedMenu.html:3
 msgid "Home"
-msgstr "首页"
+msgstr ""
 
 #: templates/topFixedMenu.html:4
 msgid "About"
-msgstr "关于"
+msgstr ""
 
 #: templates/topFixedMenu.html:5
 msgid "Link"
-msgstr "连结"
+msgstr ""
 
 #: templates/topFixedMenu.html:6
 msgid "Contact"
-msgstr "联络"
-
+msgstr ""

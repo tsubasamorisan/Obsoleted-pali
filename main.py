@@ -17,6 +17,9 @@ jinja_environment.install_gettext_translations(i18n)
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
+    #lang = self.request.headers.get('accept_language')
+    #browser = self.request.headers.get('user_agent')
+
     locale = self.request.GET.get('locale', 'en_US')
     i18n.get_i18n().set_locale(locale)
 

@@ -21,13 +21,13 @@ if __name__ == '__main__':
     os.system('sed -i "s/charset=CHARSET/charset=utf-8/g" locale/messages.pot')
     sys.exit(0)
 
-"""
+  """
   if sys.argv[1] == "po":
     os.system('pybabel init -l en_US -d ./locale -i ./locale/messages.pot')
     os.system('pybabel init -l zh_TW -d ./locale -i ./locale/messages.pot')
     os.system('pybabel init -l zh_CN -d ./locale -i ./locale/messages.pot')
     sys.exit(0)
-"""
+  """
 
   if sys.argv[1] == "mo":
     os.system('pybabel compile -f -d ./locale')
