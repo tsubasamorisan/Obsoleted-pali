@@ -1,9 +1,22 @@
 <table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing:20px">
  <td align="left" style="padding-left:20px">
-   <a href="/">{{_("Home")}}</a>
-   <a href="javascript:showAbout();">{{_("About")}}</a>
-   <a href="javascript:showLink();">{{_("Link")}}</a>
-   <a href="javascript:showContact();">{{_("Contact")}}</a>
+  <a href="/">{{_("Home")}}</a>
+  <a href="javascript:showAbout();">{{_("About")}}</a>
+  <a href="javascript:showLink();">{{_("Link")}}</a>
+  <a href="javascript:showContact();">{{_("Contact")}}</a>
  </td>
- <td align="right" style="padding-right:20px">{% include "google_translate_code" %}</td>
+ <td align="right" style="padding-right:20px">
+  <a id="lang-dropdown" href="javascript:langDropDownMenu();" style="float:right; text-decoration:none; color: #00C; font-size:small;">
+   <span style="text-decoration:underline">English</span><span style="font-size:.75em;">&#9660;</span>
+  </a>
+  <!--
+  {% include "google_translate_code" %}
+  -->
+ </td>
 </table>
+<div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 115px; ">
+<div style="margin-top: 4px;">
+ <a class="menuItem" style="display: block; " href="/">English</a>
+ <a class="menuItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
+ <a class="menuItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
+</div></div>

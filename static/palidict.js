@@ -23,13 +23,13 @@ function toggle() {
     dt.innerHTML = "Hide Pāli Keypad";
   }
 }
+
 //<!-- http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html -->
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 function showContact(){document.getElementById("result").innerHTML = document.getElementById("contact").innerHTML;}
 
 function lookup() {
-//document.getElementById('result').innerHTML = document.getElementById('PaliInput').value;
 var xmlhttp;
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -51,4 +51,11 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("POST","/lookup",true);
 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
+}
+
+function langDropDownMenu() {
+  var ldd = document.getElementById("menuDiv-lang-dropdown");
+  if (ldd.style.display == "none") {
+    ldd.style.display = "";
+  } else {ldd.style.display = "none" ;}
 }
