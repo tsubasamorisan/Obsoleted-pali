@@ -27,7 +27,6 @@ function toggle() {
 // http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
-function showContact(){document.getElementById("result").innerHTML = document.getElementById("contact").innerHTML;}
 
 function lookup() {
 var xmlhttp;
