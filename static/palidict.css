@@ -36,11 +36,12 @@ table.floating-menu a, table.floating-menu h3 {
   border-left-color: #A2BAE7;
   border-style: solid;
   border-width: 1px;
-  z-index: 101;
+  z-index: 21;
   padding: 0;
   background-color: white;
   overflow: hidden;
   font-size: small;
+  font-family: Arial;
 }
 
 .menuItem {
@@ -49,3 +50,9 @@ table.floating-menu a, table.floating-menu h3 {
   text-decoration: none;
   background: white;
 }
+
+a.langItem:hover {
+  background: #00C;
+  color: white;
+}
+

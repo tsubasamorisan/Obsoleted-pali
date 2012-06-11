@@ -24,7 +24,7 @@ function toggle() {
   }
 }
 
-//<!-- http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html -->
+// http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 function showContact(){document.getElementById("result").innerHTML = document.getElementById("contact").innerHTML;}
@@ -53,9 +53,46 @@ xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
 }
 
-function langDropDownMenu() {
-  var ldd = document.getElementById("menuDiv-lang-dropdown");
-  if (ldd.style.display == "none") {
-    ldd.style.display = "";
-  } else {ldd.style.display = "none" ;}
+// Dynamically retrieve Html element (X,Y) position with JavaScript
+// http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
+function getOffset( el ) {
+  var _x = 0;
+  var _y = 0;
+  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+    _x += el.offsetLeft - el.scrollLeft;
+    _y += el.offsetTop - el.scrollTop;
+    el = el.offsetParent;
+  }
+  return { top: _y, left: _x };
 }
+
+// hide popup div when clicking outside the div
+// http://www.webdeveloper.com/forum/showthread.php?t=98973
+document.onclick = check;
+// Event accessing
+// http://www.quirksmode.org/js/events_access.html
+// Event properties
+// http://www.quirksmode.org/js/events_properties.html
+function check(e){
+  var target = (e && e.target) || (event && event.srcElement); 
+  var langDropdownMenuDiv = document.getElementById("menuDiv-lang-dropdown"); 
+  var langDropdown = document.getElementById("lang-dropdown"); 
+
+  if (!checkParent(target, "menuDiv-lang-dropdown")) {
+    if (checkParent(target, "lang-dropdown")) {
+      if (langDropdownMenuDiv.style.display == "none") {
+        langDropdownMenuDiv.style.left = getOffset(langDropdown).left;
+        langDropdownMenuDiv.style.display = "";
+      } else {langDropdownMenuDiv.style.display = "none";}
+    } else {
+      langDropdownMenuDiv.style.display = "none";
+    }
+  }
+}
+function checkParent(t,id) {
+  while(t.parentNode) { 
+    if( t == document.getElementById(id) ) {return true;} 
+    t = t.parentNode;
+  } 
+  return false;
+} 
