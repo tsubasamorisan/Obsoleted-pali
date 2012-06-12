@@ -34,6 +34,9 @@ class lookup:
 #app = web.application(urls, globals())
 #application = app.wsgifunc()
 
+# To work with Apache and mod_wsgi, Add WSGIScriptAlias / /path_to_python_script_dir/code.py
+# http://stackoverflow.com/questions/3613594/web-py-url-mapping-not-accepting
+
 if __name__ == "__main__":
   app = web.application(urls, globals())
   app.run()
