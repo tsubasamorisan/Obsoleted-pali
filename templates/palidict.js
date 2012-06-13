@@ -47,6 +47,7 @@ xmlhttp.onreadystatechange=function()
     document.getElementById('result').innerHTML=xmlhttp.responseText;
     }
   }
+document.getElementById('result').innerHTML="Looking Up...";
 xmlhttp.open("POST","/lookup",true);
 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
