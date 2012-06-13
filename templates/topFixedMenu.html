@@ -1,13 +1,20 @@
-<table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing:20px">
+<table class="floating-menu" style="top:0px; left:0px"><tr height="100%" width="100%" style="word-spacing: 15px">
  <td align="left" style="padding-left:20px">
   <a href="{{ href[locale] }}">{{_("Home")}}</a>
   <a href="javascript:showAbout();">{{_("About")}}</a>
   <a href="javascript:showLink();">{{_("Link")}}</a>
  </td>
- <td align="right" style="padding-right:20px">
-  <a id="lang-dropdown" href="/" onclick="return false;" style="float:right; text-decoration:none; color: #00C; font-size:small; cursor:pointer; ">
+ <td style="padding-right: 20px; text-align: right;">
+  <a id="lang-dropdown" href="/" onclick="return false;" style="text-decoration:none; color: #00C; font-size:small; cursor:pointer; ">
    <span style="text-decoration:underline">{{ localeStr[locale] }}</span><span style="font-size:.75em;">&#9660;</span>
   </a>
+  <!-- http://www.mountaindragon.com/html/redirectjs2.htm  -->
+  <select onChange="window.location=this.options[this.selectedIndex].value;">
+   <option value="/" selected="selected">Choose Site:</option>
+   <option value="http://palidictionary.appspot.com/">Main Site</option>
+   <option value="http://siongui.pythonanywhere.com/">Backup Site #1</option>
+   <option value="http://siongui.webfactional.com">Backup Site #2</option>
+  </select>
   <!--
   {% include "google_translate_code" %}
   -->
