@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-09 18:50+0800\n"
+"POT-Creation-Date: 2012-06-13 22:30+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
@@ -50,13 +50,13 @@ msgstr "請"
 msgid "contact me"
 msgstr "聯絡我"
 
-#: templates/info.html:9
+#: templates/info.html:9 templates/index.html:4 templates/index.html:22
 msgid "Pāli Dictionary"
-msgstr "巴利文字典"
+msgstr "巴利語字典"
 
 #: templates/info.html:15
 msgid "Pāli Canon"
-msgstr "巴利經典"
+msgstr "巴利語經典"
 
 #: templates/info.html:16 templates/info.html:17 templates/info.html:18
 msgid "Tipiṭaka"
@@ -98,13 +98,9 @@ msgstr "從"
 msgid "on"
 msgstr "在"
 
-#: templates/info.html:30
-msgid "My Email"
-msgstr "我的電子郵件地址"
-
 #: templates/index.html:39
 msgid "Show Pāli Keypad"
-msgstr "顯示巴利文鍵盤"
+msgstr "顯示巴利語鍵盤"
 
 #: templates/topFixedMenu.html:3
 msgid "Home"
@@ -117,8 +113,4 @@ msgstr "關於"
 #: templates/topFixedMenu.html:5
 msgid "Link"
 msgstr "連結"
-
-#: templates/topFixedMenu.html:6
-msgid "Contact"
-msgstr "聯絡"
 
