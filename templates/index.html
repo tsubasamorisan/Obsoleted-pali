@@ -11,7 +11,9 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
+  <script type="text/javascript">{% include "jsvarindex.js" %}</script>
   <script type="text/javascript">{% include "palidict.js" %}</script>
+  <script type="text/javascript">{% include "palidictSearch.js" %}</script>
 
   {% include "google_analytics_code" %}
 </head> 
@@ -30,20 +32,18 @@
   <tr>
     <td valign="top" align="left">
 
-    <center>
       <br /><br />
       <!-- input pāli word -->
-      <form action="javascript:lookup();">
+      <form action="javascript:lookup();" style="text-align: center;">
         <div>
-          <input id="PaliInput" type="text" name="word" value="">
+          <input id="PaliInput" type="text" name="word" value="" onpropertychange="return false;" oninput="javascript:strMatch();">
           <input type="submit" value="Search"><sub><a id="displayText" href="javascript:toggle();">{{_("Show Pāli Keypad")}}</a></sub>
         </div>
       </form>
-
       {% include "keyboard.html" %}
-    </center>
 
-    <center><div id="result">{{ result  }}</div></center>
+      <div id="userInput" style="text-align: center;"></div><br />
+      <div id="result" style="text-align: center">{{ result  }}</div>
     </td>
   </tr>
   </table>
