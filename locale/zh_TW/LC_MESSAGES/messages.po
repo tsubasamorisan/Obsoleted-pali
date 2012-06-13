@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-13 22:30+0800\n"
+"POT-Creation-Date: 2012-06-13 22:48+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
@@ -113,4 +113,20 @@ msgstr "關於"
 #: templates/topFixedMenu.html:5
 msgid "Link"
 msgstr "連結"
+
+#: templates/topFixedMenu.html:13
+msgid "Choose Site"
+msgstr "選擇站點"
+
+#: templates/topFixedMenu.html:14
+msgid "Main Site"
+msgstr "主站"
+
+#: templates/topFixedMenu.html:15
+msgid "Backup Site #1"
+msgstr "備用站一"
+
+#: templates/topFixedMenu.html:16
+msgid "Backup Site #2"
+msgstr "備用站二"
 
