@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-14 07:17+0800\n"
+"PO-Revision-Date: 2012-06-09 08:50+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: templates/info.html:3
+msgid "The dictionary come from"
+msgstr ""
+
+#: templates/info.html:3 templates/info.html:26
+msgid "Pali-Chinese-English Dictionary"
+msgstr ""
+
+#: templates/info.html:3
+msgid "The version is"
+msgstr ""
+
+#: templates/info.html:3
+msgid "This site is still under development"
+msgstr ""
+
+#: templates/info.html:3
+msgid "so errors may be encountered"
+msgstr ""
+
+#: templates/info.html:3
+msgid "If any questions or suggestions"
+msgstr ""
+
+#: templates/info.html:3
+msgid "please"
+msgstr ""
+
+#: templates/info.html:3
+msgid "contact me"
+msgstr ""
+
+#: templates/info.html:9 templates/index.html:4 templates/index.html:24
+msgid "Pāli Dictionary"
+msgstr ""
+
+#: templates/info.html:15
+msgid "Pāli Canon"
+msgstr ""
+
+#: templates/info.html:16 templates/info.html:17 templates/info.html:18
+msgid "Tipiṭaka"
+msgstr ""
+
+#: templates/info.html:16
+msgid "Sri Lankan version"
+msgstr ""
+
+#: templates/info.html:17
+msgid "Thai version"
+msgstr ""
+
+#: templates/info.html:18
+msgid "Burmese version"
+msgstr ""
+
+#: templates/info.html:20
+msgid "Links about Buddhism"
+msgstr ""
+
+#: templates/info.html:25
+msgid "Source Code"
+msgstr ""
+
+#: templates/info.html:25
+msgid "project on Google Code"
+msgstr ""
+
+#: templates/info.html:26
+msgid "Dictionary"
+msgstr ""
+
+#: templates/info.html:26
+msgid "from"
+msgstr ""
+
+#: templates/info.html:26
+msgid "on"
+msgstr ""
+
+#: templates/index.html:40
+msgid "Show Pāli Keypad"
+msgstr ""
+
+#: templates/topFixedMenu.html:3
+msgid "Home"
+msgstr ""
+
+#: templates/topFixedMenu.html:4
+msgid "About"
+msgstr ""
+
+#: templates/topFixedMenu.html:5
+msgid "Link"
+msgstr ""
+
+#: templates/topFixedMenu.html:13
+msgid "Choose Site"
+msgstr ""
+
+#: templates/topFixedMenu.html:14
+msgid "Main Site"
+msgstr ""
+
+#: templates/topFixedMenu.html:15
+msgid "Backup Site #1"
+msgstr ""
+
+#: templates/topFixedMenu.html:16
+msgid "Backup Site #2"
+msgstr ""
+
+#: templates/js/palidict.js:20
+msgid "'Show Pāli Keypad'"
+msgstr ""
+
+#: templates/js/palidict.js:24
+msgid "'Hide Pāli Keypad'"
+msgstr ""
+
