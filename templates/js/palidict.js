@@ -17,11 +17,11 @@ function toggle() {
   var dt = document.getElementById("displayText");
   if(kb.style.display == "inline") {
     kb.style.display = "none";
-    dt.innerHTML = "Show Pāli Keypad";
+    dt.innerHTML = {{_("'Show Pāli Keypad'")|safe}};
   }
   else {
     kb.style.display = "inline";
-    dt.innerHTML = "Hide Pāli Keypad";
+    dt.innerHTML = {{_("'Hide Pāli Keypad'")|safe}};
   }
 }
 

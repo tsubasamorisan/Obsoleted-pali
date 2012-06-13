@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-13 22:48+0800\n"
+"POT-Creation-Date: 2012-06-14 07:17+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "請"
 msgid "contact me"
 msgstr "聯絡我"
 
-#: templates/info.html:9 templates/index.html:4 templates/index.html:22
+#: templates/info.html:9 templates/index.html:4 templates/index.html:24
 msgid "Pāli Dictionary"
 msgstr "巴利語字典"
 
@@ -98,7 +98,7 @@ msgstr "從"
 msgid "on"
 msgstr "在"
 
-#: templates/index.html:39
+#: templates/index.html:40
 msgid "Show Pāli Keypad"
 msgstr "顯示巴利語鍵盤"
 
@@ -129,4 +129,12 @@ msgstr "備用站一"
 #: templates/topFixedMenu.html:16
 msgid "Backup Site #2"
 msgstr "備用站二"
+
+#: templates/js/palidict.js:20
+msgid "'Show Pāli Keypad'"
+msgstr "'顯示巴利語鍵盤'"
+
+#: templates/js/palidict.js:24
+msgid "'Hide Pāli Keypad'"
+msgstr "'隱藏巴利語鍵盤'"
 
