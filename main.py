@@ -26,6 +26,19 @@ class MainPage(webapp2.RequestHandler):
     locale = self.request.GET.get('locale', 'en_US')
     i18n.get_i18n().set_locale(locale)
 
+    """
+    # https://developers.google.com/appengine/docs/python/runtime#The_Environment
+    if (os.environ['SERVER_SOFTWARE'][:11] != "Development"):
+      if (locale == "zh_TW"):
+        self.response.out.write(open('production/index-zh_TW.html').read())
+        return
+      if (locale =="zh_CN"):
+        self.response.out.write(open('production/index-zh_CN.html').read())
+        return
+      self.response.out.write(open('production/index-en_US.html').read())
+      return
+    """
+
     result = ""
     localeStr = {
       'en_US' : u'English',
