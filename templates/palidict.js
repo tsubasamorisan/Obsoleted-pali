@@ -6,6 +6,7 @@ $(document).ready(function() {
   $("#keyboard input").bind("click", function(e) {
     document.getElementById("PaliInput").value += this.value;
     document.getElementById("PaliInput").focus();
+    strMatch();
   });
 });
 
