@@ -54,7 +54,7 @@ function strMatch() {
 
   //if the first letter in user input string is invalid, return
   if (!prefix_code[userInputStr[0]]) {
-    document.getElementById("result").innerHTML = "No Such Word";
+    document.getElementById("result").innerHTML = {{_("'No Such Word'")|safe}};
     return;
   }
 

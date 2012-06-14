@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-14 07:17+0800\n"
+"POT-Creation-Date: 2012-06-14 08:22+0800\n"
 "PO-Revision-Date: 2012-06-09 09:21+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -137,4 +137,12 @@ msgstr "'显示巴利语键盘'"
 #: templates/js/palidict.js:24
 msgid "'Hide Pāli Keypad'"
 msgstr "'隐藏巴利语键盘'"
+
+#: templates/js/palidict.js:51
+msgid "'Looking Up...'"
+msgstr "'查询中...'"
+
+#: templates/js/palidictSearch.js:57
+msgid "'No Such Word'"
+msgstr "'无此字'"
 
