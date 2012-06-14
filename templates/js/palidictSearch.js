@@ -79,7 +79,8 @@ function strMatch() {
   for (i=0; i<matched_array.length; i++) {
     /* http://www.javascriptkit.com/javatutors/dom2.shtml */
     var word = document.createElement('span');
-    word.setAttribute('style','font-family: Special Elite, arial, serif; text-align:left;')
+    word.setAttribute('style','position: absolute;');
+    word.style.left = getOffset(document.getElementById('PaliInput')).left;
     word.innerHTML = matched_array[i];
     resultElement.appendChild(word);
     resultElement.innerHTML += '<br />';

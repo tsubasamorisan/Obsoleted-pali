@@ -5,6 +5,7 @@
   <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
   <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
 
+  <link href='http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <style type="text/css">{% include "palidict.css" %}</style>
 
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -42,8 +43,8 @@
       </form>
       {% include "keyboard.html" %}
 
-      <div id="userInput" style="text-align: center;"></div><br />
-      <div id="result" style="font-family: special-elite; text-align:center;">{{ result  }}</div>
+      <div id="userInput" style="text-align: center; font-family: Special Elite, arial, serif;"></div><br />
+      <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;">{{ result  }}</div>
     </td>
   </tr>
   </table>
