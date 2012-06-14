@@ -5,6 +5,7 @@
   <meta name="keywords" content="pali, pāli, dictionary, pali-chinese,字典,辭典,巴利,巴漢字典" />
   <meta name="description" content="pali dictionary (especially pali-chinese). 巴利字典,巴漢字典" /> 
 
+  <link href='http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <style type="text/css">table.curvedEdges {
   border:10px solid #98FB98;
   -webkit-border-radius:13px;
@@ -33,7 +34,8 @@ table.floating-menu a, table.floating-menu h3 {
   border: 1px solid #ccc;  
   padding: 10px;
   cursor: move;
-  z-index: 20; 
+  z-index: 20;
+  text-align: center;
 }
 
 .menuDiv {
@@ -268,11 +270,20 @@ function strMatch() {
     }
     if (matched_count == 25) {break;}
   }
-  var matched_result = new String();
+  /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
+  /* http://www.w3schools.com/jsref/jsref_sort.asp */
+  matched_array.sort();
+  var resultElement = document.getElementById("result");
+  resultElement.innerHTML = "";
   for (i=0; i<matched_array.length; i++) {
-    matched_result = matched_result + matched_array[i] + "<br />";
+    /* http://www.javascriptkit.com/javatutors/dom2.shtml */
+    var word = document.createElement('span');
+    word.setAttribute('style','position: absolute;');
+    word.style.left = getOffset(document.getElementById('PaliInput')).left;
+    word.innerHTML = matched_array[i];
+    resultElement.appendChild(word);
+    resultElement.innerHTML += '<br />';
   }
-  document.getElementById("result").innerHTML = matched_result;
 }
 </script>
 
@@ -423,8 +434,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 </div>
 
-      <div id="userInput" style="text-align: center;"></div><br />
-      <div id="result" style="text-align: center"></div>
+      <div id="userInput" style="text-align: center; font-family: Special Elite, arial, serif;"></div><br />
+      <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;"></div>
     </td>
   </tr>
   </table>
