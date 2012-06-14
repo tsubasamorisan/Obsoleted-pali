@@ -52,7 +52,7 @@ table.floating-menu a, table.floating-menu h3 {
   background: white;
 }
 
-a.langItem:hover {
+a.menuItem:hover {
   background: #00C;
   color: white;
 }
