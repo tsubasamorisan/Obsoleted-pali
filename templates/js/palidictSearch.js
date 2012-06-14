@@ -81,7 +81,7 @@ function strMatch() {
     var word = document.createElement('span');
     word.setAttribute('style','position: absolute;');
     word.style.left = getOffset(document.getElementById('PaliInput')).left;
-    word.innerHTML = matched_array[i];
+    word.innerHTML = matched_array[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
     resultElement.appendChild(word);
     resultElement.innerHTML += '<br />';
   }
