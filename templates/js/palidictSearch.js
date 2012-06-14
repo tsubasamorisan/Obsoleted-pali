@@ -71,6 +71,7 @@ function strMatch() {
     }
     if (matched_count == 25) {break;}
   }
+  matched_array.sort();
   var matched_result = new String();
   for (i=0; i<matched_array.length; i++) {
     matched_result = matched_result + matched_array[i] + "<br />";
