@@ -26,7 +26,8 @@ table.floating-menu a, table.floating-menu h3 {
   border: 1px solid #ccc;  
   padding: 10px;
   cursor: move;
-  z-index: 20; 
+  z-index: 20;
+  text-align: center;
 }
 
 .menuDiv {

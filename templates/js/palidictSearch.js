@@ -71,11 +71,18 @@ function strMatch() {
     }
     if (matched_count == 25) {break;}
   }
+  /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
+  /* http://www.w3schools.com/jsref/jsref_sort.asp */
   matched_array.sort();
-  var matched_result = new String();
+  var resultElement = document.getElementById("result");
+  resultElement.innerHTML = "";
   for (i=0; i<matched_array.length; i++) {
-    matched_result = matched_result + matched_array[i] + "<br />";
+    /* http://www.javascriptkit.com/javatutors/dom2.shtml */
+    var word = document.createElement('span');
+    word.setAttribute('style','font-family: Special Elite, arial, serif; text-align:left;')
+    word.innerHTML = matched_array[i];
+    resultElement.appendChild(word);
+    resultElement.innerHTML += '<br />';
   }
-  document.getElementById("result").innerHTML = matched_result;
 }
 
