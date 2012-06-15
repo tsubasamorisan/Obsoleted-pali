@@ -57,3 +57,19 @@ a.menuItem:hover {
   color: white;
 }
 
+#suggest {
+  border-top-color: #C9D7F1;
+  border-right-color: #36C;
+  border-bottom-color: #36C;
+  border-left-color: #A2BAE7;
+  border-style: solid;
+  border-width: 1px;
+  z-index: 10;
+  padding: 0;
+  background-color: white;
+  overflow: hidden;
+  font-size: small;
+  font-family: Arial;
+  position: absolute;
+}
+

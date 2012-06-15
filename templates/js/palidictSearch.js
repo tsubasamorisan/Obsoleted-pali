@@ -65,7 +65,7 @@ function strMatch() {
   /* keyword: javascript evaluate string as variable
      in this case, eval(arrayName) */
   for ( i=0; i < eval(arrayName).length; i++ ) {
-    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with the string that users input
+    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with user input string
       matched_array.push(eval(arrayName)[i]);
       matched_count += 1;
     }
