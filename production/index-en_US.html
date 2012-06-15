@@ -60,7 +60,7 @@ table.floating-menu a, table.floating-menu h3 {
   background: white;
 }
 
-a.langItem:hover {
+a.menuItem:hover {
   background: #00C;
   color: white;
 }
@@ -264,7 +264,7 @@ function strMatch() {
   /* keyword: javascript evaluate string as variable
      in this case, eval(arrayName) */
   for ( i=0; i < eval(arrayName).length; i++ ) {
-    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with the string that users input
+    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with user input string
       matched_array.push(eval(arrayName)[i]);
       matched_count += 1;
     }
@@ -280,7 +280,7 @@ function strMatch() {
     var word = document.createElement('span');
     word.setAttribute('style','position: absolute;');
     word.style.left = getOffset(document.getElementById('PaliInput')).left;
-    word.innerHTML = matched_array[i];
+    word.innerHTML = matched_array[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
     resultElement.appendChild(word);
     resultElement.innerHTML += '<br />';
   }
@@ -336,9 +336,9 @@ function googleTranslateElementInit() {
 </table>
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
- <a class="menuItem langItem" style="display: block; " href="/">English</a>
- <a class="menuItem langItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
- <a class="menuItem langItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
+ <a class="menuItem" style="display: block; " href="/">English</a>
+ <a class="menuItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
+ <a class="menuItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
 </div></div>
   <table class="curvedEdges" align="center" cellspacing="0" style="margin-top:32px; width:75%; height:600px">
   <tr height=50" bgcolor="#fff4c8">
@@ -375,7 +375,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
       <br /><br />
       <!-- input pāli word -->
-      <form action="javascript:lookup();" style="text-align: center;">
+      <form action="javascript:lookup();" style="text-align: center;" autocomplete="off">
         <div>
           <input id="PaliInput" type="text" name="word" value="" onpropertychange="javascript:strMatch();" oninput="javascript:strMatch();">
           <input type="submit" value="Search"><sub><a id="displayText" href="javascript:toggle();">Show Pāli Keypad</a></sub>
