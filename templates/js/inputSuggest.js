@@ -82,6 +82,13 @@ Suggest.prototype = {
         this.input.value = currentWord.title;
       }
     }
+    if (code == Key.RETURN) {
+      this.flush();
+    }
+    if (code == Key.ESC) {
+      this.input.value = this.originalUserPaliInput;
+      this.flush();
+    }
   },
 
   updateSuggestion:function(matchedArray, userInputStr) {

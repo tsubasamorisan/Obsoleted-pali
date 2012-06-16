@@ -39,7 +39,6 @@ function strMatch() {
   // remove whitespace in the beginning and end of the string
   var userInputStr = document.getElementById("PaliInput").value.replace(/(^\s+)|(\s+$)/g, "");
 
-  document.getElementById("userInput").innerHTML = userInputStr;
 /*
   keyword: javascript string prefix match
   http://stackoverflow.com/questions/457160/the-most-efficient-algorithm-to-find-first-prefix-match-from-a-sorted-string-arr
@@ -75,17 +74,6 @@ function strMatch() {
   /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
   /* http://www.w3schools.com/jsref/jsref_sort.asp */
   matched_array.sort();
-  var resultElement = document.getElementById("result");
-  resultElement.innerHTML = "";
-  for (i=0; i<matched_array.length; i++) {
-    /* http://www.javascriptkit.com/javatutors/dom2.shtml */
-    var word = document.createElement('span');
-    word.setAttribute('style','position: absolute;');
-    word.style.left = getOffset(document.getElementById('PaliInput')).left;
-    word.innerHTML = matched_array[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
-    resultElement.appendChild(word);
-    resultElement.innerHTML += '<br />';
-  }
   Suggest.updateSuggestion(matched_array, userInputStr);
 }
 
