@@ -29,6 +29,7 @@ Suggest.prototype = {
   prefixMatchedArray : [],
   suggestedWordPosition : null,
   suggestedWordListSize : null,
+  originalUserPaliInput : null,
 
   keyEvent:function(event) {
     if (this.suggestedWordListSize == null) {return;}
@@ -39,11 +40,13 @@ Suggest.prototype = {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
+        this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == 1) {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         this.suggestedWordPosition = null;
         currentWord.style.background = "";
         currentWord.style.color = "";
+        this.input.value = this.originalUserPaliInput;
       } else {
         var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         previousWord.style.background = "";
@@ -52,6 +55,7 @@ Suggest.prototype = {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
+        this.input.value = currentWord.title;
       }
     }
     if (code == Key.DOWN) {
@@ -60,11 +64,13 @@ Suggest.prototype = {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
+        this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == this.suggestedWordListSize) {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         this.suggestedWordPosition = null;
         currentWord.style.background = "";
         currentWord.style.color = "";
+        this.input.value = this.originalUserPaliInput;
       } else {
         var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         previousWord.style.background = "";
@@ -73,6 +79,7 @@ Suggest.prototype = {
         var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
+        this.input.value = currentWord.title;
       }
     }
   },
@@ -80,12 +87,14 @@ Suggest.prototype = {
   updateSuggestion:function(matchedArray, userInputStr) {
     this.suggestedWordPosition = null;
     this.suggestedWordListSize = matchedArray.length;
+    this.originalUserPaliInput = userInputStr;
     /* create dropdown input suggestion menu */
     this.suggestDiv.innerHTML = "";
     for (i=0; i<matchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('span');
       word.id = ("suggestedWord" + (i+1));
+      word.title = matchedArray[i];
       word.innerHTML = matchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
       this.suggestDiv.appendChild(word);
       this.suggestDiv.innerHTML += '<br />';
@@ -102,6 +111,7 @@ Suggest.prototype = {
     this.suggestDiv.style.display = "none";
     this.suggestedWordPosition = null;
     this.suggestedWordListSize = null;
+    this.originalUserPaliInput = null;
   },
 
   _addEvent:function(element, type, func) {
