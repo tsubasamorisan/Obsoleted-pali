@@ -1,4 +1,4 @@
-prefix_code = {
+var prefix_code = {
 //  "°" : "uc",
 //  "-" : "dash",
   "a" : "a",
@@ -32,8 +32,8 @@ prefix_code = {
   "u" : "u",
   "ū" : "uu",
   "v" : "v",
-  "y" : "y",
-}
+  "y" : "y"
+};
 
 function strMatch() {
   // remove whitespace in the beginning and end of the string

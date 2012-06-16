@@ -82,7 +82,7 @@ function check(e){
   if (!checkParent(target, "menuDiv-lang-dropdown")) {
     if (checkParent(target, "lang-dropdown")) {
       if (langDropdownMenuDiv.style.display == "none") {
-        langDropdownMenuDiv.style.left = getOffset(langDropdown).left;
+        langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
         langDropdownMenuDiv.style.display = "";
       } else {langDropdownMenuDiv.style.display = "none";}
     } else {

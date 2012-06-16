@@ -1,7 +1,7 @@
 // http://www.enjoyxstudy.com/javascript/suggest/index.en.html
 // http://www.phpied.com/3-ways-to-define-a-javascript-class/
 
-Key = {
+var Key = {
   TAB:     9,
   RETURN: 13,
   ESC:    27,
@@ -9,7 +9,7 @@ Key = {
   DOWN:   40
 };
 
-Suggest = function() {
+var Suggest = function() {
   this.initialize.apply(this, arguments);
 };
 
@@ -106,7 +106,7 @@ Suggest.prototype = {
       this.suggestDiv.appendChild(word);
       this.suggestDiv.innerHTML += '<br />';
     }
-    this.suggestDiv.style.left = getOffset(document.getElementById('PaliInput')).left;
+    this.suggestDiv.style.left = getOffset(document.getElementById('PaliInput')).left + "px";
     this.suggestDiv.style.textAlign = 'left';
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
@@ -143,11 +143,10 @@ Suggest.prototype = {
 
   getKeyCodeChar : function(keycode) {
     return String.fromCharCode(keycode);
-  },
+  }
 
 };
 
-if (!Suggest) {var Suggest = {};}
 function startSuggest() {Suggest = new Suggest("PaliInput", "suggest");}
 
 window.addEventListener ?
