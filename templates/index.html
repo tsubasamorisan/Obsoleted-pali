@@ -22,18 +22,18 @@
 </head> 
 <body OnLoad="document.getElementById('PaliInput').focus();">
   {% include "topFixedMenu.html" %}
-  <table class="curvedEdges" align="center" style="margin-top:32px; width:75%; height:600px; cellspacing: 0px;">
+  <table class="curvedEdges" style="width: 78%; margin-left:11%; margin-right:11%; margin-top:32px; height:600px; cellspacing: 0px;">
   <tr style="height: 50px; background-color: #fff4c8;">
-    <th colspan="2" style="padding-top:18px; padding-bottom:0px"><h1 align="center" style="color:olive;">{{_("Pāli Dictionary")}}</h1></th>
+    <td colspan="2"><h1 style="color:olive; text-align: center;">{{_("Pāli Dictionary")}}</h1></td>
   </tr>
 
   <tr>
-    <td align="left" style="border-bottom:1px dotted black; padding:10px; height: 50px;">{% include "google_upper_ad_code" %}</td>
-    <td align="right" valign="top" rowspan="2" style="padding-top:10px; width: 160px;">{% include "google_right_ad_code" %}</td>
+    <td style="border-bottom:1px dotted black; padding:10px; height: 50px; text-align: left;">{% include "google_upper_ad_code" %}</td>
+    <td rowspan="2" style="vertical-align: top; padding-top:10px; width: 160px;">{% include "google_right_ad_code" %}</td>
   </tr>
 
   <tr>
-    <td valign="top" align="left">
+    <td style="vertical-align: top; text-align: left;">
 
       <br /><br />
       <!-- input pāli word -->
@@ -51,6 +51,6 @@
     </td>
   </tr>
   </table>
-</body>
 {% include "info.html" %}
+</body>
 </html>

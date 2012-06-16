@@ -97,7 +97,7 @@ Suggest.prototype = {
     this.originalUserPaliInput = userInputStr;
     /* create dropdown input suggestion menu */
     this.suggestDiv.innerHTML = "";
-    for (i=0; i<matchedArray.length; i++) {
+    for (var i=0; i<matchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('span');
       word.id = ("suggestedWord" + (i+1));
