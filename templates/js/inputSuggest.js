@@ -1,8 +1,6 @@
 // http://www.enjoyxstudy.com/javascript/suggest/index.en.html
 // http://www.phpied.com/3-ways-to-define-a-javascript-class/
 
-if (!Suggest) {var Suggest = {};}
-
 Key = {
   TAB:     9,
   RETURN: 13,
@@ -29,35 +27,83 @@ Suggest.prototype = {
   },
 
   prefixMatchedArray : [],
+  suggestedWordPosition : null,
+  suggestedWordListSize : null,
 
   keyEvent:function(event) {
+    if (this.suggestedWordListSize == null) {return;}
     var code = this.getKeyCode(event);
     if (code == Key.UP) {
-      console.log('up');
+      if (this.suggestedWordPosition == null) {
+        this.suggestedWordPosition = this.suggestedWordListSize;
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        currentWord.style.background = "#00C";
+        currentWord.style.color = "white";
+      } else if (this.suggestedWordPosition == 1) {
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        this.suggestedWordPosition = null;
+        currentWord.style.background = "";
+        currentWord.style.color = "";
+      } else {
+        var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        previousWord.style.background = "";
+        previousWord.style.color = "";
+        this.suggestedWordPosition -= 1;
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        currentWord.style.background = "#00C";
+        currentWord.style.color = "white";
+      }
     }
     if (code == Key.DOWN) {
-      console.log('down');
+      if (this.suggestedWordPosition == null) {
+        this.suggestedWordPosition = 1;
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        currentWord.style.background = "#00C";
+        currentWord.style.color = "white";
+      } else if (this.suggestedWordPosition == this.suggestedWordListSize) {
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        this.suggestedWordPosition = null;
+        currentWord.style.background = "";
+        currentWord.style.color = "";
+      } else {
+        var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        previousWord.style.background = "";
+        previousWord.style.color = "";
+        this.suggestedWordPosition += 1;
+        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        currentWord.style.background = "#00C";
+        currentWord.style.color = "white";
+      }
     }
   },
 
-  createSuggestion:function() {
+  updateSuggestion:function(matchedArray, userInputStr) {
+    this.suggestedWordPosition = null;
+    this.suggestedWordListSize = matchedArray.length;
     /* create dropdown input suggestion menu */
-    this.suggest.innerHTML = "";
-    //suggest.position.left = getOffset(document.getElementById('PaliInput')).left;
-    for (i=0; i<matched_array.length; i++) {
+    this.suggestDiv.innerHTML = "";
+    for (i=0; i<matchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('span');
-      word.innerHTML = matched_array[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
-      this.suggest.appendChild(word);
-      this.suggest.innerHTML += '<br />';
+      word.id = ("suggestedWord" + (i+1));
+      word.innerHTML = matchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
+      this.suggestDiv.appendChild(word);
+      this.suggestDiv.innerHTML += '<br />';
     }
-    this.suggest.style.left = getOffset(document.getElementById('PaliInput')).left;
-    this.suggest.style.textAlign = 'left';
-    this.suggest.style.fontFamily = 'Gentium Basic, arial, serif';
-    this.suggest.style.fontSize = '100%';
-    this.suggest.style.display = '';
+    this.suggestDiv.style.left = getOffset(document.getElementById('PaliInput')).left;
+    this.suggestDiv.style.textAlign = 'left';
+    this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
+    this.suggestDiv.style.fontSize = '100%';
+    this.suggestDiv.style.display = '';
   },
- 
+
+  flush: function() {
+    this.suggestDiv.innerHTML = "";
+    this.suggestDiv.style.display = "none";
+    this.suggestedWordPosition = null;
+    this.suggestedWordListSize = null;
+  },
+
   _addEvent:function(element, type, func) {
     if (window.addEventListener) {
       element.addEventListener(type, func, false);
@@ -84,7 +130,8 @@ Suggest.prototype = {
 
 };
 
-function startSuggest() {new Suggest("PaliInput", "suggest");}
+if (!Suggest) {var Suggest = {};}
+function startSuggest() {Suggest = new Suggest("PaliInput", "suggest");}
 
 window.addEventListener ?
   window.addEventListener('load', startSuggest, false) :

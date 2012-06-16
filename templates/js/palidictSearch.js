@@ -49,6 +49,7 @@ function strMatch() {
   /* Here we give simple implementation for prefix matching */
   if (userInputStr.length == 0){
     document.getElementById("result").innerHTML = "";
+    Suggest.flush();
     return;
   }
 
@@ -85,5 +86,6 @@ function strMatch() {
     resultElement.appendChild(word);
     resultElement.innerHTML += '<br />';
   }
+  Suggest.updateSuggestion(matched_array, userInputStr);
 }
 
