@@ -61,7 +61,7 @@ Suggest.prototype = {
     // http://www.quirksmode.org/js/keys.html
     // http://unixpapa.com/js/key.html
     var _this = this;
-    this._addEventListener(this.input, 'keydown', function(){var e=event||window.event;_this.keyEvent(e);});
+    this._addEventListener(this.input, 'keydown', function(e){_this.keyEvent(e);});
 
     this._addEventListener(this.input, 'focus', function(){_this.checkInput();})
     this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();})
