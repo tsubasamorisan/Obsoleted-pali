@@ -13,7 +13,13 @@ urls = (
 
 class index:
   def GET(self):
-    response = urllib2.urlopen('http://palidictionary.appspot.com/%s' % web.ctx.fullpath)
+    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath)
+    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
+    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
+    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
+    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
+    request.add_header('User-Agent', web.ctx.env['HTTP_USER_AGENT'])
+    response = urllib2.urlopen(request)
     web.header('Content-Type','text/html; charset=utf-8', unique=True)
     return response.read()
 
@@ -24,6 +30,11 @@ class lookup:
     value = {"word": web.input().word.encode('utf-8')}
     data = urllib.urlencode(value)
     request = urllib2.Request(url, data)
+    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
+    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
+    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
+    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
+    request.add_header('User-Agent', web.ctx.env['HTTP_USER_AGENT'])
     response = urllib2.urlopen(request)
     web.header('Content-Type','text/html; charset=utf-8', unique=True)
     return response.read()
