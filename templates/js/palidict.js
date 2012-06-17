@@ -22,6 +22,7 @@ function toggle() {
   else {
     kb.style.display = "inline";
     dt.innerHTML = {{_("'Hide Pāli Keypad'")|safe}};
+    kb.style.left = getOffset(dt).left +"px";
   }
 }
 
