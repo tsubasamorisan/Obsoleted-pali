@@ -1,3 +1,40 @@
+var prefix_code = {
+//  "°" : "uc",
+//  "-" : "dash",
+  "a" : "a",
+  "ā" : "aa",
+  "b" : "b",
+  "c" : "c",
+  "d" : "d",
+  "ḍ" : "dotd",
+  "e" : "e",
+  "g" : "g",
+  "h" : "h",
+  "i" : "i",
+  "ī" : "ii",
+  "j" : "j",
+  "k" : "k",
+  "l" : "l",
+  "ḷ" : "dotl",
+  "m" : "m",
+//  "ṃ" : "dotm",
+  "n" : "n",
+  "ñ" : "tilden",
+//  "ṇ" : "dotn",
+//  "ṅ" : "ndot",
+//  "ŋ" : "ngng",
+  "o" : "o",
+  "p" : "p",
+  "r" : "r",
+  "s" : "s",
+  "t" : "t",
+  "ṭ" : "dott",
+  "u" : "u",
+  "ū" : "uu",
+  "v" : "v",
+  "y" : "y"
+};
+
 // http://www.enjoyxstudy.com/javascript/suggest/index.en.html
 // http://www.phpied.com/3-ways-to-define-a-javascript-class/
 
@@ -23,15 +60,88 @@ Suggest.prototype = {
     // http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
     // http://www.quirksmode.org/js/keys.html
     // http://unixpapa.com/js/key.html
-    this._addEvent(this.input, 'keydown', this._bindEvent(this.keyEvent));
+    var _this = this;
+    this._addEventListener(this.input, 'keydown', function(){var e=event||window.event;_this.keyEvent(e);});
+
+    this._addEventListener(this.input, 'focus', function(){_this.checkInput();})
+    this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();})
   },
 
   prefixMatchedArray : [],
+  prefixMatchedWordMaxCount : 25,
   suggestedWordPosition : null,
   suggestedWordListSize : null,
-  originalUserPaliInput : null,
+  checkInputTimingEventVar : null,
+  checkInputEventInterval : 500,//ms
+  originalUserPaliInput : "",
+  oldInput : "",
+
+  checkInput:function() {
+  /* check user input periodically (oninput or onpropertychange is not usable because browser incompatibility) */
+    if (this.input.value != this.oldInput) {
+      if (this.suggestedWordPosition == null) {
+        this.match();
+      }
+      this.oldInput = this.input.value;
+    }
+    var _this = this;
+    this.checkInputTimingEventVar = setTimeout(function(){_this.checkInput();}, this.checkInputEventInterval);
+  },
+
+  stopCheckInput:function() {
+    clearTimeout(this.checkInputTimingEventVar);
+    this.flush();
+  },
+
+  match:function() {
+    // remove whitespace in the beginning and end of the string
+    var userInputStr = this.input.value.replace(/(^\s+)|(\s+$)/g, "");
+
+/*
+  keyword: javascript string prefix match
+  http://stackoverflow.com/questions/457160/the-most-efficient-algorithm-to-find-first-prefix-match-from-a-sorted-string-arr
+*/
+    /* TODO: should we convert the string to lower case here? */
+
+    /* Here we give simple implementation for prefix matching */
+    if (userInputStr.length == 0){
+      document.getElementById("result").innerHTML = "";//FIXME: bad practice
+      this.flush();
+      return;
+    }
+
+    //if the first letter in user input string is invalid, return
+    if (!prefix_code[userInputStr[0]]) {
+      document.getElementById("result").innerHTML = {{_("'No Such Word'")|safe}};//FIXME: bad practice
+      return;
+    }
+
+    var arrayName = "prefix_" + prefix_code[userInputStr[0]];
+
+    var matched_count = 0;
+    var matched_array = new Array();//FIXME: use prefixMatchedArray
+    /* keyword: javascript evaluate string as variable
+       in this case, eval(arrayName) */
+    for (var i=0; i < eval(arrayName).length; i++ ) {
+      if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with user input string
+        matched_array.push(eval(arrayName)[i]);
+        matched_count += 1;
+      }
+      if (matched_count == this.prefixMatchedWordMaxCount) {break;}
+    }
+    /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
+    /* http://www.w3schools.com/jsref/jsref_sort.asp */
+    matched_array.sort();
+    this.updateSuggestion(matched_array, userInputStr);
+  },
 
   keyEvent:function(event) {
+    if (!this.checkInputTimingEventVar) {
+      // Google Search Keyword: javascript object settimeout
+      var _this = this;
+      this.checkInputTimingEventVar = setTimeout(function(){_this.checkInput();}, this.checkInputEventInterval);
+    }
+
     if (this.suggestedWordListSize == null) {return;}
     var code = this.getKeyCode(event);
     if (code == Key.UP) {
@@ -84,6 +194,7 @@ Suggest.prototype = {
     }
     if (code == Key.RETURN) {
       this.flush();
+      this.oldInput = this.input.value;
     }
     if (code == Key.ESC) {
       this.input.value = this.originalUserPaliInput;
@@ -118,21 +229,16 @@ Suggest.prototype = {
     this.suggestDiv.style.display = "none";
     this.suggestedWordPosition = null;
     this.suggestedWordListSize = null;
-    this.originalUserPaliInput = null;
+    this.originalUserPaliInput = "";
+    this.oldInput = "";
   },
 
-  _addEvent:function(element, type, func) {
+  _addEventListener:function(e, evt, fn) {
     if (window.addEventListener) {
-      element.addEventListener(type, func, false);
+      e.addEventListener(evt, fn, false);
     } else {
-      element.attachEvent('on' + type, func);
+      e.attachEvent('on'+evt, fn);
     }
-  },
-
-  _bindEvent: function(func) {
-    var self = this;
-    var args = Array.prototype.slice.call(arguments, 1);
-    return function(event){ event = event || window.event; func.apply(self, [event].concat(args)); };
   },
 
   getKeyCode : function(e) {
