@@ -84,6 +84,7 @@ function check(e){
     if (checkParent(target, "lang-dropdown")) {
       if (langDropdownMenuDiv.style.display == "none") {
         langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
+        langDropdownMenuDiv.style.top = (getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
         langDropdownMenuDiv.style.display = "";
       } else {langDropdownMenuDiv.style.display = "none";}
     } else {
