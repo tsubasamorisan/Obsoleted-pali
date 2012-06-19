@@ -6,7 +6,6 @@ $(document).ready(function() {
   $("#keyboard input").bind("click", function(e) {
     document.getElementById("PaliInput").value += this.value;
     document.getElementById("PaliInput").focus();
-    strMatch();
   });
 });
 
@@ -63,7 +62,8 @@ function getOffset( el ) {
   while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
     _x += el.offsetLeft - el.scrollLeft;
     _y += el.offsetTop - el.scrollTop;
-    el = el.offsetParent;
+    if (navigator.userAgent.indexOf('WebKit') >= 0) {el = el.parentNode;}
+    else {el = el.offsetParent;}
   }
   return { top: _y, left: _x };
 }

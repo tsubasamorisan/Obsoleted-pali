@@ -220,6 +220,7 @@ Suggest.prototype = {
       this.suggestDiv.innerHTML += '<br />';
     }
     this.suggestDiv.style.left = getOffset(this.input).left + "px";
+    this.suggestDiv.style.width = this.input.offsetWidth + "px";
     this.suggestDiv.style.textAlign = 'left';
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
