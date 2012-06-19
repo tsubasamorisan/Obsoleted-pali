@@ -5,6 +5,7 @@ import webapp2
 import jinja2
 import os, cgi
 from google.appengine.api import users
+from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup
 
@@ -16,6 +17,11 @@ jinja_environment = jinja2.Environment(
   extensions=['jinja2.ext.i18n'])
 
 jinja_environment.install_gettext_translations(i18n)
+
+
+memcache.set('en_US', open('production/index-en_US.html', 'r').read())
+memcache.set('zh_TW', open('production/index-zh_TW.html', 'r').read())
+memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
 
 class MainPage(webapp2.RequestHandler):
@@ -64,6 +70,18 @@ class MainPage(webapp2.RequestHandler):
         i18n.get_i18n().set_locale(locale)
         #self.response.out.write("locale: en_US")
     #browser = self.request.headers.get('user_agent')
+
+    useMemcache = self.request.GET.get('memcache', 'yes')
+    if (useMemcache == 'yes'):
+      data = memcache.get(locale)
+      if data is not None:
+        self.response.out.write(data)
+        return
+      else:
+        memcache.set(locale, open('production/index-%s.html' % locale, 'r').read())
+        data = memcache.get(locale)
+        self.response.out.write(data)
+        return
 
     """
     # https://developers.google.com/appengine/docs/python/runtime#The_Environment
