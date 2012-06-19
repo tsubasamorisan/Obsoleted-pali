@@ -50,13 +50,14 @@ AJAXLoad("js", false, "http://pali.googlecode.com/git/static/jsvarindex.js");
 AJAXLoad("css", false, "http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
 if (window.location.href.indexOf('localhost:8080') >= 0) {AJAXLoad("css", false, "static/css/palidict.css");}
 else {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/css/palidict.css");}
+if (window.location.href.indexOf('localhost:8080') >= 0) {AJAXLoad("js", false, "static/js/inputSuggest.js");}
+else {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/js/inputSuggest.js");}
   </script>
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
   <script type="text/javascript">{% include "palidict.js" %}</script>
-  <script type="text/javascript">{% include "inputSuggest.js" %}</script>
   {% include "google_analytics_code" %}
 </head> 
 <body OnLoad="document.getElementById('PaliInput').focus();">
