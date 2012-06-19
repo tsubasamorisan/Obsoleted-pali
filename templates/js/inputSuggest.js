@@ -81,6 +81,10 @@ Suggest.prototype = {
     if (this.input.value != this.oldInput) {
       if (this.suggestedWordPosition == null) {
         this.match();
+      } else {
+        if(this.prefixMatchedArray[this.suggestedWordPosition - 1] != this.input.value) {
+          this.match();
+        }
       }
       this.oldInput = this.input.value;
     }
@@ -119,20 +123,20 @@ Suggest.prototype = {
     var arrayName = "prefix_" + prefix_code[userInputStr[0]];
 
     var matched_count = 0;
-    var matched_array = new Array();//FIXME: use prefixMatchedArray
+    this.prefixMatchedArray = new Array();
     /* keyword: javascript evaluate string as variable
        in this case, eval(arrayName) */
     for (var i=0; i < eval(arrayName).length; i++ ) {
       if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with user input string
-        matched_array.push(eval(arrayName)[i]);
+        this.prefixMatchedArray.push(eval(arrayName)[i]);
         matched_count += 1;
       }
       if (matched_count == this.prefixMatchedWordMaxCount) {break;}
     }
     /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
     /* http://www.w3schools.com/jsref/jsref_sort.asp */
-    matched_array.sort();
-    this.updateSuggestion(matched_array, userInputStr);
+    this.prefixMatchedArray.sort();
+    this.updateSuggestion(userInputStr);
   },
 
   keyEvent:function(event) {
@@ -199,25 +203,26 @@ Suggest.prototype = {
     if (code == Key.ESC) {
       this.input.value = this.originalUserPaliInput;
       this.flush();
+      this.oldInput = this.input.value;
     }
   },
 
-  updateSuggestion:function(matchedArray, userInputStr) {
+  updateSuggestion:function(userInputStr) {
     this.suggestedWordPosition = null;
-    this.suggestedWordListSize = matchedArray.length;
+    this.suggestedWordListSize = this.prefixMatchedArray.length;
     this.originalUserPaliInput = userInputStr;
     /* create dropdown input suggestion menu */
     this.suggestDiv.innerHTML = "";
-    for (var i=0; i<matchedArray.length; i++) {
+    for (var i=0; i < this.prefixMatchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('span');
       word.id = ("suggestedWord" + (i+1));
-      word.title = matchedArray[i];
-      word.innerHTML = matchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
+      word.title = this.prefixMatchedArray[i];
+      word.innerHTML = this.prefixMatchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
       this.suggestDiv.appendChild(word);
       this.suggestDiv.innerHTML += '<br />';
     }
-    this.suggestDiv.style.left = getOffset(document.getElementById('PaliInput')).left + "px";
+    this.suggestDiv.style.left = getOffset(this.input).left + "px";
     this.suggestDiv.style.textAlign = 'left';
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
@@ -231,6 +236,7 @@ Suggest.prototype = {
     this.suggestedWordListSize = null;
     this.originalUserPaliInput = "";
     this.oldInput = "";
+    delete this.prefixMatchedArray;
   },
 
   _addEventListener:function(e, evt, fn) {
