@@ -108,17 +108,10 @@ Suggest.prototype = {
     /* TODO: should we convert the string to lower case here? */
 
     /* Here we give simple implementation for prefix matching */
-    if (userInputStr.length == 0){
-      document.getElementById("result").innerHTML = "";//FIXME: bad practice
-      this.flush();
-      return;
-    }
+    if (userInputStr.length == 0) {this.flush();return;}
 
     //if the first letter in user input string is invalid, return
-    if (!prefix_code[userInputStr[0]]) {
-      document.getElementById("result").innerHTML = {{_("'No Such Word'")|safe}};//FIXME: bad practice
-      return;
-    }
+    if (!prefix_code[userInputStr[0]]) {return;}
 
     var arrayName = "prefix_" + prefix_code[userInputStr[0]];
 
