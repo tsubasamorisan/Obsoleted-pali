@@ -146,8 +146,12 @@ Suggest.prototype = {
       this.checkInputTimingEventVar = setTimeout(function(){_this.checkInput();}, this.checkInputEventInterval);
     }
 
-    if (this.suggestedWordListSize == null) {return;}
     var code = this.getKeyCode(event);
+    if (this.suggestedWordListSize == null) {
+      if ((code == Key.DOWN) && (this.input.value != "")){this.match();}
+      if ((code == Key.UP) && (this.input.value != "")){this.match();}
+      return;
+    }
     if (code == Key.UP) {
       if (this.suggestedWordPosition == null) {
         this.suggestedWordPosition = this.suggestedWordListSize;
