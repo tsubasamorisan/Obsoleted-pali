@@ -39,6 +39,9 @@ class MainPage(webapp2.RequestHandler):
     else:
       #self.response.out.write("no locale")
       accept_languages = self.request.headers.get('accept_language')
+      if accept_languages is None:
+        locale = 'en_US'
+        break
       languages = accept_languages.split(",")
       language_q_pairs = []
       for language in languages:
