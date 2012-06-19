@@ -41,37 +41,37 @@ class MainPage(webapp2.RequestHandler):
       accept_languages = self.request.headers.get('accept_language')
       if accept_languages is None:
         locale = 'en_US'
-        break
-      languages = accept_languages.split(",")
-      language_q_pairs = []
-      for language in languages:
-        if language.split(";")[0] == language:
-          language_q_pairs.append((language, "1"))
-        else:
-          locale = language.split(";")[0]
-          q = language.split(";")[1].split("=")[1]
-          language_q_pairs.append((locale, q))
-      #self.response.out.write(language_q_pairs)
-      if (language_q_pairs[0][0].lower() == 'zh-tw'):
-        locale = 'zh_TW'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: zh_TW")
-      elif (language_q_pairs[0][0].lower() == 'zh-hk'):
-        locale = 'zh_TW'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: zh_TW")
-      elif (language_q_pairs[0][0].lower() == 'zh-cn'):
-        locale = 'zh_CN'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: zh_CN")
-      elif (language_q_pairs[0][0][:2].lower() == 'zh'):
-        locale = 'zh_CN'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: zh_CN")
       else:
-        locale = 'en_US'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: en_US")
+        languages = accept_languages.split(",")
+        language_q_pairs = []
+        for language in languages:
+          if language.split(";")[0] == language:
+            language_q_pairs.append((language, "1"))
+          else:
+            locale = language.split(";")[0]
+            q = language.split(";")[1].split("=")[1]
+            language_q_pairs.append((locale, q))
+        #self.response.out.write(language_q_pairs)
+        if (language_q_pairs[0][0].lower() == 'zh-tw'):
+          locale = 'zh_TW'
+          i18n.get_i18n().set_locale(locale)
+          #self.response.out.write("locale: zh_TW")
+        elif (language_q_pairs[0][0].lower() == 'zh-hk'):
+          locale = 'zh_TW'
+          i18n.get_i18n().set_locale(locale)
+          #self.response.out.write("locale: zh_TW")
+        elif (language_q_pairs[0][0].lower() == 'zh-cn'):
+          locale = 'zh_CN'
+          i18n.get_i18n().set_locale(locale)
+          #self.response.out.write("locale: zh_CN")
+        elif (language_q_pairs[0][0][:2].lower() == 'zh'):
+          locale = 'zh_CN'
+          i18n.get_i18n().set_locale(locale)
+          #self.response.out.write("locale: zh_CN")
+        else:
+          locale = 'en_US'
+          i18n.get_i18n().set_locale(locale)
+          #self.response.out.write("locale: en_US")
     #browser = self.request.headers.get('user_agent')
 
     useMemcache = self.request.GET.get('memcache', 'yes')
