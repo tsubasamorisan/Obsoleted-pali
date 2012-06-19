@@ -212,15 +212,14 @@ Suggest.prototype = {
     this.suggestDiv.innerHTML = "";
     for (var i=0; i < this.prefixMatchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
-      var word = document.createElement('span');
+      var word = document.createElement('div');
       word.id = ("suggestedWord" + (i+1));
       word.title = this.prefixMatchedArray[i];
       word.innerHTML = this.prefixMatchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
       this.suggestDiv.appendChild(word);
-      this.suggestDiv.innerHTML += '<br />';
     }
     this.suggestDiv.style.left = getOffset(this.input).left + "px";
-    this.suggestDiv.style.width = this.input.offsetWidth + "px";
+    this.suggestDiv.style.minWidth = this.input.offsetWidth + "px";
     this.suggestDiv.style.textAlign = 'left';
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
