@@ -93,9 +93,14 @@ function check(e){
   }
 }
 function checkParent(t,id) {
+  /* Chrome and Firefox use parentNode, while Opera use offsetParent */
   while(t.parentNode) { 
     if( t == document.getElementById(id) ) {return true;} 
     t = t.parentNode;
+  } 
+  while(t.offsetParent) { 
+    if( t == document.getElementById(id) ) {return true;} 
+    t = t.offsetParent;
   } 
   return false;
 }

@@ -126,6 +126,7 @@ Suggest.prototype = {
       }
       if (matched_count == this.prefixMatchedWordMaxCount) {break;}
     }
+    if (matched_count == 0) {this.flush();return;}
     /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
     /* http://www.w3schools.com/jsref/jsref_sort.asp */
     this.prefixMatchedArray.sort();
@@ -148,22 +149,22 @@ Suggest.prototype = {
     if (code == Key.UP) {
       if (this.suggestedWordPosition == null) {
         this.suggestedWordPosition = this.suggestedWordListSize;
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
         this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == 1) {
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         this.suggestedWordPosition = null;
         currentWord.style.background = "";
         currentWord.style.color = "";
         this.input.value = this.originalUserPaliInput;
       } else {
-        var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         previousWord.style.background = "";
         previousWord.style.color = "";
         this.suggestedWordPosition -= 1;
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
         this.input.value = currentWord.title;
@@ -172,22 +173,22 @@ Suggest.prototype = {
     if (code == Key.DOWN) {
       if (this.suggestedWordPosition == null) {
         this.suggestedWordPosition = 1;
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
         this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == this.suggestedWordListSize) {
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         this.suggestedWordPosition = null;
         currentWord.style.background = "";
         currentWord.style.color = "";
         this.input.value = this.originalUserPaliInput;
       } else {
-        var previousWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         previousWord.style.background = "";
         previousWord.style.color = "";
         this.suggestedWordPosition += 1;
-        var currentWord = document.getElementById("suggestedWord"+this.suggestedWordPosition);
+        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         currentWord.style.background = "#00C";
         currentWord.style.color = "white";
         this.input.value = currentWord.title;
@@ -204,18 +205,58 @@ Suggest.prototype = {
     }
   },
 
+  onItemClick:function(event) {
+    this.flush();
+    this.oldInput = this.input.value;
+  },
+
+  onItemMouseOver:function(event) {
+    var targetElement = event.target || event.srcElement;
+    currentWord = this._checkParent(targetElement);
+    var currentWordPosition = this._getWordElementNumberIndex(currentWord);
+    if (this.suggestedWordPosition == null) {
+      this.suggestedWordPosition = currentWordPosition;
+      currentWord.style.background = "#00C";
+      currentWord.style.color = "white";
+      this.input.value = currentWord.title;
+    } else {
+      if (this.suggestedWordPosition != currentWordPosition) {
+        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
+        previousWord.style.background = "";
+        previousWord.style.color = "";
+        this.suggestedWordPosition = currentWordPosition;
+        currentWord.style.background = "#00C";
+        currentWord.style.color = "white";
+        this.input.value = currentWord.title;
+      }
+    }
+  },
+
+  onItemMouseOut:function(event) {
+    var targetElement = event.target || event.srcElement;
+    currentWord = this._checkParent(targetElement);
+    currentWord.style.background = "";
+    currentWord.style.color = "";
+  },
+
   updateSuggestion:function(userInputStr) {
     this.suggestedWordPosition = null;
     this.suggestedWordListSize = this.prefixMatchedArray.length;
     this.originalUserPaliInput = userInputStr;
     /* create dropdown input suggestion menu */
     this.suggestDiv.innerHTML = "";
+    var _this = this;
     for (var i=0; i < this.prefixMatchedArray.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('div');
-      word.id = ("suggestedWord" + (i+1));
+      word.id = this._getWordElementIdString((i+1));
       word.title = this.prefixMatchedArray[i];
       word.innerHTML = this.prefixMatchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
+
+      this._addEventListener(word, 'click', function(e){_this.onItemClick(e);});
+      this._addEventListener(word, 'mouseover', function(e){_this.onItemMouseOver(e);});
+      this._addEventListener(word, 'mouseout', function(e){_this.onItemMouseOut(e);});
+
       this.suggestDiv.appendChild(word);
     }
     this.suggestDiv.style.left = getOffset(this.input).left + "px";
@@ -224,6 +265,36 @@ Suggest.prototype = {
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
     this.suggestDiv.style.display = '';
+  },
+
+  _checkParent: function(element) {
+    /* sometimes muose event return the child element of actual element we need, so we need to check parent element */
+    /* Chrome and Firefox use parentNode, while Opera uses offsetParent */
+    while(element.parentNode) { 
+      if( element.id.indexOf('suggest') == 0 ) {return element;}
+      element = element.parentNode;
+    }
+    while(element.offsetParent) { 
+      if( element.id.indexOf('suggest') == 0 ) {return element;}
+      element = element.offsetParent;
+    }
+    console.log('in _checkParent: cannot find element with proper id!'); 
+    return null;
+  },
+
+  _getWordElementByNumberIndex: function(number) {
+    if (typeof number != "number") {console.log('in _getWordElementByNumberIndex: input is not of type number');}
+    return document.getElementById("suggestedWord"+number.toString());
+  },
+
+  _getWordElementNumberIndex: function(element) {
+    if (typeof element.id != "string") {console.log('in _getWordElementNumberIndexById: input element.id is not of type string');}
+    return parseInt(element.id.replace("suggestedWord", ""));
+  },
+
+  _getWordElementIdString: function(number) {
+    if (typeof number != "number") {console.log('in _getWordElementIdString: input is not of type number');}
+    return ("suggestedWord" + number.toString());
   },
 
   flush: function() {
