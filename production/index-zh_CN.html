@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>巴利语字典</title>
-  <meta name="keywords" content="Pāli, Pali, Pāli dictionary, Pali dictionary, Pāli-Chinese, Pāli-English, Pāli-Japanese,字典,辭典,巴利,巴利文,巴利語,巴利語字典,巴漢字典,巴英字典,巴日字典" />
-  <meta name="description" content="Pāli dictionary (Pāli to Chinese, Pāli to English, Pāli to Japanese).巴利語字典,巴漢字典,巴英字典,巴日字典" />
-  <link rel="shortcut icon" href="http://pali.googlecode.com/git/static/favicon.ico" /> 
-  <script type="text/javascript">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>巴利语字典</title>
+<meta name="keywords" content="Pāli, Pali, Pāli dictionary, Pali dictionary, Pāli-Chinese, Pāli-English, Pāli-Japanese,字典,辭典,巴利,巴利文,巴利語,巴利語字典,巴漢字典,巴英字典,巴日字典" />
+<meta name="description" content="Pāli dictionary (Pāli to Chinese, Pāli to English, Pāli to Japanese).巴利語字典,巴漢字典,巴英字典,巴日字典" />
+<link rel="shortcut icon" href="http://pali.googlecode.com/git/static/favicon.ico" />
+ 
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
 /* Reference: http://ntt.cc/2008/02/10/4-ways-to-dynamically-load-external-javascriptwith-source.html */
 function AJAXLoad(type, loadByXMLHttp, url){
   var ext;
@@ -46,16 +52,53 @@ function AJAXLoad(type, loadByXMLHttp, url){
   xmlhttp.open("GET",url,true);
   xmlhttp.send();
 }
+/* Load Index of Pāli Words */
 AJAXLoad("js", false, "http://pali.googlecode.com/git/static/jsvarindex.js");
+/* Load Google Web Fonts */
 AJAXLoad("css", false, "http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
-if (window.location.href.indexOf('localhost:8080') >= 0) {AJAXLoad("css", false, "static/css/palidict.css");}
+/* Load CSS */
+if (window.location.host == 'localhost:8080') {AJAXLoad("css", false, "static/css/palidict.css");}
 else {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/css/palidict.css");}
-if (window.location.href.indexOf('localhost:8080') >= 0) {AJAXLoad("js", false, "static/js/inputSuggest.js");}
+/* Load Input Suggestion Library */
+if (window.location.host == 'localhost:8080') {AJAXLoad("js", false, "static/js/inputSuggest.js");}
 else {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/js/inputSuggest.js");}
+
+/*
+keyword: javascript get url parameter 
+http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
+http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+http://papermashup.com/read-url-get-variables-withjavascript/
+*/
+var queryURL = function() {
+  // This function is anonymous, is executed immediately and the return value is assigned to queryURL
+  var queryPairs = {};
+  var variables = window.location.search.substring(1).split("&");
+  for (var i=0; i < variables.length; i++) {
+    /* http://stackoverflow.com/questions/747641/what-is-the-difference-between-decodeuricomponent-and-decodeuri */
+    var pair = decodeURIComponent(variables[i]).split("=");
+    if (pair.length != 2) {console.log('strange query string: '+variables[i]);continue;}
+    if (typeof pair[0] == "undefined") {
+      continue;
+    } else if (typeof pair[0] == null) {
+      continue;
+    } else {
+      queryPairs[pair[0]] = pair[1];
+    }
+  }
+  return queryPairs;
+} ();
+
+if (queryURL.track != "no") {
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-32179549-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+}
   </script>
-  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
   <script type="text/javascript">$(document).ready(function() {
   <!-- make keypad draggable -->
@@ -162,19 +205,6 @@ function checkParent(t,id) {
   } 
   return false;
 }</script>
-  <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-32179549-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 </head> 
 <body OnLoad="document.getElementById('PaliInput').focus();">
   <table class="floating-menu" style="top:0px; left:0px"><tr style="word-spacing: 15px; width: 100%; height: 100%;">
