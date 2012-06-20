@@ -16,11 +16,11 @@ function toggle() {
   var dt = document.getElementById("displayText");
   if(kb.style.display == "inline") {
     kb.style.display = "none";
-    dt.innerHTML = {{_("'Show Pāli Keypad'")|safe}};
+    dt.innerHTML = getStringShowKeypad();
   }
   else {
     kb.style.display = "inline";
-    dt.innerHTML = {{_("'Hide Pāli Keypad'")|safe}};
+    dt.innerHTML = getStringHideKeypad();
     kb.style.left = getOffset(dt).left +"px";
   }
 }
@@ -48,7 +48,7 @@ xmlhttp.onreadystatechange=function()
     document.getElementById('result').innerHTML=xmlhttp.responseText;
     }
   }
-document.getElementById('result').innerHTML={{_("'Looking Up...'")|safe}};
+document.getElementById('result').innerHTML = getStringLookingUp();
 xmlhttp.open("POST","/lookup",true);
 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
