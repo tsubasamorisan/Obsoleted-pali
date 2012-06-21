@@ -12,7 +12,6 @@ from dictionary import lookup
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
                                   os.path.join(os.path.dirname(__file__), 'templates/js'),
-                                  os.path.join(os.path.dirname(__file__), 'templates/css'),
                                   os.path.join(os.path.dirname(__file__), 'templates/google')]),
   extensions=['jinja2.ext.i18n'])
 
