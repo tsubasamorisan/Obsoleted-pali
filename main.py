@@ -55,35 +55,35 @@ class MainPage(webapp2.RequestHandler):
         if (language_q_pairs[0][0].lower() == 'zh-tw'):
           locale = 'zh_TW'
           i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: zh_TW")
+          #self.response.out.write("locale: %s" % locale)
         elif (language_q_pairs[0][0].lower() == 'zh-hk'):
           locale = 'zh_TW'
           i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: zh_TW")
+          #self.response.out.write("locale: %s" % locale)
         elif (language_q_pairs[0][0].lower() == 'zh-cn'):
           locale = 'zh_CN'
           i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: zh_CN")
-        elif (language_q_pairs[0][0][:2].lower() == 'zh'):
+          #self.response.out.write("locale: %s" % locale)
+        elif (language_q_pairs[0][0].lower().startswith('zh')):
           locale = 'zh_CN'
           i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: zh_CN")
+          #self.response.out.write("locale: %s" % locale)
         else:
           locale = 'en_US'
           i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: en_US")
+          #self.response.out.write("locale: %s" % locale)
     #browser = self.request.headers.get('user_agent')
 
     useMemcache = self.request.GET.get('memcache', 'yes')
     if (useMemcache == 'yes'):
-      data = memcache.get(locale)
-      if data is not None:
-        self.response.out.write(data)
-        return
-      else:
-        memcache.set(locale, open('production/index-%s.html' % locale, 'r').read())
+      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
         data = memcache.get(locale)
-        self.response.out.write(data)
+        if data is not None:
+          self.response.out.write(data)
+        else:
+          memcache.set(locale, open('production/index-%s.html' % locale, 'r').read())
+          data = memcache.get(locale)
+          self.response.out.write(data)
         return
 
     """
