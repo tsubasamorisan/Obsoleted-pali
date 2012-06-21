@@ -1,0 +1,85 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>Check Event Target Example</title>
+
+ <style type="text/css" media=screen>
+#div1 {
+text-align: left;
+border-style: solid;
+border-width: 3px;
+border-color: #36C;
+width: 30%;
+margin-left:25%;
+margin-right:45%;
+min-width: 200px;
+height: 300px;
+margin-top: 100px;
+}
+#div2 {
+text-align: left;
+border-style: solid;
+border-width: 3px;
+border-color: #36C;
+width: 60%;
+margin-left:20%;
+margin-right:20%;
+height: 60%;
+}
+#span1 {
+background-color: #0C0;
+border-width: 3px;
+}
+ </style>
+
+ <script type="text/javascript">
+   /* IE: attachEvent, Firefox & Chrome: addEventListener */
+   function _addEventListener(evt, element, fn) {
+     if (window.addEventListener) {element.addEventListener(evt, fn, false);}
+     else {element.attachEvent('on'+evt, fn);}
+   }
+
+   function _getParentElement(element, id) {
+     /* sometimes mouse event return the child element of actual element we need, so we need to check parent element */
+     /* Chrome and Firefox use parentNode, while Opera uses offsetParent */
+     while(element.parentNode) { 
+       if( element.id == id ) {return element;}
+       element = element.parentNode;
+     }
+     while(element.offsetParent) { 
+       if( element.id == id ) {return element;}
+       element = element.offsetParent;
+     }
+     return null;
+   }
+
+   function onDiv1Click(evt) {
+     if(!evt) {evt = window.event;}
+     var target = evt.target || evt.srcElement;
+     document.getElementById("info").innerHTML = target.id + " clicked";
+     if (target.id != 'div1') {
+       var ediv1 = _getParentElement(target, 'div1');
+       document.getElementById("info").innerHTML += '<br />' + ediv1.id + ' element was gotten';
+     }
+   }
+
+   function addevt() {
+     _addEventListener('click', document.getElementById("div1"), onDiv1Click);
+     document.getElementById("info").innerHTML = "only div1 onclick event registered";
+   }
+ </script>
+
+</head>
+<body onload="addevt()">
+  <div id="div1">I am div1. Try to click me.
+    <br /><br />
+    <div id="div2">I am div2. Try to click me.
+      <br /><br />
+      <span id="span1">I am span1. Try to click me.</span>
+    </div>
+  </div>
+
+  <div id="info" style="margin-top: 20px;width: 30%; margin-left:35%; margin-right:35%;" />
+
+</body>
+</html>
