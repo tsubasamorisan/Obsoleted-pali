@@ -76,6 +76,7 @@ class MainPage(webapp2.RequestHandler):
 
     useMemcache = self.request.GET.get('memcache', 'yes')
     if (useMemcache == 'yes'):
+      # https://developers.google.com/appengine/docs/python/runtime#The_Environment
       if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
         data = memcache.get(locale)
         if data is not None:
@@ -85,19 +86,6 @@ class MainPage(webapp2.RequestHandler):
           data = memcache.get(locale)
           self.response.out.write(data)
         return
-
-    """
-    # https://developers.google.com/appengine/docs/python/runtime#The_Environment
-    if (os.environ['SERVER_SOFTWARE'][:11] != "Development"):
-      if (locale == "zh_TW"):
-        self.response.out.write(open('production/index-zh_TW.html').read())
-        return
-      if (locale =="zh_CN"):
-        self.response.out.write(open('production/index-zh_CN.html').read())
-        return
-      self.response.out.write(open('production/index-en_US.html').read())
-      return
-    """
 
     result = ""
     localeStr = {
