@@ -11,17 +11,34 @@ urls = (
   '/lookup', 'lookup'
 )
 
+http_header_string = {
+  'HTTP_ACCEPT_CHARSET'  : 'Accept-Charset',
+  'HTTP_USER_AGENT'      : 'User-Agent',
+  'HTTP_CONNECTION'      : 'Connection',
+#  'HTTP_HOST'            : 'Host',
+  'HTTP_CACHE_CONTROL'   : 'Cache-Control',
+  'HTTP_ACCEPT'          : 'Accept',
+  'HTTP_ACCEPT_LANGUAGE' : 'Accept-Language',
+  'HTTP_ACCEPT_ENCODING' : 'Accept-Encoding'
+}
+
 
 class index:
   def GET(self):
     request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath)
-    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
-    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
-    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
-    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
-    request.add_header('User-Agent', "".join([web.ctx.env['HTTP_USER_AGENT'], " from: %s" % web.ctx.host]))
+    for headerItem in web.ctx.env:
+      try:
+        if http_header_string[headerItem] != None:
+          if http_header_string[headerItem] == 'User-Agent':
+            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
+          else:
+            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
+      except KeyError:
+        pass
     response = urllib2.urlopen(request)
-    web.header('Content-Type','text/html; charset=utf-8', unique=True)
+    #web.debug(response.info()["Content-Type"])
+    for headerItem in response.info().items():
+      web.header(headerItem[0], headerItem[1])
     return response.read()
 
 
@@ -31,25 +48,38 @@ class lookup:
     value = {"word": web.input().word.encode('utf-8')}
     data = urllib.urlencode(value)
     request = urllib2.Request(url, data)
-    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
-    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
-    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
-    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
-    request.add_header('User-Agent', "".join([web.ctx.env['HTTP_USER_AGENT'], " from: %s" % web.ctx.host]))
+    for headerItem in web.ctx.env:
+      try:
+        if http_header_string[headerItem] != None:
+          if http_header_string[headerItem] == 'User-Agent':
+            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
+          else:
+            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
+      except KeyError:
+        pass
     response = urllib2.urlopen(request)
-    web.header('Content-Type','text/html; charset=utf-8', unique=True)
+    #web.debug(response.info()["Content-Type"])
+    for headerItem in response.info().items():
+      web.header(headerItem[0], headerItem[1])
     return response.read()
 
 
 class static:
   def GET(self, path):
     request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath.replace("/statics", "/static", 1))
-    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
-    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
-    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
-    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
-    request.add_header('User-Agent', "".join([web.ctx.env['HTTP_USER_AGENT'], " from: %s" % web.ctx.host]))
+    for headerItem in web.ctx.env:
+      try:
+        if http_header_string[headerItem] != None:
+          if http_header_string[headerItem] == 'User-Agent':
+            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
+          else:
+            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
+      except KeyError:
+        pass
     response = urllib2.urlopen(request)
+    #web.debug(response.info()["Content-Type"])
+    for headerItem in response.info().items():
+      web.header(headerItem[0], headerItem[1])
     return response.read()
 
 
