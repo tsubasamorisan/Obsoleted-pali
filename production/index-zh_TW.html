@@ -52,6 +52,13 @@ function AJAXLoad(type, loadByXMLHttp, url){
   xmlhttp.send();
 }
 
+function LoadFavicon(url) {
+  var ext = document.createElement('link');
+  ext.setAttribute("rel", "shortcut icon");
+  ext.setAttribute("href", url);
+  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
+}
+
 /*
 keyword: javascript get url parameter 
 http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
@@ -61,6 +68,7 @@ http://papermashup.com/read-url-get-variables-withjavascript/
 var queryURL = function() {
   // This function is anonymous, is executed immediately and the return value is assigned to queryURL
   var queryPairs = {};
+  if (!window.location.search) {return queryPairs;}
   var variables = window.location.search.substring(1).split("&");
   for (var i=0; i < variables.length; i++) {
     /* http://stackoverflow.com/questions/747641/what-is-the-difference-between-decodeuricomponent-and-decodeuri */
@@ -79,6 +87,11 @@ var queryURL = function() {
 
 /* Load Google Web Fonts */
 AJAXLoad("css", false, "http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
+/* Load favicon.ico */
+if (window.location.host == 'localhost:8080')                  {LoadFavicon("favicon.ico");}
+else if (queryURL.relaystatic == "no")                         {LoadFavicon("statics/favicon.ico");}
+else if (window.location.host == 'palidictionary.appspot.com') {LoadFavicon("favicon.ico");}
+else {LoadFavicon("http://pali.googlecode.com/git/static/favicon.ico");}
 /* Load Index of Pāli Words */
 if (window.location.host == 'localhost:8080')                  {AJAXLoad("js", false, "static/jsvarindex.js");}
 else if (queryURL.relaystatic == "no")                         {AJAXLoad("js", false, "statics/jsvarindex.js");}
@@ -89,28 +102,6 @@ if (window.location.host == 'localhost:8080')                  {AJAXLoad("css", 
 else if (queryURL.relaystatic == "no")                         {AJAXLoad("css", false, "statics/css/palidict.css");}
 else if (window.location.host == 'palidictionary.appspot.com') {AJAXLoad("css", false, "static/css/palidict.css");}
 else {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/css/palidict.css");}
-/* Load favicon.ico */
-if (window.location.host == 'localhost:8080') {
-  var ext = document.createElement('link');
-  ext.setAttribute("rel", "shortcut icon");
-  ext.setAttribute("href", "favicon.ico");
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
-} else if (queryURL.relaystatic == "no") {
-  var ext = document.createElement('link');
-  ext.setAttribute("rel", "shortcut icon");
-  ext.setAttribute("href", "statics/favicon.ico");
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
-} else if (window.location.host == 'palidictionary.appspot.com') {
-  var ext = document.createElement('link');
-  ext.setAttribute("rel", "shortcut icon");
-  ext.setAttribute("href", "favicon.ico");
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
-} else {
-  var ext = document.createElement('link');
-  ext.setAttribute("rel", "shortcut icon");
-  ext.setAttribute("href", "http://pali.googlecode.com/git/static/favicon.ico");
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
-}
 /* Load Input Suggestion Library */
 if (window.location.host == 'localhost:8080')                  {AJAXLoad("js", false, "static/js/inputSuggest.js");}
 else if (queryURL.relaystatic == "no")                         {AJAXLoad("js", false, "statics/js/inputSuggest.js");}
