@@ -30,28 +30,27 @@ function showAbout(){document.getElementById("result").innerHTML = document.getE
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
 function lookup() {
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    //document.getElementById('').innerHTML=xmlhttp.status;
-    //document.getElementById('').innerHTML=xmlhttp.statusText;
-    document.getElementById('result').innerHTML=xmlhttp.responseText;
+  var xmlhttp;
+  if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+  else {xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}
+  xmlhttp.onreadystatechange=function() {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        //document.getElementById('').innerHTML=xmlhttp.status;
+        //document.getElementById('').innerHTML=xmlhttp.statusText;
+        document.getElementById('result').innerHTML=xmlhttp.responseText;
+      } else {
+        document.getElementById('result').innerHTML='XMLHttpRequest error!';
+      }
     }
   }
-document.getElementById('result').innerHTML = getStringLookingUp();
-xmlhttp.open("POST","/lookup",true);
-xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
+  document.getElementById('result').innerHTML = getStringLookingUp();
+  if (queryURL.lookup == "gae") {xmlhttp.open("POST","http://palidictionary.appspot.com/lookup",true);}
+  else if (queryURL.lookup == "paw") {xmlhttp.open("POST","http://siongui.pythonanywhere.com/lookup",true);}
+  else if (queryURL.lookup == "wfn") {xmlhttp.open("POST","http://siongui.webfactional.com/lookup",true);}
+  else {xmlhttp.open("POST","/lookup",true);}
+  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
 }
 
 // Dynamically retrieve Html element (X,Y) position with JavaScript
