@@ -17,7 +17,10 @@ def HexStringToString(hexString):
     bytes.append( chr( int (hexStr[i:i+2], 16 ) ) )
 
   # decode as utf8
-  string = ''.join( bytes ).decode("utf-8")
+  try:
+    string = ''.join( bytes ).decode("utf-8")
+  except UnicodeDecodeError:
+    string = u"Sorry! Something wrong with the database. We cannot get explain of this word in this dictionary."
 
   return string
 
