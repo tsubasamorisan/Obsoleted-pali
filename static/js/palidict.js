@@ -61,7 +61,11 @@ function lookup() {
 // http://www.onlinesolutionsdevelopment.com/blog/web-development/javascript/jsonp-example/
 // http://www.slideshare.net/andymckay/cross-domain-webmashups-with-jquery-and-google-app-engine
 function JSONPlookup(paliword) {
+  document.getElementById('result').innerHTML = getStringLookingUp();
   url = "/lookup?callback=JSONPlookupCallback&word=" + encodeURIComponent(paliword);
+  if (queryURL.lookup == "gae") {url="http://palidictionary.appspot.com"+url;}
+  if (queryURL.lookup == "paw") {url="http://siongui.pythonanywhere.com"+url;}
+  if (queryURL.lookup == "wfn") {url="http://siongui.webfactional.com"+url;}
   var ext = document.createElement('script');
   ext.setAttribute('src', url);
   if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
