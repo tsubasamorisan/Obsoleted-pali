@@ -88,30 +88,30 @@ var queryURL = function() {
 /* Load Google Web Fonts */
 AJAXLoad("css", false, "http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
 /* Load favicon.ico */
-if (queryURL.relay == "yes") {LoadFavicon("statics/favicon.ico");}
+if (queryURL.ugcfh == "yes") {LoadFavicon("http://pali.googlecode.com/git/static/favicon.ico");}
 else if (window.location.host == 'localhost:8080')             {LoadFavicon("favicon.ico");}
 else if (window.location.host == 'palidictionary.appspot.com') {LoadFavicon("favicon.ico");}
-else {LoadFavicon("http://pali.googlecode.com/git/static/favicon.ico");}
+else {LoadFavicon("statics/favicon.ico");}
 /* Load Index of Pāli Words */
-if (queryURL.relay == "yes") {AJAXLoad("js", false, "statics/jsvarindex.js");}
+if (queryURL.ugcfh == "yes") {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/jsvarindex.js");}
 else if (window.location.host == 'localhost:8080')             {AJAXLoad("js", false, "static/jsvarindex.js");}
 else if (window.location.host == 'palidictionary.appspot.com') {AJAXLoad("js", false, "static/jsvarindex.js");}
-else {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/jsvarindex.js");}
+else {AJAXLoad("js", false, "statics/jsvarindex.js");}
 /* Load CSS */
-if (queryURL.relay == "yes") {AJAXLoad("css", false, "statics/css/palidict.css");}
+if (queryURL.ugcfh == "yes") {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/css/palidict.css");}
 else if (window.location.host == 'localhost:8080')             {AJAXLoad("css", false, "static/css/palidict.css");}
 else if (window.location.host == 'palidictionary.appspot.com') {AJAXLoad("css", false, "static/css/palidict.css");}
-else {AJAXLoad("css", false, "http://pali.googlecode.com/git/static/css/palidict.css");}
+else {AJAXLoad("css", false, "statics/css/palidict.css");}
 /* Load Input Suggestion Library */
-if (queryURL.relay == "yes") {AJAXLoad("js", false, "statics/js/inputSuggest.js");}
+if (queryURL.ugcfh == "yes") {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/js/inputSuggest.js");}
 else if (window.location.host == 'localhost:8080')             {AJAXLoad("js", false, "static/js/inputSuggest.js");}
 else if (window.location.host == 'palidictionary.appspot.com') {AJAXLoad("js", false, "static/js/inputSuggest.js");}
-else {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/js/inputSuggest.js");}
+else {AJAXLoad("js", false, "statics/js/inputSuggest.js");}
 /* Load Helper Library */
-if (queryURL.relay == "yes") {AJAXLoad("js", false, "statics/js/palidict.js");}
+if (queryURL.ugcfh == "yes") {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/js/palidict.js");}
 else if (window.location.host == 'localhost:8080')             {AJAXLoad("js", false, "static/js/palidict.js");}
 else if (window.location.host == 'palidictionary.appspot.com') {AJAXLoad("js", false, "static/js/palidict.js");}
-else {AJAXLoad("js", false, "http://pali.googlecode.com/git/static/js/palidict.js");}
+else {AJAXLoad("js", false, "statics/js/palidict.js");}
 
 if (queryURL.track != "no") {
   if (window.location.host != 'localhost:8080') {
