@@ -7,6 +7,7 @@ import urllib2
 
 urls = (
   '/', 'index',
+  '/statics/(.*)', 'static',
   '/lookup', 'lookup'
 )
 
@@ -37,6 +38,18 @@ class lookup:
     request.add_header('User-Agent', "".join([web.ctx.env['HTTP_USER_AGENT'], " from: %s" % web.ctx.host]))
     response = urllib2.urlopen(request)
     web.header('Content-Type','text/html; charset=utf-8', unique=True)
+    return response.read()
+
+
+class static:
+  def GET(self, path):
+    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath.replace("/statics", "/static", 1))
+    request.add_header('Accept', web.ctx.env['HTTP_ACCEPT'])
+    #request.add_header('Accept-Charset', web.ctx.env['HTTP_ACCEPT_CHARSET'])
+    #request.add_header('Accept-Encoding', web.ctx.env['HTTP_ACCEPT_ENCODING'])
+    request.add_header('Accept-Language', web.ctx.env['HTTP_ACCEPT_LANGUAGE'])
+    request.add_header('User-Agent', "".join([web.ctx.env['HTTP_USER_AGENT'], " from: %s" % web.ctx.host]))
+    response = urllib2.urlopen(request)
     return response.read()
 
 
