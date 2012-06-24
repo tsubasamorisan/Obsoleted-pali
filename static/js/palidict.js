@@ -29,6 +29,11 @@ function toggle() {
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
+function onPaliInputSubmit() {
+  if (queryURL.jsonp == "yes") {JSONPlookup(document.getElementById('PaliInput').value);}
+  else {lookup();}
+}
+
 function lookup() {
   var xmlhttp;
   if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
@@ -51,6 +56,19 @@ function lookup() {
   else {xmlhttp.open("POST","/lookup",true);}
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
+}
+
+// http://www.onlinesolutionsdevelopment.com/blog/web-development/javascript/jsonp-example/
+// http://www.slideshare.net/andymckay/cross-domain-webmashups-with-jquery-and-google-app-engine
+function JSONPlookup(paliword) {
+  url = "/lookup?callback=JSONPlookupCallback&word=" + encodeURIComponent(paliword);
+  var ext = document.createElement('script');
+  ext.setAttribute('src', url);
+  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
+}
+
+function JSONPlookupCallback(result) {
+  document.getElementById('result').innerHTML = decodeURIComponent(result);
 }
 
 // Dynamically retrieve Html element (X,Y) position with JavaScript

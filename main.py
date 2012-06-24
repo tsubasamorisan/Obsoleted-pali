@@ -4,6 +4,7 @@
 import webapp2
 import jinja2
 import os, cgi
+import urllib
 from google.appengine.api import users
 from google.appengine.api import memcache
 from webapp2_extras import i18n
@@ -111,6 +112,9 @@ class MainPage(webapp2.RequestHandler):
 
 class Lookup(webapp2.RequestHandler):
   def get(self):
+    paliword = cgi.escape(self.request.get('word'))
+    self.response.out.write("%s('%s')" % (self.request.get('callback'), urllib.quote(lookup(paliword).encode('utf-8'))))
+    return
     self.redirect('/')
 
   def post(self):
