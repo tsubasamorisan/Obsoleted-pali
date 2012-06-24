@@ -43,6 +43,23 @@ class index:
 
 
 class lookup:
+  def GET(self):
+    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath)
+    for headerItem in web.ctx.env:
+      try:
+        if http_header_string[headerItem] != None:
+          if http_header_string[headerItem] == 'User-Agent':
+            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
+          else:
+            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
+      except KeyError:
+        pass
+    response = urllib2.urlopen(request)
+    #web.debug(response.info()["Content-Type"])
+    for headerItem in response.info().items():
+      web.header(headerItem[0], headerItem[1])
+    return response.read()
+
   def POST(self):
     url = "http://palidictionary.appspot.com/lookup"
     value = {"word": web.input().word.encode('utf-8')}
