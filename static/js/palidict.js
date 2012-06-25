@@ -30,8 +30,8 @@ function showAbout(){document.getElementById("result").innerHTML = document.getE
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
 function onPaliInputSubmit() {
-  if (queryURL.jsonp == "yes") {JSONPlookup(document.getElementById('PaliInput').value);}
-  else {lookup();}
+  if (queryURL.jsonp == "no") {lookup();}
+  else {JSONPlookup(document.getElementById('PaliInput').value);}
 }
 
 function lookup() {
