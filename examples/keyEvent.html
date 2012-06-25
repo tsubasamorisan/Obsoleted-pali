@@ -1,0 +1,49 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>Key Event Example</title>
+
+ <style type="text/css" media=screen>
+ </style>
+
+ <script type="text/javascript">
+  var Key = {
+    LEFT:   37,
+    UP:     38,
+    RIGHT:  39,
+    DOWN:   40
+  };
+
+  /* IE: attachEvent, Firefox & Chrome: addEventListener */
+  function _addEventListener(evt, element, fn) {
+    if (window.addEventListener) {element.addEventListener(evt, fn, false);}
+    else {element.attachEvent('on'+evt, fn);}
+  }
+
+  function onInputKeydown(evt) {
+    if (!evt) {evt = window.event;} // for IE compatible
+    var keycode = evt.keyCode || evt.which; // also for cross-browser compatible
+    if (keycode == Key.LEFT) {document.getElementById("info").innerHTML += "left key!";}
+    else if (keycode == Key.UP) {document.getElementById("info").innerHTML += "up key!";}
+    else if (keycode == Key.RIGHT) {document.getElementById("info").innerHTML += "right key!";}
+    else if (keycode == Key.DOWN) {document.getElementById("info").innerHTML += "down key!";}
+    else {document.getElementById("info").innerHTML += "key (not arrow key)!";}
+  }
+
+  function addevt() {
+    _addEventListener('keydown', document.getElementById("input"), onInputKeydown);
+    document.getElementById("input").value = "try to press arrow key here";
+    document.getElementById("info").innerHTML = "";
+    document.getElementById("input").focus();
+  }
+ </script>
+
+</head>
+<body onload="addevt()">
+ <div style="margin-top: 20px;width: 30%; margin-left:20%; margin-right:50%;" />
+  <input id="input" type="text" />
+  <textarea id="info" rows="20" cols="80" />
+ </div>
+
+</body>
+</html>
