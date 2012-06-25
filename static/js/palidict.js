@@ -78,14 +78,31 @@ function JSONPlookupCallback(result) {
     document.getElementById('result').innerHTML = "no such word";
     return;
   }
+  var resultOuterTable = document.createElement("table");
+  resultOuterTable.className = "resultCurvedEdges";
   //result = eval(result);
   for (var index1 in result) {
     var dictWordExp = eval(result[index1]);
+    var resultInnerTable = document.createElement("table");
+    resultInnerTable.className = "dicTable";
     for (var index2 in dictWordExp) {
-      var tmp = dictWordExp[index2] + '<br /><br />';
-      document.getElementById('result').innerHTML += tmp;
+      var tr = document.createElement("tr");
+      var td = document.createElement("td");
+      var th = document.createElement("th");
+      th.innerHTML = "TODO";
+      th.width = "25px";
+      td.innerHTML = dictWordExp[index2];
+      tr.appendChild(th);
+      tr.appendChild(td);
+      resultInnerTable.appendChild(tr);
     }
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    td.appendChild(resultInnerTable);
+    tr.appendChild(td);
+    resultOuterTable.appendChild(tr);
   }
+  document.getElementById('result').appendChild(resultOuterTable);
 }
 
 // Dynamically retrieve Html element (X,Y) position with JavaScript

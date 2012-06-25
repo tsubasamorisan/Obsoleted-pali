@@ -86,3 +86,17 @@ a.menuItem:hover {
   padding-top:10px;
   width: 160px;
 }
+
+.resultCurvedEdges {
+  border:10px solid #98FB98;
+  -webkit-border-radius:13px;
+  -moz-border-radius:13px;
+  border-radius:13px;
+  width: 100%;
+}
+
+.dicTable {
+  border: 1px solid #00FFFF;
+  background-color: #CCFFFF;
+  width: 100%;
+}
