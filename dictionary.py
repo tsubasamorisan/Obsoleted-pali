@@ -65,3 +65,25 @@ def lookup(word):
     return decodeXML(paliword.xmlfilename, paliword.xmlfiledata.encode('utf8'))
   else:
     return u'查無此字(No Such Word)'
+
+
+def jsonpDecodeXML(xmlfilename, xmlfile):
+  # input: xml file of pali word definition
+  dom = xml.dom.minidom.parseString(xmlfile)
+
+  items = dom.getElementsByTagName("item")
+  result = []
+  for item in items:
+    dictstr, wordstr, explainstr = decodeItem(item)
+    result.append((dictstr, wordstr, explainstr))
+
+  # return valus is "list of 3-tuples"
+  return result
+
+
+def jsonpLookup(word):
+  paliword = PaliWord.get_by_id(word)
+  if (paliword):
+    return jsonpDecodeXML(paliword.xmlfilename, paliword.xmlfiledata.encode('utf8'))
+  else:
+    return None

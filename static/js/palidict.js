@@ -72,7 +72,20 @@ function JSONPlookup(paliword) {
 }
 
 function JSONPlookupCallback(result) {
-  document.getElementById('result').innerHTML = decodeURIComponent(result);
+  // input value is "list of 3-tuple" in Python
+  document.getElementById('result').innerHTML = "";
+  if (result == null) {
+    document.getElementById('result').innerHTML = "no such word";
+    return;
+  }
+  //result = eval(result);
+  for (var index1 in result) {
+    var dictWordExp = eval(result[index1]);
+    for (var index2 in dictWordExp) {
+      var tmp = dictWordExp[index2] + '<br /><br />';
+      document.getElementById('result').innerHTML += tmp;
+    }
+  }
 }
 
 // Dynamically retrieve Html element (X,Y) position with JavaScript

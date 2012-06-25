@@ -5,10 +5,11 @@ import webapp2
 import jinja2
 import os, cgi
 import urllib
+import json
 from google.appengine.api import users
 from google.appengine.api import memcache
 from webapp2_extras import i18n
-from dictionary import lookup
+from dictionary import lookup, jsonpLookup
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
@@ -112,8 +113,14 @@ class MainPage(webapp2.RequestHandler):
 
 class Lookup(webapp2.RequestHandler):
   def get(self):
+    # http://docs.python.org/library/json.html
+    # http://stackoverflow.com/questions/10468553/google-app-engine-json-response-as-rest
+    # https://developers.google.com/appengine/docs/python/tools/webapp/redirects
     paliword = cgi.escape(self.request.get('word'))
-    self.response.out.write("%s('%s')" % (self.request.get('callback'), urllib.quote(lookup(paliword).encode('utf-8'))))
+    result = jsonpLookup(paliword)
+    #self.response.headers['Content-Type'] = 'application/json'
+    self.response.headers['Content-Type'] = 'application/javascript'
+    self.response.out.write("%s(%s)" % (self.request.get('callback'), json.dumps(result)))
     return
     self.redirect('/')
 
