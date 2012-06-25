@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-20 20:03+0800\n"
+"POT-Creation-Date: 2012-06-25 15:41+0800\n"
 "PO-Revision-Date: 2012-06-09 09:21+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "请"
 msgid "contact me"
 msgstr "联络我"
 
-#: templates/info.html:9 templates/index.html:6 templates/index.html:114
+#: templates/info.html:9 templates/index.html:6 templates/index.html:136
 msgid "Pāli Dictionary"
 msgstr "巴利语字典"
 
@@ -98,7 +98,7 @@ msgstr "从"
 msgid "on"
 msgstr "在"
 
-#: templates/index.html:130
+#: templates/index.html:152
 msgid "Show Pāli Keypad"
 msgstr "显示巴利语键盘"
 
@@ -142,6 +142,19 @@ msgstr "'隐藏巴利语键盘'"
 msgid "'Looking Up...'"
 msgstr "'查询中...'"
 
-#~ msgid "'No Such Word'"
-#~ msgstr "'无此字'"
+#: templates/js/potI18N.js:4
+msgid "'No Such Word'"
+msgstr "'无此字'"
+
+#: templates/js/potI18N.js:5
+msgid "'Dictionary'"
+msgstr "'字典'"
+
+#: templates/js/potI18N.js:6
+msgid "'Pāli Word'"
+msgstr "'巴利语单字'"
+
+#: templates/js/potI18N.js:7
+msgid "'Explanation'"
+msgstr "'解释'"
 

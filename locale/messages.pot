@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-20 20:03+0800\n"
+"POT-Creation-Date: 2012-06-25 15:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "contact me"
 msgstr ""
 
-#: templates/info.html:9 templates/index.html:6 templates/index.html:114
+#: templates/info.html:9 templates/index.html:6 templates/index.html:136
 msgid "Pāli Dictionary"
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: templates/index.html:130
+#: templates/index.html:152
 msgid "Show Pāli Keypad"
 msgstr ""
 
@@ -139,4 +139,20 @@ msgstr ""
 
 #: templates/js/potI18N.js:3
 msgid "'Looking Up...'"
+msgstr ""
+
+#: templates/js/potI18N.js:4
+msgid "'No Such Word'"
+msgstr ""
+
+#: templates/js/potI18N.js:5
+msgid "'Dictionary'"
+msgstr ""
+
+#: templates/js/potI18N.js:6
+msgid "'Pāli Word'"
+msgstr ""
+
+#: templates/js/potI18N.js:7
+msgid "'Explanation'"
 msgstr ""
