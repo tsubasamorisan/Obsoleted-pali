@@ -98,5 +98,18 @@ a.menuItem:hover {
 .dicTable {
   border: 1px solid #00FFFF;
   background-color: #CCFFFF;
+  border-spacing: 0px;
+  border-collapse: collapse;
   width: 100%;
+}
+
+.dicTable th {
+  border: 3px solid #00FFFF;
+  width: 25px;
+  padding: 5px;
+}
+
+.dicTable td {
+  border: 3px solid #00FFFF;
+  padding: 5px;
 }

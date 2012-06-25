@@ -75,7 +75,7 @@ function JSONPlookupCallback(result) {
   // input value is "list of 3-tuple" in Python
   document.getElementById('result').innerHTML = "";
   if (result == null) {
-    document.getElementById('result').innerHTML = "no such word";
+    document.getElementById('result').innerHTML = getStringNoSuchWord();
     return;
   }
   var resultOuterTable = document.createElement("table");
@@ -84,17 +84,21 @@ function JSONPlookupCallback(result) {
   for (var index1 in result) {
     var dictWordExp = eval(result[index1]);
     var resultInnerTable = document.createElement("table");
+    var count = 0;
     resultInnerTable.className = "dicTable";
     for (var index2 in dictWordExp) {
       var tr = document.createElement("tr");
       var td = document.createElement("td");
       var th = document.createElement("th");
-      th.innerHTML = "TODO";
-      th.width = "25px";
+      if (count == 0) {th.innerHTML = getStringDictionary();}
+      else if (count == 1) {th.innerHTML = getStringPaliWord();}
+      else {th.innerHTML = getStringExplain();}
       td.innerHTML = dictWordExp[index2];
       tr.appendChild(th);
       tr.appendChild(td);
       resultInnerTable.appendChild(tr);
+      if (count > 2) {console.log("in JSONPlookupCallback: something strange. count > 2");}
+      count += 1;
     }
     var tr = document.createElement("tr");
     var td = document.createElement("td");
