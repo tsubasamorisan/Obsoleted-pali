@@ -7,6 +7,10 @@ $(document).ready(function() {
     document.getElementById("PaliInput").value += this.value;
     document.getElementById("PaliInput").focus();
   });
+
+  // set position of social buttons
+  document.getElementById("social-buttons").style.top = (getOffset(document.getElementById("rightAD")).top + 30) + "px";
+  document.getElementById("social-buttons").style.left = (getOffset(document.getElementById("upperAD")).left - 65) + "px";
 });
 
 
