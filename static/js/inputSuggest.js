@@ -65,6 +65,18 @@ Suggest.prototype = {
 
     this._addEventListener(this.input, 'focus', function(){_this.checkInput();})
     this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();})
+
+    // http://stackoverflow.com/questions/6006763/set-style-with-hover-javascript
+    // http://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript
+/*
+    var style = document.createElement('style');
+    var declarations = document.createTextNode('div.suggestedItem:hover {background:#00C;color:white;}');
+
+    if (style.styleSheet) { style.styleSheet.cssText = declarations.nodeValue; }
+    else { style.appendChild(declarations); }
+
+    document.getElementsByTagName("head")[0].appendChild(style);
+*/
   },
 
   prefixMatchedArray : [],
