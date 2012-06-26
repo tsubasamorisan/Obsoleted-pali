@@ -162,23 +162,19 @@ Suggest.prototype = {
       if (this.suggestedWordPosition == null) {
         this.suggestedWordPosition = this.suggestedWordListSize;
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        currentWord.style.background = "#00C";
-        currentWord.style.color = "white";
+        this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == 1) {
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         this.suggestedWordPosition = null;
-        currentWord.style.background = "";
-        currentWord.style.color = "";
+        this._removeItemStyle(currentWord);
         this.input.value = this.originalUserPaliInput;
       } else {
         var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        previousWord.style.background = "";
-        previousWord.style.color = "";
+        this._removeItemStyle(previousWord);
         this.suggestedWordPosition -= 1;
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        currentWord.style.background = "#00C";
-        currentWord.style.color = "white";
+        this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       }
     }
@@ -186,23 +182,19 @@ Suggest.prototype = {
       if (this.suggestedWordPosition == null) {
         this.suggestedWordPosition = 1;
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        currentWord.style.background = "#00C";
-        currentWord.style.color = "white";
+        this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       } else if (this.suggestedWordPosition == this.suggestedWordListSize) {
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
         this.suggestedWordPosition = null;
-        currentWord.style.background = "";
-        currentWord.style.color = "";
+        this._removeItemStyle(currentWord);
         this.input.value = this.originalUserPaliInput;
       } else {
         var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        previousWord.style.background = "";
-        previousWord.style.color = "";
+        this._removeItemStyle(previousWord);
         this.suggestedWordPosition += 1;
         var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        currentWord.style.background = "#00C";
-        currentWord.style.color = "white";
+        this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       }
     }
@@ -228,17 +220,14 @@ Suggest.prototype = {
     var currentWordPosition = this._getWordElementNumberIndex(currentWord);
     if (this.suggestedWordPosition == null) {
       this.suggestedWordPosition = currentWordPosition;
-      currentWord.style.background = "#00C";
-      currentWord.style.color = "white";
+      this._setItemStyle(currentWord);
       this.input.value = currentWord.title;
     } else {
       if (this.suggestedWordPosition != currentWordPosition) {
         var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        previousWord.style.background = "";
-        previousWord.style.color = "";
+        this._removeItemStyle(previousWord);
         this.suggestedWordPosition = currentWordPosition;
-        currentWord.style.background = "#00C";
-        currentWord.style.color = "white";
+        this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       }
     }
@@ -247,8 +236,7 @@ Suggest.prototype = {
   onItemMouseOut:function(event) {
     var targetElement = event.target || event.srcElement;
     currentWord = this._checkParent(targetElement);
-    currentWord.style.background = "";
-    currentWord.style.color = "";
+    this._removeItemStyle(currentWord);
   },
 
   updateSuggestion:function(userInputStr) {
@@ -307,6 +295,16 @@ Suggest.prototype = {
   _getWordElementIdString: function(number) {
     if (typeof number != "number") {console.log('in _getWordElementIdString: input is not of type number');}
     return ("suggestedWord" + number.toString());
+  },
+
+  _setItemStyle: function(e) {
+    e.style.background = "#00C";
+    e.style.color = "white";
+  },
+
+  _removeItemStyle: function(e) {
+    e.style.background = "";
+    e.style.color = "";
   },
 
   flush: function() {
