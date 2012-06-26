@@ -109,10 +109,11 @@ function JSONPlookupCallback(result) {
     td.appendChild(resultInnerTable);
 
     var backToTop = document.createElement("a");
-    backToTop.href = "#";
+    backToTop.href = '/';
+    backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
+//    backToTop.href = "javascript:window.scrollTo(0,0);";
     backToTop.style = "text-decoration:none; color: #00C; font-size:small; cursor:pointer; ";
     backToTop.innerHTML = '<span style="text-decoration:underline">Back to Top</span><span style="font-size:.75em;">&#9650;</span>';
-    backToTop.onclick = "window.scrollTo(0,0); return false;";
     td.appendChild(backToTop);
 
     tr.appendChild(td);
