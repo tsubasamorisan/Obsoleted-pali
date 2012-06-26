@@ -11,8 +11,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-<script type="text/javascript">
-/* Reference: http://ntt.cc/2008/02/10/4-ways-to-dynamically-load-external-javascriptwith-source.html */
+<script type="text/javascript">/* Reference: http://ntt.cc/2008/02/10/4-ways-to-dynamically-load-external-javascriptwith-source.html */
 function AJAXLoad(type, loadByXMLHttp, url){
   var ext;
   if (type == "js") {
@@ -124,10 +123,8 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
   }
-}
-  </script>
-
-  <script type="text/javascript">function getStringShowKeypad() { return 'Show Pāli Keypad'; }
+}</script>
+<script type="text/javascript">function getStringShowKeypad() { return 'Show Pāli Keypad'; }
 function getStringHideKeypad() { return 'Hide Pāli Keypad'; }
 function getStringLookingUp() { return 'Looking Up...'; } 
 function getStringNoSuchWord() { return 'No Such Word'; } 
@@ -174,6 +171,41 @@ function googleTranslateElementInit() {
  <a class="menuItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
  <a class="menuItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
 </div></div>
+  <style>
+div.floating-buttons {position:absolute; z-index:25;}
+div.floating-buttons div {display: block; margin-top: 10px;}
+</style>
+<div class="floating-buttons" id="social-buttons">
+
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="tall" data-href="http://palidictionary.appspot.com/"></div>
+<div>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://palidictionary.appspot.com/" data-count="vertical">Tweet</a>
+</div>
+<!-- Place the code for your plugin wherever you want the plugin to appear on your page. -->
+<div class="fb-like" data-href="http://palidictionary.appspot.com/" data-send="true" data-layout="box_count" data-width="450" data-show-faces="true"></div>
+</div>
+
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+<!-- Include the JavaScript SDK on your page once, ideally right after the opening <body> tag. -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   <table class="curvedEdges" style="width: 78%; margin-left:11%; margin-right:11%; margin-top:32px; height:600px; cellspacing: 0px;">
   <tr style="height: 50px; background-color: #fff4c8;">
     <td colspan="2"><h1 style="color:olive; text-align: center;">Pāli Dictionary</h1></td>
