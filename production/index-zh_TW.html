@@ -133,15 +133,55 @@ function getStringPaliWord() { return '巴利語單字'; }
 function getStringExplain() { return '解釋'; } 
 function getStringBackToTop() { return '返回頁面頂端'; } </script>
 </head> 
-<body OnLoad="document.getElementById('PaliInput').focus();">
-  <table class="floating-menu" style="top:0px; left:0px"><tr style="word-spacing: 15px; width: 100%; height: 100%;">
- <td style="padding-left:20px; text-align:left;">
+<body>
+<table class="skeleton">
+<tr class="skeleton-tr">
+ <td class="skeleton-left"><div class="floating-buttons" id="social-buttons">
+
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="tall" data-href="http://palidictionary.appspot.com/"></div>
+<div>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://palidictionary.appspot.com/" data-count="vertical">Tweet</a>
+</div>
+<!-- Place the code for your plugin wherever you want the plugin to appear on your page. -->
+<div class="fb-like" data-href="http://palidictionary.appspot.com/" data-send="true" data-layout="box_count" data-show-faces="true"></div>
+</div>
+
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+<!-- Include the JavaScript SDK on your page once, ideally right after the opening <body> tag. -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
+ <td class="skeleton-middle">
+  <table class="main">
+  <tr class="title">
+    <td colspan="2"><h1>巴利語字典</h1></td>
+  </tr>
+
+  <tr><td colspan="2"><table class="main-menu">
+<tr>
+ <td class="left-main-menu">
   <a href="/?locale=zh_TW">首頁</a>
   <a href="javascript:showAbout();">關於</a>
   <a href="javascript:showLink();">連結</a>
  </td>
- <td style="padding-right: 20px; text-align: right;">
-  <a id="lang-dropdown" href="/" onclick="return false;" style="text-decoration:none; color: #00C; font-size:small; cursor:pointer; ">
+ <td class="right-main-menu">
+  <a id="lang-dropdown" href="/" onclick="return false;">
    <span style="text-decoration:underline">中文(繁體)</span><span style="font-size:.75em;">&#9660;</span>
   </a>
   <!-- http://www.mountaindragon.com/html/redirectjs2.htm  -->
@@ -165,52 +205,16 @@ function googleTranslateElementInit() {
 </script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   -->
  </td>
+</tr>
 </table>
+
+
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
  <a class="menuItem" style="display: block; " href="/?locale=en_US">English</a>
  <a class="menuItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
  <a class="menuItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
-</div></div>
-  <style>
-div.floating-buttons {position:absolute; z-index:25;}
-div.floating-buttons div {display: block; margin-top: 10px;}
-</style>
-<div class="floating-buttons" id="social-buttons">
-
-<!-- Place this tag where you want the +1 button to render -->
-<div class="g-plusone" data-size="tall" data-href="http://palidictionary.appspot.com/"></div>
-<div>
-<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://palidictionary.appspot.com/" data-count="vertical">Tweet</a>
-</div>
-<!-- Place the code for your plugin wherever you want the plugin to appear on your page. -->
-<div class="fb-like" data-href="http://palidictionary.appspot.com/" data-send="true" data-layout="box_count" data-width="60" data-show-faces="true"></div>
-</div>
-
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-
-<!-- Include the JavaScript SDK on your page once, ideally right after the opening <body> tag. -->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-  <table class="curvedEdges" style="width: 78%; margin-left:11%; margin-right:11%; margin-top:32px; height:600px; cellspacing: 0px;">
-  <tr style="height: 50px; background-color: #fff4c8;">
-    <td colspan="2"><h1 style="color:olive; text-align: center;">巴利語字典</h1></td>
-  </tr>
+</div></div></td></tr>
 
   <tr>
     <td id="upperAD"><script type="text/javascript"><!--
@@ -306,6 +310,10 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     </td>
   </tr>
   </table>
+ </td>
+ <td class="skeleton-right"></td>
+</tr>
+</table>
 <div id="about" style="display:none"><br /><br />
 <div style="padding-left: 30px; padding-right: 30px;">
 字典來自 <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">巴利語-漢語-英語 字典</a>. 版本是 "Pali Dict Linux Web Ver 1.0". 本站仍在開發中 所以可能會遭遇錯誤. 如果有任何問題或建議, 請 <a href="mailto:siongui@gmail.com">聯絡我</a>.
