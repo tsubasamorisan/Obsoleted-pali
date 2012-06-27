@@ -110,7 +110,10 @@ function JSONPlookupCallback(result) {
     backToTop.href = '/';
     backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
 //    backToTop.href = "javascript:window.scrollTo(0,0);";
-    backToTop.style = "text-decoration:none; color: #00C; font-size:small; cursor:pointer; ";
+    backToTop.style.textDecoration = "none";
+    backToTop.style.color = "#00C";
+    backToTop.style.fontSize = "small";
+    backToTop.style.cursor = "pointer";
     backToTop.innerHTML = '<span style="text-decoration:underline">' + getStringBackToTop() + '</span><span style="font-size:.75em;">&#9650;</span>';
     td.appendChild(backToTop);
 
