@@ -113,7 +113,7 @@ function JSONPlookupCallback(result) {
     backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
 //    backToTop.href = "javascript:window.scrollTo(0,0);";
     backToTop.style = "text-decoration:none; color: #00C; font-size:small; cursor:pointer; ";
-    backToTop.innerHTML = '<span style="text-decoration:underline">Back to Top</span><span style="font-size:.75em;">&#9650;</span>';
+    backToTop.innerHTML = '<span style="text-decoration:underline">' + getStringBackToTop() + '</span><span style="font-size:.75em;">&#9650;</span>';
     td.appendChild(backToTop);
 
     tr.appendChild(td);
