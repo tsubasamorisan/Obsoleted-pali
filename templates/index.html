@@ -15,12 +15,16 @@
 <script type="text/javascript">{% include "potI18N.js" %}</script>
 </head> 
 <body>
-  {% include "topFixedMenu.html" %}
-  {% include "buttons.html" %}
-  <table class="curvedEdges" style="width: 78%; margin-left:11%; margin-right:11%; margin-top:32px; height:600px; cellspacing: 0px;">
-  <tr style="height: 50px; background-color: #fff4c8;">
-    <td colspan="2"><h1 style="color:olive; text-align: center;">{{_("Pāli Dictionary")}}</h1></td>
+<table class="skeleton">
+<tr class="skeleton-tr">
+ <td class="skeleton-left">{% include "buttons.html" %}</td>
+ <td class="skeleton-middle">
+  <table class="main">
+  <tr class="title">
+    <td colspan="2"><h1>{{_("Pāli Dictionary")}}</h1></td>
   </tr>
+
+  <tr><td colspan="2">{% include "topFixedMenu.html" %}</td></tr>
 
   <tr>
     <td id="upperAD">{% include "google_upper_ad_code" %}</td>
@@ -45,6 +49,10 @@
     </td>
   </tr>
   </table>
+ </td>
+ <td class="skeleton-right"></td>
+</tr>
+</table>
 {% include "info.html" %}
 </body>
 </html>
