@@ -1,8 +1,10 @@
 $(document).ready(function() {
-  <!-- make keypad draggable -->
+  document.getElementById('PaliInput').focus();
+
+  // <!-- make keypad draggable -->
   $("#keyboard").draggable();
 
-  <!-- bind the click function of input element inside keypad -->
+  // <!-- bind the click function of input element inside keypad -->
   $("#keyboard input").bind("click", function(e) {
     document.getElementById("PaliInput").value += this.value;
     document.getElementById("PaliInput").focus();
