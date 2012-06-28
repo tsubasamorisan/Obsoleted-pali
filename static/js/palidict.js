@@ -126,6 +126,10 @@ function JSONPlookupCallback(result) {
 // Dynamically retrieve Html element (X,Y) position with JavaScript
 // http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
 function getOffset( el ) {
+  // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
+  if (el.getBoundingClientRect) {
+    return { top: el.getBoundingClientRect().top , left: el.getBoundingClientRect().left };
+  }
   var _x = 0;
   var _y = 0;
   while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
@@ -151,10 +155,8 @@ function check(e){
   if (!checkParent(target, "menuDiv-lang-dropdown")) {
     if (checkParent(target, "lang-dropdown")) {
       if (langDropdownMenuDiv.style.display == "none") {
-//        langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
-//        langDropdownMenuDiv.style.top = (getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
-        langDropdownMenuDiv.style.left = $("#lang-dropdown").position().left + "px";
-        langDropdownMenuDiv.style.top = ($("#lang-dropdown").position().top + langDropdown.offsetHeight) + "px";
+        langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
+        langDropdownMenuDiv.style.top = (getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
         langDropdownMenuDiv.style.display = "";
       } else {langDropdownMenuDiv.style.display = "none";}
     } else {
