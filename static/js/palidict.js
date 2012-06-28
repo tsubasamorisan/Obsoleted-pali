@@ -123,19 +123,54 @@ function JSONPlookupCallback(result) {
   document.getElementById('result').appendChild(resultOuterTable);
 }
 
+// Window size and scrolling
+// http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+function getScrollXY() {
+  var scrOfX = 0, scrOfY = 0;
+  if( typeof( window.pageYOffset ) == 'number' ) {
+    //Netscape compliant
+    scrOfY = window.pageYOffset;
+    scrOfX = window.pageXOffset;
+  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
+    //DOM compliant
+    scrOfY = document.body.scrollTop;
+    scrOfX = document.body.scrollLeft;
+  } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
+    //IE6 standards compliant mode
+    scrOfY = document.documentElement.scrollTop;
+    scrOfX = document.documentElement.scrollLeft;
+  }
+  return [ scrOfX, scrOfY ];
+}
+
 // Dynamically retrieve Html element (X,Y) position with JavaScript
 // http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
 function getOffset( el ) {
-  // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
-  if (el.getBoundingClientRect) {
-    return { top: el.getBoundingClientRect().top , left: el.getBoundingClientRect().left };
-  }
+  var oriEl = el;
   var _x = 0;
   var _y = 0;
+  var offsetX = 0;
+  var offsetY = 0;
+  var scrollX = 0;
+  var scrollY = 0;
   while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-    _x += el.offsetLeft - el.scrollLeft;
-    _y += el.offsetTop - el.scrollTop;
+    offsetX += el.offsetLeft;
+    offsetY += el.offsetTop;
+    scrollX += el.scrollLeft;
+    scrollY += el.scrollTop;
     el = el.offsetParent;
+  }
+  console.log("offsetX: ", offsetX);
+  console.log("offsetY: ", offsetY);
+  console.log("scrollX: ", scrollX);
+  console.log("scrollY: ", scrollY);
+  // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
+  if (oriEl.getBoundingClientRect) {
+    _x = oriEl.getBoundingClientRect().left + getScrollXY()[0];
+    _y = oriEl.getBoundingClientRect().top + getScrollXY()[1];
+  } else {
+    _x = offsetX - scrollX;
+    _y = offsetY - scrollY;
   }
   return { top: _y, left: _x };
 }
