@@ -160,10 +160,6 @@ function getOffset( el ) {
     scrollY += el.scrollTop;
     el = el.offsetParent;
   }
-  console.log("offsetX: ", offsetX);
-  console.log("offsetY: ", offsetY);
-  console.log("scrollX: ", scrollX);
-  console.log("scrollY: ", scrollY);
   // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
   if (oriEl.getBoundingClientRect) {
     _x = oriEl.getBoundingClientRect().left + getScrollXY()[0];

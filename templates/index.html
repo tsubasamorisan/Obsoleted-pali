@@ -15,10 +15,9 @@
 <script type="text/javascript">{% include "potI18N.js" %}</script>
 </head> 
 <body>
-<table class="skeleton">
-<tr class="skeleton-tr">
- <td class="skeleton-left">{% include "buttons.html" %}</td>
- <td class="skeleton-middle">
+<div style="width: 100%;">
+ <div style="width: 10%; float: left;">{% include "buttons.html" %}</div>
+ <div style="width: 80%; float: left;">
   <table class="main">
   <tr class="title">
     <td colspan="2"><h1>{{_("Pāli Dictionary")}}</h1></td>
@@ -49,10 +48,8 @@
     </td>
   </tr>
   </table>
- </td>
- <td class="skeleton-right"></td>
-</tr>
-</table>
+ </div>
+</div>
 {% include "info.html" %}
 </body>
 </html>
