@@ -17,12 +17,14 @@ div.main {
 }
 
 div.title {
-  height: 50px;
+  line-height: 5em;
   background-color: #fff4c8;
-}
-div.title h1 {
-  color:olive;
   text-align: center;
+}
+div.title span {
+  font-size: 2em;
+  font-weight: bold;
+  color:olive;
 }
 
 div.main-menu {
