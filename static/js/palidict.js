@@ -133,7 +133,7 @@ function JSONPlookupCallback(result) {
 // jQuery source code: src/offset.js
 // https://github.com/jquery/jquery/blob/master/src/offset.js
 function getOffset( el ) {
-  return { top: $(el).position().top, left: $(el).position().left };
+//  return { top: $(el).position().top, left: $(el).position().left };
   var oriEl = el;
   var _x = 0;
   var _y = 0;
@@ -141,29 +141,22 @@ function getOffset( el ) {
   var offsetY = 0;
   var scrollX = 0;
   var scrollY = 0;
-//  var marginLeft = 0;
-//  var marginTop = 0;
   while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
     offsetX += el.offsetLeft;
     offsetY += el.offsetTop;
     scrollX += el.scrollLeft;
     scrollY += el.scrollTop;
-//    marginLeft += parseFloat(el.style.marginLeft) || 0;
-//    marginTop += parseFloat(el.style.marginTop) || 0;
     el = el.offsetParent;
   }
   // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
   if (oriEl.getBoundingClientRect) {
-    scrollX = window.pageYOffset || document.body.scrollLeft;
+    /* FIXME: should take margin-left and margin-top into consideration */
+    scrollX = window.pageXOffset || document.body.scrollLeft;
     scrollY = window.pageYOffset || document.body.scrollTop;
-//    console.log("marginTop: " + marginTop);
-//    console.log("marginLeft: " + marginLeft);
-//    console.log("scrollX: " + scrollX);
-//    console.log("scrollY: " + scrollY);
-    _x = oriEl.getBoundingClientRect().left + scrollX - marginLeft;
-    _y = oriEl.getBoundingClientRect().top + scrollX - marginTop;
+    _x = oriEl.getBoundingClientRect().left + scrollX;
+    _y = oriEl.getBoundingClientRect().top + scrollY;
   } else {
-    /* code in this else clause is problematic */
+    /* FIXME: code in this else clause maybe not correct? */
     _x = offsetX - scrollX;
     _y = offsetY - scrollY;
   }
