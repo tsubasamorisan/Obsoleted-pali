@@ -146,6 +146,7 @@ function getScrollXY() {
 // Dynamically retrieve Html element (X,Y) position with JavaScript
 // http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
 function getOffset( el ) {
+  return { top: $(el).position().top, left: $(el).position().left };
   var oriEl = el;
   var _x = 0;
   var _y = 0;
