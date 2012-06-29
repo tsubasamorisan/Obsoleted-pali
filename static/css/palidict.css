@@ -58,6 +58,9 @@ div.right-main-menu > #lang-dropdown {
   z-index: 21;
   text-align: center;
 }
+#keyboard input {
+  cursor: pointer;
+}
 
 .menuDiv {
   border-top-color: #C9D7F1;

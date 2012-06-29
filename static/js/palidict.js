@@ -23,7 +23,7 @@ function toggle() {
   else {
     kb.style.display = "inline";
     dt.innerHTML = getStringHideKeypad();
-    kb.style.left = getOffset(dt).left +"px";
+    kb.style.left = getOffset(dt).left + "px";
   }
 }
 
@@ -123,28 +123,15 @@ function JSONPlookupCallback(result) {
   document.getElementById('result').appendChild(resultOuterTable);
 }
 
-// Window size and scrolling
-// http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
-function getScrollXY() {
-  var scrOfX = 0, scrOfY = 0;
-  if( typeof( window.pageYOffset ) == 'number' ) {
-    //Netscape compliant
-    scrOfY = window.pageYOffset;
-    scrOfX = window.pageXOffset;
-  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
-    //DOM compliant
-    scrOfY = document.body.scrollTop;
-    scrOfX = document.body.scrollLeft;
-  } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
-    //IE6 standards compliant mode
-    scrOfY = document.documentElement.scrollTop;
-    scrOfX = document.documentElement.scrollLeft;
-  }
-  return [ scrOfX, scrOfY ];
-}
 
 // Dynamically retrieve Html element (X,Y) position with JavaScript
 // http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
+// Window size and scrolling
+// http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
+// scrollLeft property
+// http://help.dottoro.com/ljcjgrml.php
+// jQuery source code: src/offset.js
+// https://github.com/jquery/jquery/blob/master/src/offset.js
 function getOffset( el ) {
   return { top: $(el).position().top, left: $(el).position().left };
   var oriEl = el;
@@ -154,18 +141,29 @@ function getOffset( el ) {
   var offsetY = 0;
   var scrollX = 0;
   var scrollY = 0;
+//  var marginLeft = 0;
+//  var marginTop = 0;
   while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
     offsetX += el.offsetLeft;
     offsetY += el.offsetTop;
     scrollX += el.scrollLeft;
     scrollY += el.scrollTop;
+//    marginLeft += parseFloat(el.style.marginLeft) || 0;
+//    marginTop += parseFloat(el.style.marginTop) || 0;
     el = el.offsetParent;
   }
   // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
   if (oriEl.getBoundingClientRect) {
-    _x = oriEl.getBoundingClientRect().left + getScrollXY()[0];
-    _y = oriEl.getBoundingClientRect().top + getScrollXY()[1];
+    scrollX = window.pageYOffset || document.body.scrollLeft;
+    scrollY = window.pageYOffset || document.body.scrollTop;
+//    console.log("marginTop: " + marginTop);
+//    console.log("marginLeft: " + marginLeft);
+//    console.log("scrollX: " + scrollX);
+//    console.log("scrollY: " + scrollY);
+    _x = oriEl.getBoundingClientRect().left + scrollX - marginLeft;
+    _y = oriEl.getBoundingClientRect().top + scrollX - marginTop;
   } else {
+    /* code in this else clause is problematic */
     _x = offsetX - scrollX;
     _y = offsetY - scrollY;
   }
