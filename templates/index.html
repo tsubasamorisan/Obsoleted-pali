@@ -21,29 +21,27 @@
    <div class="title"><span>{{_("Pāli Dictionary")}}</span></div>
    {% include "mainMenu.html" %}
 
-   <div style="padding-right: 160px;">
-     <div style="float: left; position: relative; width: 100%;">
-       <div id="upperAD">{% include "google_upper_ad_code" %}</div>
-
-       <div style="vertical-align: top; text-align: left;">
-        <br /><br />
-        <!-- input pāli word -->
-        <form action="javascript:onPaliInputSubmit();" style="text-align: center;" autocomplete="off">
-          <div>
+   <table style="width: 100%; border-spacing:0; border-collapse:collapse;">
+     <tr>
+       <td style="vertical-align: top; text-align: left;">
+         <div id="upperAD">{% include "google_upper_ad_code" %}</div>
+         <br style="line-height: 2em;" />
+         <!-- input pāli word -->
+         <form action="javascript:onPaliInputSubmit();" style="text-align: center;" autocomplete="off">
+           <div>
             <input id="PaliInput" type="text" name="word" value="" />
             <input type="submit" value="Search" /><sub><a id="displayText" href="javascript:toggle();">{{_("Show Pāli Keypad")}}</a></sub>
             <div id="suggest" style="display:none;"></div>
-          </div>
-        </form>
-        {% include "keyboard.html" %}
-        <br /><br />
-        <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;">{{ result  }}</div>
-       </div>
+           </div>
+         </form>
+         {% include "keyboard.html" %}
+         <br style="line-height: 2em;" />
+         <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;">{{ result  }}</div>
+       </td>
 
-     </div>
-
-     <div style="float: left; position: relative; margin-right: -160px;" id="rightAD">{% include "google_right_ad_code" %}</div>
-   </div>
+       <td id="rightAD">{% include "google_right_ad_code" %}</td>
+     </tr>
+   </table>
  </div>
 </div>
 {% include "info.html" %}
