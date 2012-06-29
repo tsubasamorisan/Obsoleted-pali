@@ -1,11 +1,10 @@
-<table class="main-menu">
-<tr>
- <td class="left-main-menu">
+<div class="main-menu">
+ <div class="left-main-menu">
   <a href="{{ href[locale] }}">{{_("Home")}}</a>
   <a href="javascript:showAbout();">{{_("About")}}</a>
   <a href="javascript:showLink();">{{_("Link")}}</a>
- </td>
- <td class="right-main-menu">
+ </div>
+ <div class="right-main-menu">
   <a id="lang-dropdown" href="/" onclick="return false;">
    <span style="text-decoration:underline">{{ localeStr[locale] }}</span><span style="font-size:.75em;">&#9660;</span>
   </a>
@@ -19,9 +18,8 @@
   <!--
   {% include "google_translate_code" %}
   -->
- </td>
-</tr>
-</table>
+ </div>
+</div>
 
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">

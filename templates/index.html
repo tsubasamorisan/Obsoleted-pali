@@ -18,37 +18,37 @@
 <div style="width: 100%;">
  <div style="width: 10%; float: left;">{% include "buttons.html" %}</div>
  <div style="width: 80%; float: left;">
-  <table class="main">
-  <tr class="title">
-    <td colspan="2"><h1>{{_("Pāli Dictionary")}}</h1></td>
-  </tr>
+  <div class="main">
+   <div class="title"><h1>{{_("Pāli Dictionary")}}</h1></div>
+   {% include "mainMenu.html" %}
 
-  <tr><td colspan="2">{% include "mainMenu.html" %}</td></tr>
+   <div style="padding-right: 160px;">
+     <div style="float: left; position: relative; width: 100%;">
+       <div id="upperAD">{% include "google_upper_ad_code" %}</div>
 
-  <tr>
-    <td id="upperAD">{% include "google_upper_ad_code" %}</td>
-    <td id="rightAD" rowspan="2">{% include "google_right_ad_code" %}</td>
-  </tr>
+       <div style="vertical-align: top; text-align: left;">
+        <br /><br />
+        <!-- input pāli word -->
+        <form action="javascript:onPaliInputSubmit();" style="text-align: center;" autocomplete="off">
+          <div>
+            <input id="PaliInput" type="text" name="word" value="" />
+            <input type="submit" value="Search" /><sub><a id="displayText" href="javascript:toggle();">{{_("Show Pāli Keypad")}}</a></sub>
+            <div id="suggest" style="display:none;"></div>
+          </div>
+        </form>
+        {% include "keyboard.html" %}
+        <br /><br />
+        <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;">{{ result  }}</div>
+       </div>
 
-  <tr>
-    <td style="vertical-align: top; text-align: left;">
+     </div>
 
-      <br /><br />
-      <!-- input pāli word -->
-      <form action="javascript:onPaliInputSubmit();" style="text-align: center;" autocomplete="off">
-        <div>
-          <input id="PaliInput" type="text" name="word" value="" />
-          <input type="submit" value="Search" /><sub><a id="displayText" href="javascript:toggle();">{{_("Show Pāli Keypad")}}</a></sub>
-          <div id="suggest" style="display:none;"></div>
-        </div>
-      </form>
-      {% include "keyboard.html" %}
-      <br /><br />
-      <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;">{{ result  }}</div>
-    </td>
-  </tr>
-  </table>
+     <div style="float: left; position: relative; margin-right: -160px;" id="rightAD">{% include "google_right_ad_code" %}</div>
+   </div>
+   <div style="clear: both;"></div>
+  </div>
  </div>
+ <div style="clear: both; width: 10%;"></div>
 </div>
 {% include "info.html" %}
 </body>
