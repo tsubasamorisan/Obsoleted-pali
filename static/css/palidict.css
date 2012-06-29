@@ -28,21 +28,15 @@ div.title span {
 }
 
 div.main-menu {
-  width: 98%;
-  padding-left: 1%;
-  padding-right: 1%;
-  background: #66FFFF;
+  overflow: hidden;
+  background-color: #66FFFF;
   word-spacing: .5em;
 }
 div.main-menu > div.left-main-menu {
-  width: 50%;
   float: left;
-  text-align: left;
 }
 div.main-menu > div.right-main-menu {
-  width: 50%%;
-  float: left;
-  text-align: right;
+  float: right;
 } 
 div.right-main-menu > #lang-dropdown {
   text-decoration:none;
