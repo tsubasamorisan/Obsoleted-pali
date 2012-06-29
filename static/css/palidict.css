@@ -1,5 +1,5 @@
 div.floating-buttons {
-  padding-top: 100px;
+  padding-top: 7em;
   padding-right: 3%;
   float: right;
   z-index: 25;
@@ -30,13 +30,17 @@ div.title span {
 div.main-menu {
   overflow: hidden;
   background-color: #66FFFF;
-  word-spacing: .5em;
+  word-spacing: 1em;
 }
 div.main-menu > div.left-main-menu {
   float: left;
+  line-height: 2em;
+  padding-left: 1em;
 }
 div.main-menu > div.right-main-menu {
   float: right;
+  line-height: 2em;
+  padding-right: 1em;
 } 
 div.right-main-menu > #lang-dropdown {
   text-decoration:none;
