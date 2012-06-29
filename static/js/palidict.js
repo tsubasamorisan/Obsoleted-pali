@@ -124,14 +124,16 @@ function JSONPlookupCallback(result) {
 }
 
 
-// Dynamically retrieve Html element (X,Y) position with JavaScript
+/* Dynamically retrieve Html element (X,Y) position with JavaScript */
 // http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
-// Window size and scrolling
+/* Window size and scrolling */
 // http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
-// scrollLeft property
+/* scrollLeft property */
 // http://help.dottoro.com/ljcjgrml.php
-// jQuery source code: src/offset.js
+/* jQuery source code: src/offset.js */
 // https://github.com/jquery/jquery/blob/master/src/offset.js
+/* How to get iframe scroll position in IE using Java Script? */
+// http://stackoverflow.com/questions/2347491/how-to-get-iframe-scroll-position-in-ie-using-java-script
 function getOffset( el ) {
 //  return { top: $(el).position().top, left: $(el).position().left };
   var oriEl = el;
@@ -151,8 +153,9 @@ function getOffset( el ) {
   // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
   if (oriEl.getBoundingClientRect) {
     /* FIXME: should take margin-left and margin-top into consideration */
-    scrollX = window.pageXOffset || document.body.scrollLeft;
-    scrollY = window.pageYOffset || document.body.scrollTop;
+    var body = document.documentElement || document.body;
+    scrollX = window.pageXOffset || body.scrollLeft;
+    scrollY = window.pageYOffset || body.scrollTop;
     _x = oriEl.getBoundingClientRect().left + scrollX;
     _y = oriEl.getBoundingClientRect().top + scrollY;
   } else {
