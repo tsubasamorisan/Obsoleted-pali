@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>DOM Elemenet Position (include scroll position) Example</title>
+<script type="text/javascript">
+function getPosition( el ) {
+  var body = document.documentElement || document.body;
+  var scrollX = window.pageXOffset || body.scrollLeft;
+  var scrollY = window.pageYOffset || body.scrollTop;
+  _x = el.getBoundingClientRect().left + scrollX;
+  _y = el.getBoundingClientRect().top + scrollY;
+  return { top: _y, left: _x };
+}
+
+function onButtonClick(element) {
+  alert("Poistion top: " + getPosition(element).top + "\nPosition left: " + getPosition(element).left);
+}
+</script>
+</head>
+<body>
+<div>There are 4 buttons in this page, try to click them to get position.</div>
+<br style="line-height: 2em;"/>
+
+<button onclick="javascript:onButtonClick(this)">click me to get my position(1)</button><br />
+<br style="line-height: 20em;"/>
+<div style="text-align: center;"><button onclick="javascript:onButtonClick(this)">click me to get my position(2)</button></div>
+<br style="line-height: 20em;"/>
+<button onclick="javascript:onButtonClick(this)">click me to get my position(3)</button><br />
+<br style="line-height: 20em;"/>
+<div style="text-align: center;"><button onclick="javascript:onButtonClick(this)">click me to get my position(4)</button></div>
+
+</body>
+</html>
