@@ -88,7 +88,6 @@ class MainPage(webapp2.RequestHandler):
           self.response.out.write(data)
         return
 
-    result = ""
     localeStr = {
       'en_US' : u'English',
       'zh_CN' : u'中文(简体)',
@@ -101,7 +100,6 @@ class MainPage(webapp2.RequestHandler):
     }
 
     template_values = {
-      'result' : result,
       'locale' : locale,
       'localeStr' : localeStr,
       'href' : href,
