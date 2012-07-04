@@ -93,16 +93,10 @@ class MainPage(webapp2.RequestHandler):
       'zh_CN' : u'中文(简体)',
       'zh_TW' : u'中文(繁體)',
     }
-    href = {
-      'en_US' : u'/?locale=en_US',
-      'zh_CN' : u'/?locale=zh_CN',
-      'zh_TW' : u'/?locale=zh_TW',
-    }
 
     template_values = {
       'locale' : locale,
       'localeStr' : localeStr,
-      'href' : href,
     }
 
     template = jinja_environment.get_template('index.html')
