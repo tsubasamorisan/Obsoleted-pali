@@ -260,3 +260,28 @@ function checkParent(t,id) {
   } 
   return false;
 }
+
+function onSiteClick(element, flag) {
+  var url = '';
+  if (flag == '1') { url = 'http://palidictionary.appspot.com/'; }
+  else if (flag == '2') { url = 'http://siongui.pythonanywhere.com/'; }
+  else if (flag == '3') { url = 'http://siongui.webfactional.com/'; }
+  else { url = 'http://palidictionary.appspot.com/'; }
+
+  var count = 0;
+  for (var key in queryURL) {
+    if (count == 0) { url += '?' + key + '=' + queryURL[key]; }
+    else { url += '&' + key + '=' + queryURL[key]; }
+    count ++;
+  }
+
+  if (window.location.host == 'localhost:8080') {
+    if (queryURL['track'] != 'no') {
+      if (count == 0) { url += '?track=no'; }
+      else { url += '&track=no'; }
+      count ++;
+    }
+  }
+
+  window.location = url;
+}
