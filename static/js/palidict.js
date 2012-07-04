@@ -9,6 +9,13 @@ $(document).ready(function() {
   else {document.getElementById('site').innerHTML = getStringMainSite();}
   document.getElementById('site').style.wordSpacing = "normal";
 
+  /* check user's locale, and fill lang innerHTML */
+  var locale = document.getElementById('locale').innerHTML;
+  if (locale == 'zh_CN') {document.getElementById('lang').innerHTML = '中文 (简体)';}
+  else if (locale == 'zh_TW') {document.getElementById('lang').innerHTML = '中文 (繁體)';}
+  else {document.getElementById('lang').innerHTML = 'English';}
+  document.getElementById('lang').style.wordSpacing = "normal";
+
   // <!-- make keypad draggable -->
   $("#keyboard").draggable();
 

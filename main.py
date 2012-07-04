@@ -88,15 +88,8 @@ class MainPage(webapp2.RequestHandler):
           self.response.out.write(data)
         return
 
-    localeStr = {
-      'en_US' : u'English',
-      'zh_CN' : u'中文(简体)',
-      'zh_TW' : u'中文(繁體)',
-    }
-
     template_values = {
       'locale' : locale,
-      'localeStr' : localeStr,
     }
 
     template = jinja_environment.get_template('index.html')
