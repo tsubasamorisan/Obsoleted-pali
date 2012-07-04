@@ -5,26 +5,28 @@
   <a href="javascript:showLink();">{{_("Link")}}</a>
  </div>
  <div class="right-main-menu">
-  <a id="lang-dropdown" href="/" onclick="return false;">
+  <a id="lang-dropdown" class="dropdown" href="/" onclick="return false;">
    <span style="text-decoration:underline">{{ localeStr[locale] }}</span><span style="font-size:.75em;">&#9660;</span>
   </a>
-  <!-- http://www.mountaindragon.com/html/redirectjs2.htm  -->
-  <select onChange="window.location=this.options[this.selectedIndex].value;">
-   <option value="/" selected="selected">{{_("Choose Site")}}:</option>
-   <option value="http://palidictionary.appspot.com/">{{_("Main Site")}}</option>
-   <option value="http://siongui.pythonanywhere.com/">{{_("Backup Site #1")}}</option>
-   <option value="http://siongui.webfactional.com">{{_("Backup Site #2")}}</option>
-  </select>
+  <a id="site-dropdown" class="dropdown" href="/" onclick="return false;">
+   <span id="site" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
+  </a>
   <!--
   {% include "google_translate_code" %}
   -->
  </div>
 </div>
 
-
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
  <a class="menuItem" style="display: block; " href="/?locale=en_US">English</a>
  <a class="menuItem" style="display: block; " href="/?locale=zh_CN">中文 (简体)</a>
  <a class="menuItem" style="display: block; " href="/?locale=zh_TW">中文 (繁體)</a>
+</div></div>
+
+<div class="menuDiv instance1" id="menuDiv-site-dropdown" style="position: absolute; display: none; width: 115px; ">
+<div style="margin-top: 4px;">
+ <a class="menuItem" style="display: block; " href="http://palidictionary.appspot.com/">{{_("Main Site")}}</a>
+ <a class="menuItem" style="display: block; " href="http://siongui.pythonanywhere.com/">{{_("Backup Site #1")}}</a>
+ <a class="menuItem" style="display: block; " href="http://siongui.webfactional.com">{{_("Backup Site #2")}}</a>
 </div></div>

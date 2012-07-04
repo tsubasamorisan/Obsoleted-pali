@@ -1,6 +1,14 @@
 $(document).ready(function() {
   document.getElementById('PaliInput').focus();
 
+  /* check users are now at which site, and fill site innerHTML */
+  if (window.location.host == 'http://siongui.pythonanywhere.com/')
+    {document.getElementById('site').innerHTML = 'Backup Site #1';}
+  else if (window.location.host == 'http://siongui.webfactional.com')
+    {document.getElementById('site').innerHTML = 'Backup Site #2';}
+  else {document.getElementById('site').innerHTML = 'Main Site';}
+  document.getElementById('site').style.wordSpacing = "normal";
+
   // <!-- make keypad draggable -->
   $("#keyboard").draggable();
 
@@ -177,16 +185,66 @@ function check(e){
   var target = (e && e.target) || (event && event.srcElement); 
   var langDropdownMenuDiv = document.getElementById("menuDiv-lang-dropdown"); 
   var langDropdown = document.getElementById("lang-dropdown"); 
+  var siteDropdownMenuDiv = document.getElementById("menuDiv-site-dropdown"); 
+  var siteDropdown = document.getElementById("site-dropdown"); 
 
   if (!checkParent(target, "menuDiv-lang-dropdown")) {
+    // click outside the language dropdown menu
     if (checkParent(target, "lang-dropdown")) {
+      // click outside the language dropdown menu
+      // AND 
+      // click on the language dropdown link
       if (langDropdownMenuDiv.style.display == "none") {
+        // click outside the language dropdown menu
+        // AND 
+        // click on the language dropdown link
+        // AND
+        // the dropdown menu is invisible
         langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
         langDropdownMenuDiv.style.top = (getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
-        langDropdownMenuDiv.style.display = "";
-      } else {langDropdownMenuDiv.style.display = "none";}
+        langDropdownMenuDiv.style.display = "block";
+      } else {
+        // click outside the language dropdown menu
+        // AND 
+        // click on the language dropdown link
+        // AND
+        // the dropdown menu is visible
+        langDropdownMenuDiv.style.display = "none";}
     } else {
+      // click outside the language dropdown menu
+      // AND 
+      // click outside the language dropdown link
       langDropdownMenuDiv.style.display = "none";
+    }
+  }
+
+  if (!checkParent(target, "menuDiv-site-dropdown")) {
+    // click outside the site dropdown menu
+    if (checkParent(target, "site-dropdown")) {
+      // click outside the site dropdown menu
+      // AND 
+      // click on the site dropdown link
+      if (siteDropdownMenuDiv.style.display == "none") {
+        // click outside the site dropdown menu
+        // AND 
+        // click on the site dropdown link
+        // AND
+        // the dropdown menu is invisible
+        siteDropdownMenuDiv.style.left = getOffset(siteDropdown).left +"px";
+        siteDropdownMenuDiv.style.top = (getOffset(siteDropdown).top + siteDropdown.offsetHeight +3) +"px";
+        siteDropdownMenuDiv.style.display = "block";
+      } else {
+        // click outside the site dropdown menu
+        // AND 
+        // click on the site dropdown link
+        // AND
+        // the dropdown menu is visible
+        siteDropdownMenuDiv.style.display = "none";}
+    } else {
+      // click outside the site dropdown menu
+      // AND 
+      // click outside the site dropdown link
+      siteDropdownMenuDiv.style.display = "none";
     }
   }
 }

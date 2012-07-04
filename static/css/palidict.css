@@ -42,7 +42,7 @@ div.main-menu > div.right-main-menu {
   line-height: 2em;
   padding-right: 1em;
 } 
-div.right-main-menu > #lang-dropdown {
+div.right-main-menu > .dropdown {
   text-decoration:none;
   color: #00C;
   font-size:small;
