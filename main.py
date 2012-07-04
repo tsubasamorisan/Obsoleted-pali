@@ -10,6 +10,7 @@ from google.appengine.api import users
 from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup, jsonpLookup
+from userLocale import getUserLocale
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
@@ -27,52 +28,8 @@ memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    #locale = self.request.GET.get('locale', 'en_US')
-    locale = self.request.GET.get('locale')
-    if (locale):
-      if locale not in ['en_US', 'zh_TW', 'zh_CN']:
-        locale = 'en_US'
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: en_US")
-      else:
-        i18n.get_i18n().set_locale(locale)
-        #self.response.out.write("locale: %s" % locale)
-    else:
-      #self.response.out.write("no locale")
-      accept_languages = self.request.headers.get('accept_language')
-      if accept_languages is None:
-        locale = 'en_US'
-      else:
-        languages = accept_languages.split(",")
-        language_q_pairs = []
-        for language in languages:
-          if language.split(";")[0] == language:
-            language_q_pairs.append((language, "1"))
-          else:
-            locale = language.split(";")[0]
-            q = language.split(";")[1].split("=")[1]
-            language_q_pairs.append((locale, q))
-        #self.response.out.write(language_q_pairs)
-        if (language_q_pairs[0][0].lower() == 'zh-tw'):
-          locale = 'zh_TW'
-          i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: %s" % locale)
-        elif (language_q_pairs[0][0].lower() == 'zh-hk'):
-          locale = 'zh_TW'
-          i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: %s" % locale)
-        elif (language_q_pairs[0][0].lower() == 'zh-cn'):
-          locale = 'zh_CN'
-          i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: %s" % locale)
-        elif (language_q_pairs[0][0].lower().startswith('zh')):
-          locale = 'zh_CN'
-          i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: %s" % locale)
-        else:
-          locale = 'en_US'
-          i18n.get_i18n().set_locale(locale)
-          #self.response.out.write("locale: %s" % locale)
+    locale = getUserLocale(self.request.GET.get('locale'), self.request.headers.get('accept_language'))
+    i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
 
     useMemcache = self.request.GET.get('memcache', 'yes')
