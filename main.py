@@ -6,7 +6,6 @@ import jinja2
 import os, cgi
 import urllib
 import json
-from google.appengine.api import users
 from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup, jsonpLookup
@@ -45,8 +44,18 @@ class MainPage(webapp2.RequestHandler):
           self.response.out.write(data)
         return
 
+    useCompiledJS = self.request.GET.get('compile')
+    if useCompiledJS not in ['yes', 'no']:
+      useCompiledJS = None
+    if (useCompiledJS == None):
+      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
+        useCompiledJS = 'yes'
+      else:
+        useCompiledJS = 'no'
+
     template_values = {
       'locale' : locale,
+      'compile': useCompiledJS,
     }
 
     template = jinja_environment.get_template('index.html')

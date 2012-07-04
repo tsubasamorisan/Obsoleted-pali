@@ -60,14 +60,26 @@ if (queryURL.ugcfh == "yes") {
 } else if ( (window.location.host == 'localhost:8080') || (window.location.host == 'palidictionary.appspot.com') ) {
   LoadFavicon("favicon.ico");
   LoadJS("static/jsvarindex.js");
-  LoadJS("static/js/inputSuggest.js");
-  LoadJS("static/js/palidict.js");
+  if (useCompiledJS == 'yes') {
+    LoadJS("static/js/inputSuggest-wso.js");
+    LoadJS("static/js/palidict-wso.js");
+  }
+  else {
+    LoadJS("static/js/inputSuggest.js");
+    LoadJS("static/js/palidict.js");
+  }
   LoadCSS("static/css/palidict.css");
 } else {
   LoadFavicon("statics/favicon.ico");
   LoadJS("statics/jsvarindex.js");
-  LoadJS("statics/js/inputSuggest.js");
-  LoadJS("statics/js/palidict.js");
+  if (useCompiledJS == 'yes') {
+    LoadJS("statics/js/inputSuggest-wso.js");
+    LoadJS("statics/js/palidict-wso.js");
+  }
+  else {
+    LoadJS("statics/js/inputSuggest.js");
+    LoadJS("statics/js/palidict.js");
+  }
   LoadCSS("statics/css/palidict.css");
 }
 

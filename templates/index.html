@@ -11,7 +11,15 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-<script type="text/javascript">{% include "bootstrap-wso.js" %}</script>
+<script type="text/javascript">
+{% if compile == 'yes' %}
+  var useCompiledJS = 'yes';
+  {% include "bootstrap-wso.js" %}
+{% else %}
+  var useCompiledJS = 'no';
+  {% include "bootstrap.js" %}
+{% endif %}
+</script>
 <script type="text/javascript">{% include "potI18N.js" %}</script>
 </head> 
 <body>
