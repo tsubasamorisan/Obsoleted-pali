@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-27 08:54+0800\n"
+"POT-Creation-Date: 2012-07-05 01:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "contact me"
 msgstr ""
 
-#: templates/info.html:9 templates/index.html:6 templates/index.html:22
+#: templates/info.html:9 templates/index.html:6 templates/index.html:21
 msgid "Pāli Dictionary"
 msgstr ""
 
@@ -97,35 +97,31 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: templates/index.html:38
+#: templates/index.html:33
 msgid "Show Pāli Keypad"
 msgstr ""
 
-#: templates/topFixedMenu.html:3
+#: templates/mainMenu.html:3
 msgid "Home"
 msgstr ""
 
-#: templates/topFixedMenu.html:4
+#: templates/mainMenu.html:4
 msgid "About"
 msgstr ""
 
-#: templates/topFixedMenu.html:5
+#: templates/mainMenu.html:5
 msgid "Link"
 msgstr ""
 
-#: templates/topFixedMenu.html:13
-msgid "Choose Site"
-msgstr ""
-
-#: templates/topFixedMenu.html:14
+#: templates/mainMenu.html:29
 msgid "Main Site"
 msgstr ""
 
-#: templates/topFixedMenu.html:15
+#: templates/mainMenu.html:30
 msgid "Backup Site #1"
 msgstr ""
 
-#: templates/topFixedMenu.html:16
+#: templates/mainMenu.html:31
 msgid "Backup Site #2"
 msgstr ""
 
@@ -159,4 +155,16 @@ msgstr ""
 
 #: templates/js/potI18N.js:8
 msgid "'Back to Top'"
+msgstr ""
+
+#: templates/js/potI18N.js:9
+msgid "'Main Site'"
+msgstr ""
+
+#: templates/js/potI18N.js:10
+msgid "'Backup Site #1'"
+msgstr ""
+
+#: templates/js/potI18N.js:11
+msgid "'Backup Site #2'"
 msgstr ""

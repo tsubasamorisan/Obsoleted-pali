@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-27 08:54+0800\n"
+"POT-Creation-Date: 2012-07-05 01:41+0800\n"
 "PO-Revision-Date: 2012-06-09 09:21+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr "请"
 msgid "contact me"
 msgstr "联络我"
 
-#: templates/info.html:9 templates/index.html:6 templates/index.html:22
+#: templates/info.html:9 templates/index.html:6 templates/index.html:21
 msgid "Pāli Dictionary"
 msgstr "巴利语字典"
 
@@ -98,35 +98,31 @@ msgstr "从"
 msgid "on"
 msgstr "在"
 
-#: templates/index.html:38
+#: templates/index.html:33
 msgid "Show Pāli Keypad"
 msgstr "显示巴利语键盘"
 
-#: templates/topFixedMenu.html:3
+#: templates/mainMenu.html:3
 msgid "Home"
 msgstr "首页"
 
-#: templates/topFixedMenu.html:4
+#: templates/mainMenu.html:4
 msgid "About"
 msgstr "关于"
 
-#: templates/topFixedMenu.html:5
+#: templates/mainMenu.html:5
 msgid "Link"
 msgstr "连结"
 
-#: templates/topFixedMenu.html:13
-msgid "Choose Site"
-msgstr "选择站点"
-
-#: templates/topFixedMenu.html:14
+#: templates/mainMenu.html:29
 msgid "Main Site"
 msgstr "主站"
 
-#: templates/topFixedMenu.html:15
+#: templates/mainMenu.html:30
 msgid "Backup Site #1"
 msgstr "备用站一"
 
-#: templates/topFixedMenu.html:16
+#: templates/mainMenu.html:31
 msgid "Backup Site #2"
 msgstr "备用站二"
 
@@ -161,4 +157,19 @@ msgstr "'解释'"
 #: templates/js/potI18N.js:8
 msgid "'Back to Top'"
 msgstr "'返回页面顶端'"
+
+#: templates/js/potI18N.js:9
+msgid "'Main Site'"
+msgstr "'主站'"
+
+#: templates/js/potI18N.js:10
+msgid "'Backup Site #1'"
+msgstr "'备用站一'"
+
+#: templates/js/potI18N.js:11
+msgid "'Backup Site #2'"
+msgstr "'备用站二'"
+
+#~ msgid "Choose Site"
+#~ msgstr "选择站点"
 

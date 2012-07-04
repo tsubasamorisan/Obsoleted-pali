@@ -3,10 +3,10 @@ $(document).ready(function() {
 
   /* check users are now at which site, and fill site innerHTML */
   if (window.location.host == 'siongui.pythonanywhere.com')
-    {document.getElementById('site').innerHTML = 'Backup Site #1';}
+    {document.getElementById('site').innerHTML = getStringBackupSite1();}
   else if (window.location.host == 'siongui.webfactional.com')
-    {document.getElementById('site').innerHTML = 'Backup Site #2';}
-  else {document.getElementById('site').innerHTML = 'Main Site';}
+    {document.getElementById('site').innerHTML = getStringBackupSite2();}
+  else {document.getElementById('site').innerHTML = getStringMainSite();}
   document.getElementById('site').style.wordSpacing = "normal";
 
   // <!-- make keypad draggable -->
