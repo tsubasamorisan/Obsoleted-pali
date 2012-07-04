@@ -2,9 +2,9 @@ $(document).ready(function() {
   document.getElementById('PaliInput').focus();
 
   /* check users are now at which site, and fill site innerHTML */
-  if (window.location.host == 'http://siongui.pythonanywhere.com/')
+  if (window.location.host == 'siongui.pythonanywhere.com')
     {document.getElementById('site').innerHTML = 'Backup Site #1';}
-  else if (window.location.host == 'http://siongui.webfactional.com')
+  else if (window.location.host == 'siongui.webfactional.com')
     {document.getElementById('site').innerHTML = 'Backup Site #2';}
   else {document.getElementById('site').innerHTML = 'Main Site';}
   document.getElementById('site').style.wordSpacing = "normal";
