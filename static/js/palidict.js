@@ -285,3 +285,22 @@ function onSiteClick(element, flag) {
 
   window.location = url;
 }
+
+function onLocaleClick(element, flag) {
+  var locale = '';
+  if (flag == '1') { locale = 'en_US'; }
+  else if (flag == '2') { locale = 'zh_CN'; }
+  else if (flag == '3') { locale = 'zh_TW'; }
+  else { locale = 'en_US'; }
+
+  queryURL['locale'] = locale;
+  var count = 0;
+  var url = '/';
+  for (var key in queryURL) {
+    if (count == 0) { url += '?' + key + '=' + queryURL[key]; }
+    else { url += '&' + key + '=' + queryURL[key]; }
+    count ++;
+  }
+
+  window.location = url;
+}

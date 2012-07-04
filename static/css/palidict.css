@@ -85,11 +85,6 @@ div.right-main-menu > .dropdown {
   display: block;
   cursor: pointer;
 }
-
-a.menuItem:hover {
-  background: #00C;
-  color: white;
-}
 span.menuItem:hover {
   background: #00C;
   color: white;
