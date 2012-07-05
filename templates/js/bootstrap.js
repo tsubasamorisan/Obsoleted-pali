@@ -58,21 +58,30 @@ if (queryURL.ugcfh == "yes") {
   LoadJS(prefix + "static/js/inputSuggest.js");
   LoadJS(prefix + "static/js/palidict.js");
   LoadCSS(prefix + "static/css/palidict.css");
-} else if ( (window.location.host == 'localhost:8080') || (window.location.host == 'palidictionary.appspot.com') ) {
+} else if (window.location.host == 'localhost:8080') {
   /*
   * NOT use google code to serve files
-  * host is "localhost:8080" or "palidictionary.appspot.com"
+  * host is "localhost:8080"
   */
   LoadFavicon("favicon.ico");
   LoadJS("static/jsvarindex.js");
   if (queryURL.compiledjs == 'yes') {
-    LoadJS("static/js/inputSuggest-wso.js");
-    LoadJS("static/js/palidict-wso.js");
+    LoadJS("static/js/pali-spo.js");
   }
   else {
     LoadJS("static/js/inputSuggest.js");
     LoadJS("static/js/palidict.js");
   }
+  LoadCSS("static/css/palidict.css");
+} else if (window.location.host == 'palidictionary.appspot.com') {
+  /*
+  * NOT use google code to serve files
+  * host is NOT "localhost:8080"
+  * host is "palidictionary.appspot.com"
+  */
+  LoadFavicon("favicon.ico");
+  LoadJS("static/jsvarindex.js");
+  LoadJS("static/js/pali-spo.js");
   LoadCSS("static/css/palidict.css");
 } else {
   /*
@@ -82,14 +91,7 @@ if (queryURL.ugcfh == "yes") {
   */
   LoadFavicon("statics/favicon.ico");
   LoadJS("statics/jsvarindex.js");
-  if (queryURL.compiledjs == 'yes') {
-    LoadJS("statics/js/inputSuggest-wso.js");
-    LoadJS("statics/js/palidict-wso.js");
-  }
-  else {
-    LoadJS("statics/js/inputSuggest.js");
-    LoadJS("statics/js/palidict.js");
-  }
+  LoadJS("statics/js/pali-spo.js");
   LoadCSS("statics/css/palidict.css");
 }
 
