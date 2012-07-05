@@ -8,26 +8,26 @@ compiler = 'java -jar ../closure-library-read-only/compiler/compiler.jar'
 
 input_bootstrap = '--js templates/js/bootstrap.js'
 output_bootstrap_wso = '--js_output_file templates/js/bootstrap-wso.js'
-output_bootstrap_sp =  '--js_output_file templates/js/bootstrap-sp.js'
+output_bootstrap_spo = '--js_output_file templates/js/bootstrap-spo.js'
 output_bootstrap_adv = '--js_output_file templates/js/bootstrap-adv.js'
 
 input_js1 = '--js static/js/palidict.js'
 input_js2 = '--js static/js/inputSuggest.js'
 output_js_wso = '--js_output_file static/js/pali-wso.js'
-output_js_sp =  '--js_output_file static/js/pali-sp.js'
+output_js_spo = '--js_output_file static/js/pali-spo.js'
 output_js_adv = '--js_output_file static/js/pali-adv.js'
 
 wso = '--compilation_level WHITESPACE_ONLY'
-sp =  '--compilation_level SIMPLE_OPTIMIZATIONS'
+spo = '--compilation_level SIMPLE_OPTIMIZATIONS'
 adv = '--compilation_level ADVANCED_OPTIMIZATIONS'
 
 def usage():
   print("Usage:")
   print("$ python compile.py help")
-  print("$ python compile.py showdir")
+  print("$ python compile.py ls")
   print("$ python compile.py rm")
   print("$ python compile.py wso")
-  print("$ python compile.py sp")
+  print("$ python compile.py spo")
   print("$ python compile.py adv")
 
 if __name__ == '__main__':
@@ -38,7 +38,7 @@ if __name__ == '__main__':
   if sys.argv[1] == "help":
     os.system('%s --help' % compiler)
     sys.exit(0)
-  elif sys.argv[1] == "showdir":
+  elif sys.argv[1] == "ls":
     os.system('ls -al static/js/')
     os.system('ls -al templates/js/')
     sys.exit(0)
@@ -52,11 +52,11 @@ if __name__ == '__main__':
     print(    '%s %s %s %s %s' % (compiler, wso, input_js1, input_js2, output_js_wso))
     os.system('%s %s %s %s %s' % (compiler, wso, input_js1, input_js2, output_js_wso))
     sys.exit(0)
-  elif sys.argv[1] == "sp":
-    print(    '%s %s %s %s' % (compiler, sp, input_bootstrap, output_bootstrap_sp))
-    os.system('%s %s %s %s' % (compiler, sp, input_bootstrap, output_bootstrap_sp))
-    print(    '%s %s %s %s %s' % (compiler, sp, input_js1, input_js2, output_js_sp))
-    os.system('%s %s %s %s %s' % (compiler, sp, input_js1, input_js2, output_js_sp))
+  elif sys.argv[1] == "spo":
+    print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
+    os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
+    print(    '%s %s %s %s %s' % (compiler, spo, input_js1, input_js2, output_js_spo))
+    os.system('%s %s %s %s %s' % (compiler, spo, input_js1, input_js2, output_js_spo))
     sys.exit(0)
   elif sys.argv[1] == "adv":
     print(    '%s %s %s %s' % (compiler, adv, input_bootstrap, output_bootstrap_adv))
