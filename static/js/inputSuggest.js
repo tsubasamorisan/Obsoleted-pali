@@ -264,7 +264,7 @@ Suggest.prototype = {
     this.suggestDiv.style.textAlign = 'left';
     this.suggestDiv.style.fontFamily = 'Gentium Basic, arial, serif';
     this.suggestDiv.style.fontSize = '100%';
-    this.suggestDiv.style.display = '';
+    this.suggestDiv.style.display = 'block';
   },
 
   _checkParent: function(element) {

@@ -31,12 +31,12 @@ $(document).ready(function() {
 function toggle() {
   var kb = document.getElementById("keyboard");
   var dt = document.getElementById("displayText");
-  if(kb.style.display == "inline") {
+  if(kb.style.display == "block") {
     kb.style.display = "none";
     dt.innerHTML = getStringShowKeypad();
   }
   else {
-    kb.style.display = "inline";
+    kb.style.display = "block";
     dt.innerHTML = getStringHideKeypad();
     kb.style.left = getOffset(dt).left + "px";
   }
