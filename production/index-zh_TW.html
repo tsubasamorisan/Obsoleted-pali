@@ -13,12 +13,12 @@
 
 <script type="text/javascript">
 
-  function LoadJS(url){var ext=document.createElement("script");ext.setAttribute("type","text/javascript");ext.setAttribute("src",url);if(typeof ext!="undefined")document.getElementsByTagName("head")[0].appendChild(ext)}function LoadCSS(url){var ext=document.createElement("link");ext.setAttribute("type","text/css");ext.setAttribute("rel","stylesheet");ext.setAttribute("href",url);if(typeof ext!="undefined")document.getElementsByTagName("head")[0].appendChild(ext)}
-function LoadFavicon(url){var ext=document.createElement("link");ext.setAttribute("rel","shortcut icon");ext.setAttribute("href",url);if(typeof ext!="undefined")document.getElementsByTagName("head")[0].appendChild(ext)}
-var queryURL=function(){var queryPairs={};if(!window.location.search)return queryPairs;var variables=window.location.search.substring(1).split("&");for(var i=0;i<variables.length;i++){var pair=decodeURIComponent(variables[i]).split("=");if(pair.length!=2){console.log("strange query string: "+variables[i]);continue}if(typeof pair[0]=="undefined")continue;else if(typeof pair[0]==null)continue;else queryPairs[pair[0]]=pair[1]}return queryPairs}();LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
-if(queryURL.ugcfh=="yes"){prefix="http://pali.googlecode.com/git/";LoadFavicon(prefix+"static/favicon.ico");LoadJS(prefix+"static/jsvarindex.js");LoadJS(prefix+"static/js/inputSuggest.js");LoadJS(prefix+"static/js/palidict.js");LoadCSS(prefix+"static/css/palidict.css")}else if(window.location.host=="localhost:8080"||window.location.host=="palidictionary.appspot.com"){LoadFavicon("favicon.ico");LoadJS("static/jsvarindex.js");if(queryURL.compiledjs=="yes"){LoadJS("static/js/inputSuggest-wso.js");LoadJS("static/js/palidict-wso.js")}else{LoadJS("static/js/inputSuggest.js");
-LoadJS("static/js/palidict.js")}LoadCSS("static/css/palidict.css")}else{LoadFavicon("statics/favicon.ico");LoadJS("statics/jsvarindex.js");if(queryURL.compiledjs=="yes"){LoadJS("statics/js/inputSuggest-wso.js");LoadJS("statics/js/palidict-wso.js")}else{LoadJS("statics/js/inputSuggest.js");LoadJS("statics/js/palidict.js")}LoadCSS("statics/css/palidict.css")}
-if(queryURL.track!="no")if(window.location.host!="localhost:8080"){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-32179549-1"]);_gaq.push(["_trackPageview"]);(function(){var ga=document.createElement("script");ga.type="text/javascript";ga.async=true;ga.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(ga,s)})()};
+  function LoadJS(b){var a=document.createElement("script");a.setAttribute("type","text/javascript");a.setAttribute("src",b);"undefined"!=typeof a&&document.getElementsByTagName("head")[0].appendChild(a)}function LoadCSS(b){var a=document.createElement("link");a.setAttribute("type","text/css");a.setAttribute("rel","stylesheet");a.setAttribute("href",b);"undefined"!=typeof a&&document.getElementsByTagName("head")[0].appendChild(a)}
+function LoadFavicon(b){var a=document.createElement("link");a.setAttribute("rel","shortcut icon");a.setAttribute("href",b);"undefined"!=typeof a&&document.getElementsByTagName("head")[0].appendChild(a)}var queryURL=function(){var b={};if(!window.location.search)return b;for(var a=window.location.search.substring(1).split("&"),d=0;d<a.length;d++){var c=decodeURIComponent(a[d]).split("=");2!=c.length?console.log("strange query string: "+a[d]):"undefined"!=typeof c[0]&&null!=typeof c[0]&&(b[c[0]]=c[1])}return b}();
+LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
+"yes"==queryURL.ugcfh?(prefix="http://pali.googlecode.com/git/",LoadFavicon(prefix+"static/favicon.ico"),LoadJS(prefix+"static/jsvarindex.js"),LoadJS(prefix+"static/js/inputSuggest.js"),LoadJS(prefix+"static/js/palidict.js"),LoadCSS(prefix+"static/css/palidict.css")):"localhost:8080"==window.location.host?(LoadFavicon("favicon.ico"),LoadJS("static/jsvarindex.js"),"yes"==queryURL.compiledjs?LoadJS("static/js/pali-spo.js"):(LoadJS("static/js/inputSuggest.js"),LoadJS("static/js/palidict.js")),LoadCSS("static/css/palidict.css")):
+"palidictionary.appspot.com"==window.location.host?(LoadFavicon("favicon.ico"),LoadJS("static/jsvarindex.js"),LoadJS("static/js/pali-spo.js"),LoadCSS("static/css/palidict.css")):(LoadFavicon("statics/favicon.ico"),LoadJS("statics/jsvarindex.js"),LoadJS("statics/js/pali-spo.js"),LoadCSS("statics/css/palidict.css"));
+if("no"!=queryURL.track&&"localhost:8080"!=window.location.host){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-32179549-1"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})()};
 
 </script>
 <script type="text/javascript">function getStringShowKeypad() { return '顯示巴利語鍵盤'; }
@@ -80,19 +80,6 @@ function getStringBackupSite2() { return '備用站二'; } </script>
   <a id="site-dropdown" class="dropdown" href="/" onclick="return false;">
    <span id="site" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
   </a>
-  <!--
-  <div id="google_translate_element"></div><script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    multilanguagePage: true,
-    gaTrack: true,
-    gaId: 'UA-32179549-1',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  -->
  </div>
 </div>
 
