@@ -51,6 +51,7 @@ var queryURL = function() {
 LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
 /* Load JS, CSS and Favicon */
 if (queryURL.ugcfh == "yes") {
+  /* use google code to serve files */
   prefix = 'http://pali.googlecode.com/git/';
   LoadFavicon(prefix + "static/favicon.ico");
   LoadJS(prefix + "static/jsvarindex.js");
@@ -58,9 +59,13 @@ if (queryURL.ugcfh == "yes") {
   LoadJS(prefix + "static/js/palidict.js");
   LoadCSS(prefix + "static/css/palidict.css");
 } else if ( (window.location.host == 'localhost:8080') || (window.location.host == 'palidictionary.appspot.com') ) {
+  /*
+  * NOT use google code to serve files
+  * host is "localhost:8080" or "palidictionary.appspot.com"
+  */
   LoadFavicon("favicon.ico");
   LoadJS("static/jsvarindex.js");
-  if (useCompiledJS == 'yes') {
+  if (queryURL.compiledjs == 'yes') {
     LoadJS("static/js/inputSuggest-wso.js");
     LoadJS("static/js/palidict-wso.js");
   }
@@ -70,9 +75,14 @@ if (queryURL.ugcfh == "yes") {
   }
   LoadCSS("static/css/palidict.css");
 } else {
+  /*
+  * NOT use google code to serve files
+  * host is NOT "localhost:8080"
+  * host is NOT "palidictionary.appspot.com"
+  */
   LoadFavicon("statics/favicon.ico");
   LoadJS("statics/jsvarindex.js");
-  if (useCompiledJS == 'yes') {
+  if (queryURL.compiledjs == 'yes') {
     LoadJS("statics/js/inputSuggest-wso.js");
     LoadJS("statics/js/palidict-wso.js");
   }

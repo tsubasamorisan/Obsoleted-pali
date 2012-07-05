@@ -44,18 +44,18 @@ class MainPage(webapp2.RequestHandler):
           self.response.out.write(data)
         return
 
-    useCompiledJS = self.request.GET.get('compile')
-    if useCompiledJS not in ['yes', 'no']:
-      useCompiledJS = None
-    if (useCompiledJS == None):
-      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
-        useCompiledJS = 'yes'
+    useCompiledBootstrapJS = self.request.GET.get('compiledBootstrapJS')
+    if useCompiledBootstrapJS not in ['yes', 'no']:
+      useCompiledBootstrapJS = None
+    if (useCompiledBootstrapJS == None):
+      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is True):
+        useCompiledBootstrapJS = 'no'
       else:
-        useCompiledJS = 'no'
+        useCompiledBootstrapJS = 'yes'
 
     template_values = {
       'locale' : locale,
-      'compile': useCompiledJS,
+      'useCompiledBootstrapJS' : useCompiledBootstrapJS,
     }
 
     template = jinja_environment.get_template('index.html')

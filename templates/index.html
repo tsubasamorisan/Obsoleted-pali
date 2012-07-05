@@ -12,11 +12,9 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
-{% if compile == 'yes' %}
-  var useCompiledJS = 'yes';
+{% if useCompiledBootstrapJS == 'yes' %}
   {% include "bootstrap-wso.js" %}
 {% else %}
-  var useCompiledJS = 'no';
   {% include "bootstrap.js" %}
 {% endif %}
 </script>
