@@ -1,3 +1,65 @@
+/**
+ * @fileoverview Class to auto-suggest pāli words according to user input.
+ */
+
+var pali = pali || {}; // Identifies this file as the base.
+
+/**
+ * Class to auto-suggest prefix-matched pāli Words
+ *
+ * @param {string=} inputId element id for text input
+ * @param {string=} suggestDivId element id for suggestion Div Menu
+ * @constructor
+ */
+pali.InputSuggest = function(inputId, suggestDivId) {
+  /**
+   * DOM element of pāli text input
+   * @type {DOM Element}
+   * @private
+   */
+  this.input_ = document.getElementById(inputId);
+  /**
+   * DOM element of suggestion menu of pāli words
+   * @type {DOM Element}
+   * @private
+   */
+  this.suggestDiv_ = document.getElementById(suggestDivId);
+
+  /**
+   References:
+   http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
+   http://www.quirksmode.org/js/keys.html
+   http://unixpapa.com/js/key.html
+   */
+  var this_ = this; // cannot use this directly because of context change
+  // monitor arrow keys event of text input
+  this.addEventListener_(this.input_, 'keydown',
+                           function(e){this_.keyEvent(e);});
+  // start to monitor user input periodically once text input get focused
+  this.addEventListener_(this.input_, 'focus',
+                           function(){this_.checkInput();});
+  // stop to monitor user input once text input loses focus
+  this.addEventListener_(this.input_, 'blur',
+                           function(){this_.stopCheckInput();});
+
+/**
+ * Here is un-used example code
+ * Reference:
+ * http://stackoverflow.com/questions/6006763/set-style-with-hover-javascript
+ * http://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript
+ * code example:
+  var style = document.createElement('style');
+  var declarations = document.createTextNode(
+    'div.suggestedItem:hover {background:#00C;color:white;}');
+
+  if (style.styleSheet) { style.styleSheet.cssText = declarations.nodeValue; }
+  else { style.appendChild(declarations); }
+
+  document.getElementsByTagName("head")[0].appendChild(style);
+ */
+};
+/*                              width: 80                                     */
+
 var prefix_code = {
 //  "°" : "uc",
 //  "-" : "dash",
