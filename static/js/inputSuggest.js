@@ -2,7 +2,13 @@
  * @fileoverview Class to auto-suggest pāli words according to user input.
  */
 
-var pali = pali || {}; // Identifies this file as the base.
+
+/**
+ * Identifies this file as the base.
+ * TODO: move this line to a separate js file
+ */
+var pali = pali || {};
+
 
 /**
  * Class to auto-suggest prefix-matched pāli Words
@@ -18,6 +24,7 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    * @private
    */
   this.input_ = document.getElementById(inputId);
+
   /**
    * DOM element of suggestion menu of pāli words
    * @type {DOM Element}
@@ -25,22 +32,76 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    */
   this.suggestDiv_ = document.getElementById(suggestDivId);
 
+
   /**
    References:
    http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
    http://www.quirksmode.org/js/keys.html
    http://unixpapa.com/js/key.html
    */
-  var this_ = this; // cannot use this directly because of context change
+
+  // cannot use keyword 'this' directly because of context change
+  var this_ = this;
+
   // monitor arrow keys event of text input
   this.addEventListener_(this.input_, 'keydown',
                            function(e){this_.keyEvent(e);});
+
   // start to monitor user input periodically once text input get focused
   this.addEventListener_(this.input_, 'focus',
                            function(){this_.checkInput();});
+
   // stop to monitor user input once text input loses focus
   this.addEventListener_(this.input_, 'blur',
                            function(){this_.stopCheckInput();});
+
+
+  /**
+   * Array which contains prefix-match pāli words
+   * @type {Array}
+   * @private
+   */
+  this.prefixMatchedPaliWords_ = new Array();
+
+  /**
+   * The position of user selection in suggestion menu
+   * @type {number|null}
+   * @private
+   */
+  this.suggestedWordPosition_ = null;
+
+  /**
+   * size of prefixMatchedPaliWords_, i.e.,
+   * number of prefix-match pāli words in suggestion menu.
+   * This value can not be larger than MAX_WORDS_IN_SUGGESTION_MENU.
+   * @type {number|null}
+   * @private
+   */
+  this.suggestedPaliWordsArraySize_ = null;
+
+  /**
+   * id returned by JavaScript built-in setTimeout() function
+   * @type {number|null}
+   * @private
+   */
+  this.checkInputTimingEventVar_ = null;
+
+  /**
+   * When user selects suggested word in suggestion menu by arrow key,
+   * the original user input must be kept. This variable keeps the original
+   * user input.
+   * @type {string}
+   * @private
+   */
+  this.originalUserPaliInput_ = "";
+
+  /**
+   * Keep track of usr input in this variable everytime user presses keys.
+   * This variable keeps user input everytime user presses keys.
+   * @type {string}
+   * @private
+   */
+  this.oldInput_ = "";
 
 /**
  * Here is un-used example code
@@ -58,7 +119,24 @@ pali.InputSuggest = function(inputId, suggestDivId) {
   document.getElementsByTagName("head")[0].appendChild(style);
  */
 };
+
+
+/**
+ * max number of pāli words shown in suggestion menu
+ * @define {number}
+ */
+pali.InputSuggest.MAX_WORDS_IN_SUGGESTION_MENU = 25;
+
+
+/**
+ * interval for polling user input, in ms
+ * @define {number}
+ */
+pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
+
+
 /*                              width: 80                                     */
+
 
 var prefix_code = {
 //  "°" : "uc",
@@ -125,8 +203,8 @@ Suggest.prototype = {
     var _this = this;
     this._addEventListener(this.input, 'keydown', function(e){_this.keyEvent(e);});
 
-    this._addEventListener(this.input, 'focus', function(){_this.checkInput();})
-    this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();})
+    this._addEventListener(this.input, 'focus', function(){_this.checkInput();});
+    this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();});
 
     // http://stackoverflow.com/questions/6006763/set-style-with-hover-javascript
     // http://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript
