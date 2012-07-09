@@ -11,8 +11,9 @@ output_bootstrap_wso = '--js_output_file templates/js/bootstrap-wso.js'
 output_bootstrap_spo = '--js_output_file templates/js/bootstrap-spo.js'
 output_bootstrap_adv = '--js_output_file templates/js/bootstrap-adv.js'
 
-input_js1 = '--js static/js/palidict.js'
-input_js2 = '--js static/js/inputSuggest.js'
+input_base = '--js static/js/base.js'
+input_js1 =  '--js static/js/palidict.js'
+input_js2 =  '--js static/js/inputSuggest.js'
 output_js_wso = '--js_output_file static/js/pali-wso.js'
 output_js_spo = '--js_output_file static/js/pali-spo.js'
 output_js_adv = '--js_output_file static/js/pali-adv.js'
@@ -49,20 +50,20 @@ if __name__ == '__main__':
   elif sys.argv[1] == "wso":
     print(    '%s %s %s %s' % (compiler, wso, input_bootstrap, output_bootstrap_wso))
     os.system('%s %s %s %s' % (compiler, wso, input_bootstrap, output_bootstrap_wso))
-    print(    '%s %s %s %s %s' % (compiler, wso, input_js1, input_js2, output_js_wso))
-    os.system('%s %s %s %s %s' % (compiler, wso, input_js1, input_js2, output_js_wso))
+    print(    '%s %s %s %s %s %s' % (compiler, wso, input_base, input_js1, input_js2, output_js_wso))
+    os.system('%s %s %s %s %s %s' % (compiler, wso, input_base, input_js1, input_js2, output_js_wso))
     sys.exit(0)
   elif sys.argv[1] == "spo":
     print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
     os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
-    print(    '%s %s %s %s %s' % (compiler, spo, input_js1, input_js2, output_js_spo))
-    os.system('%s %s %s %s %s' % (compiler, spo, input_js1, input_js2, output_js_spo))
+    print(    '%s %s %s %s %s %s' % (compiler, spo, input_base, input_js1, input_js2, output_js_spo))
+    os.system('%s %s %s %s %s %s' % (compiler, spo, input_base, input_js1, input_js2, output_js_spo))
     sys.exit(0)
   elif sys.argv[1] == "adv":
     print(    '%s %s %s %s' % (compiler, adv, input_bootstrap, output_bootstrap_adv))
     os.system('%s %s %s %s' % (compiler, adv, input_bootstrap, output_bootstrap_adv))
-    print(    '%s %s %s %s %s' % (compiler, adv, input_js1, input_js2, output_js_adv))
-    os.system('%s %s %s %s %s' % (compiler, adv, input_js1, input_js2, output_js_adv))
+    print(    '%s %s %s %s %s %s' % (compiler, adv, input_base, input_js1, input_js2, output_js_adv))
+    os.system('%s %s %s %s %s %s' % (compiler, adv, input_base, input_js1, input_js2, output_js_adv))
     sys.exit(0)
   else:
     usage()

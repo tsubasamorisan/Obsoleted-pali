@@ -1,3 +1,141 @@
+/**
+ * @fileoverview Class to auto-suggest pāli words according to user input.
+ *
+ * References:
+ * @see http://www.enjoyxstudy.com/javascript/suggest/index.en.html
+ * @see http://www.phpied.com/3-ways-to-define-a-javascript-class/
+ * @see http://blog.anselmbradford.com/2009/04/09/object-oriented-javascript-tip-creating-static-methods-instance-methods/
+ */
+
+
+/**
+ * Class to auto-suggest prefix-matched pāli Words
+ *
+ * @param {string=} inputId element id for text input
+ * @param {string=} suggestDivId element id for suggestion Div Menu
+ * @constructor
+ */
+pali.InputSuggest = function(inputId, suggestDivId) {
+  /**
+   * DOM element of pāli text input
+   * @type {DOM Element}
+   * @private
+   */
+  this.input_ = document.getElementById(inputId);
+
+  /**
+   * DOM element of suggestion menu of pāli words
+   * @type {DOM Element}
+   * @private
+   */
+  this.suggestDiv_ = document.getElementById(suggestDivId);
+
+
+  /**
+   References:
+   http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
+   http://www.quirksmode.org/js/keys.html
+   http://unixpapa.com/js/key.html
+   */
+
+  // cannot use keyword 'this' directly because of context change
+  var this_ = this;
+
+  // monitor arrow keys event of text input
+  this.addEventListener_(this.input_, 'keydown',
+                           function(e){this_.keyEvent(e);});
+
+  // start to monitor user input periodically once text input get focused
+  this.addEventListener_(this.input_, 'focus',
+                           function(){this_.checkInput();});
+
+  // stop to monitor user input once text input loses focus
+  this.addEventListener_(this.input_, 'blur',
+                           function(){this_.stopCheckInput();});
+
+
+  /**
+   * Array which contains prefix-match pāli words
+   * @type {Array}
+   * @private
+   */
+  this.prefixMatchedPaliWords_ = new Array();
+
+  /**
+   * The position of user selection in suggestion menu
+   * @type {number|null}
+   * @private
+   */
+  this.suggestedWordPosition_ = null;
+
+  /**
+   * size of prefixMatchedPaliWords_, i.e.,
+   * number of prefix-match pāli words in suggestion menu.
+   * This value can not be larger than MAX_WORDS_IN_SUGGESTION_MENU.
+   * @type {number|null}
+   * @private
+   */
+  this.suggestedPaliWordsArraySize_ = null;
+
+  /**
+   * id returned by JavaScript built-in setTimeout() function
+   * @type {number|null}
+   * @private
+   */
+  this.checkInputTimingEventVar_ = null;
+
+  /**
+   * When user selects suggested word in suggestion menu by arrow key,
+   * the original user input must be kept. This variable keeps the original
+   * user input.
+   * @type {string}
+   * @private
+   */
+  this.originalUserPaliInput_ = "";
+
+  /**
+   * Keep track of usr input in this variable everytime user presses keys.
+   * This variable keeps user input everytime user presses keys.
+   * @type {string}
+   * @private
+   */
+  this.oldInput_ = "";
+};
+
+
+/**
+ * max number of pāli words shown in suggestion menu
+ * @define {number}
+ */
+pali.InputSuggest.MAX_WORDS_IN_SUGGESTION_MENU = 25;
+
+
+/**
+ * interval for polling user input, in ms
+ * @define {number}
+ */
+pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
+
+
+/*                              width: 80                                     */
+
+/**
+ * Here is un-used example code
+ * Reference:
+ * http://stackoverflow.com/questions/6006763/set-style-with-hover-javascript
+ * http://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript
+ * code example:
+  var style = document.createElement('style');
+  var declarations = document.createTextNode(
+    'div.suggestedItem:hover {background:#00C;color:white;}');
+
+  if (style.styleSheet) { style.styleSheet.cssText = declarations.nodeValue; }
+  else { style.appendChild(declarations); }
+
+  document.getElementsByTagName("head")[0].appendChild(style);
+ */
+
+
 var prefix_code = {
 //  "°" : "uc",
 //  "-" : "dash",
@@ -51,43 +189,6 @@ var Suggest = function() {
 };
 
 Suggest.prototype = {
-  initialize: function(inputId, suggestId) {
-    //console.log(inputId);
-    //console.log(suggestId);
-    this.input = document.getElementById(inputId);
-    this.suggestDiv = document.getElementById(suggestId);
-
-    // http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
-    // http://www.quirksmode.org/js/keys.html
-    // http://unixpapa.com/js/key.html
-    var _this = this;
-    this._addEventListener(this.input, 'keydown', function(e){_this.keyEvent(e);});
-
-    this._addEventListener(this.input, 'focus', function(){_this.checkInput();});
-    this._addEventListener(this.input, 'blur', function(){_this.stopCheckInput();});
-
-    // http://stackoverflow.com/questions/6006763/set-style-with-hover-javascript
-    // http://stackoverflow.com/questions/707565/how-do-you-add-css-with-javascript
-/*
-    var style = document.createElement('style');
-    var declarations = document.createTextNode('div.suggestedItem:hover {background:#00C;color:white;}');
-
-    if (style.styleSheet) { style.styleSheet.cssText = declarations.nodeValue; }
-    else { style.appendChild(declarations); }
-
-    document.getElementsByTagName("head")[0].appendChild(style);
-*/
-  },
-
-  prefixMatchedArray : [],
-  prefixMatchedWordMaxCount : 25,
-  suggestedWordPosition : null,
-  suggestedWordListSize : null,
-  checkInputTimingEventVar : null,
-  checkInputEventInterval : 500,//ms
-  originalUserPaliInput : "",
-  oldInput : "",
-
   checkInput:function() {
   /* check user input periodically (oninput or onpropertychange is not usable because browser incompatibility) */
     if (this.input.value != this.oldInput) {
