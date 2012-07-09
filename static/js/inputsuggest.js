@@ -121,6 +121,63 @@ pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
 
 
 /**
+ * Map romanized pāli letters to English name.
+ * @enum {string}
+ * @private
+ */
+pali.InputSuggest.PrefixMapping = {
+//  "°" : "uc",
+//  "-" : "dash",
+  "a" : "a",
+  "ā" : "aa",
+  "b" : "b",
+  "c" : "c",
+  "d" : "d",
+  "ḍ" : "dotd",
+  "e" : "e",
+  "g" : "g",
+  "h" : "h",
+  "i" : "i",
+  "ī" : "ii",
+  "j" : "j",
+  "k" : "k",
+  "l" : "l",
+  "ḷ" : "dotl",
+  "m" : "m",
+//  "ṃ" : "dotm",
+  "n" : "n",
+  "ñ" : "tilden",
+//  "ṇ" : "dotn",
+//  "ṅ" : "ndot",
+//  "ŋ" : "ngng",
+  "o" : "o",
+  "p" : "p",
+  "r" : "r",
+  "s" : "s",
+  "t" : "t",
+  "ṭ" : "dott",
+  "u" : "u",
+  "ū" : "uu",
+  "v" : "v",
+  "y" : "y"
+};
+
+
+/**
+ * Keys code numbers.
+ * @enum {number}
+ * @private
+ */
+pali.InputSuggest.KeyCode = {
+  TAB:     9,
+  RETURN: 13,
+  ESC:    27,
+  UP:     38,
+  DOWN:   40
+};
+
+
+/**
  * check user input periodically.
  * (oninput or onpropertychange is not usable because browser incompatibility)
  * @private
@@ -166,53 +223,6 @@ pali.Inputsuggest.prototype.checkInput = function() {
  */
 
 
-var prefix_code = {
-//  "°" : "uc",
-//  "-" : "dash",
-  "a" : "a",
-  "ā" : "aa",
-  "b" : "b",
-  "c" : "c",
-  "d" : "d",
-  "ḍ" : "dotd",
-  "e" : "e",
-  "g" : "g",
-  "h" : "h",
-  "i" : "i",
-  "ī" : "ii",
-  "j" : "j",
-  "k" : "k",
-  "l" : "l",
-  "ḷ" : "dotl",
-  "m" : "m",
-//  "ṃ" : "dotm",
-  "n" : "n",
-  "ñ" : "tilden",
-//  "ṇ" : "dotn",
-//  "ṅ" : "ndot",
-//  "ŋ" : "ngng",
-  "o" : "o",
-  "p" : "p",
-  "r" : "r",
-  "s" : "s",
-  "t" : "t",
-  "ṭ" : "dott",
-  "u" : "u",
-  "ū" : "uu",
-  "v" : "v",
-  "y" : "y"
-};
-
-// http://www.enjoyxstudy.com/javascript/suggest/index.en.html
-// http://www.phpied.com/3-ways-to-define-a-javascript-class/
-
-var Key = {
-  TAB:     9,
-  RETURN: 13,
-  ESC:    27,
-  UP:     38,
-  DOWN:   40
-};
 
 
 Suggest.prototype = {
