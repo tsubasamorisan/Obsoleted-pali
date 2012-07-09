@@ -8,6 +8,9 @@
  */
 
 
+pali.require('base');
+
+
 /**
  * Class to auto-suggest prefix-matched pāli Words
  *
@@ -42,15 +45,15 @@ pali.InputSuggest = function(inputId, suggestDivId) {
   var this_ = this;
 
   // monitor arrow keys event of text input
-  this.addEventListener_(this.input_, 'keydown',
+  pali.addEventListener(this.input_, 'keydown',
                            function(e){this_.keyEvent(e);});
 
   // start to monitor user input periodically once text input get focused
-  this.addEventListener_(this.input_, 'focus',
+  pali.addEventListener(this.input_, 'focus',
                            function(){this_.checkInput();});
 
   // stop to monitor user input once text input loses focus
-  this.addEventListener_(this.input_, 'blur',
+  pali.addEventListener(this.input_, 'blur',
                            function(){this_.stopCheckInput();});
 
 
@@ -416,14 +419,6 @@ Suggest.prototype = {
     this.originalUserPaliInput = "";
     this.oldInput = "";
     delete this.prefixMatchedArray;
-  },
-
-  _addEventListener:function(e, evt, fn) {
-    if (window.addEventListener) {
-      e.addEventListener(evt, fn, false);
-    } else {
-      e.attachEvent('on'+evt, fn);
-    }
   },
 
   getKeyCode : function(e) {
