@@ -46,7 +46,7 @@ pali.InputSuggest = function(inputId, suggestDivId) {
 
   // monitor arrow keys event of text input
   pali.addEventListener(this.input_, 'keydown',
-                           function(e){this_.keyEvent(e);});
+                           function(e){this_.handleKeyEvent(e);});
 
   // start to monitor user input periodically once text input get focused
   pali.addEventListener(this.input_, 'focus',
@@ -65,20 +65,20 @@ pali.InputSuggest = function(inputId, suggestDivId) {
   this.prefixMatchedPaliWords_ = new Array();
 
   /**
-   * The position of user selection in suggestion menu
-   * @type {number|null}
-   * @private
-   */
-  this.suggestedWordPosition_ = null;
-
-  /**
    * size of prefixMatchedPaliWords_, i.e.,
    * number of prefix-match pāli words in suggestion menu.
    * This value can not be larger than MAX_WORDS_IN_SUGGESTION_MENU.
    * @type {number|null}
    * @private
    */
-  this.suggestedPaliWordsArraySize_ = null;
+  this.numberOfPrefixMatchedPaliWords_ = null;
+
+  /**
+   * The position of user selection in suggestion menu
+   * @type {number|null}
+   * @private
+   */
+  this.suggestedWordPosition_ = null;
 
   /**
    * id returned by JavaScript built-in setTimeout() function
@@ -103,6 +103,14 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    * @private
    */
   this.oldInput_ = "";
+
+  /**
+   * TODO: use "this.self_" instead of "var _this = this"?
+   * @const
+   * @type {Object}
+   * @private
+   */
+  this.self_ = this;
 };
 
 
@@ -178,7 +186,7 @@ pali.InputSuggest.KeyCode = {
 
 
 /**
- * check user input periodically.
+ * Check user input periodically.
  * (oninput or onpropertychange is not usable because browser incompatibility)
  * @private
  */
@@ -205,7 +213,7 @@ pali.Inputsuggest.prototype.checkInput = function() {
 
 
 /**
- * stop checking user input periodically.
+ * Stop checking user input periodically.
  * @private
  */
 pali.InputSuggest.prototype.stopCheckInput = function() {
@@ -299,6 +307,74 @@ pali.InputSuggest.prototype.prefixMatch = function() {
 };
 
 
+pali.InputSuggest.prototype.handleKeyEvent = function(event) {
+  if (!this.checkInputTimingEventVar_) {
+    // Google Search Keyword: javascript object settimeout
+    var _this = this;
+    this.checkInputTimingEventVar_ = setTimeout(
+      function(){_this.checkInput();},
+      pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS
+    );
+  }
+
+  var code = this.getKeyCode(event);
+  if (this.numberOfPrefixMatchedPaliWords_ == null) {
+    if ((code == Key.DOWN) && (this.input.value != "")){this.match();}
+    if ((code == Key.UP) && (this.input.value != "")){this.match();}
+    return;
+  }
+  if (code == Key.UP) {
+    if (this.suggestedWordPosition_ == null) {
+      this.suggestedWordPosition_ = this.numberOfPrefixMatchedPaliWords_;
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._setItemStyle(currentWord);
+      this.input.value = currentWord.title;
+    } else if (this.suggestedWordPosition_ == 1) {
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this.suggestedWordPosition_ = null;
+      this._removeItemStyle(currentWord);
+      this.input.value = this.originalUserPaliInput_;
+    } else {
+      var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._removeItemStyle(previousWord);
+      this.suggestedWordPosition_ -= 1;
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._setItemStyle(currentWord);
+      this.input.value = currentWord.title;
+    }
+  }
+  if (code == Key.DOWN) {
+    if (this.suggestedWordPosition_ == null) {
+      this.suggestedWordPosition_ = 1;
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._setItemStyle(currentWord);
+      this.input.value = currentWord.title;
+    } else if (this.suggestedWordPosition_ == this.numberOfPrefixMatchedPaliWords_) {
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this.suggestedWordPosition_ = null;
+      this._removeItemStyle(currentWord);
+      this.input.value = this.originalUserPaliInput_;
+    } else {
+      var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._removeItemStyle(previousWord);
+      this.suggestedWordPosition_ += 1;
+      var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
+      this._setItemStyle(currentWord);
+      this.input.value = currentWord.title;
+    }
+  }
+  if (code == Key.RETURN) {
+    this.clearSuggestionMenu();
+    this.oldInput_ = this.input.value;
+  }
+  if (code == Key.ESC) {
+    this.input.value = this.originalUserPaliInput_;
+    this.clearSuggestionMenu();
+    this.oldInput_ = this.input.value;
+  }
+};
+
+
 /*                              width: 80                                     */
 
 /**
@@ -323,88 +399,26 @@ pali.InputSuggest.prototype.prefixMatch = function() {
 Suggest.prototype = {
 
 
-  keyEvent:function(event) {
-    if (!this.checkInputTimingEventVar) {
-      // Google Search Keyword: javascript object settimeout
-      var _this = this;
-      this.checkInputTimingEventVar = setTimeout(function(){_this.checkInput();}, this.checkInputEventInterval);
-    }
 
-    var code = this.getKeyCode(event);
-    if (this.suggestedWordListSize == null) {
-      if ((code == Key.DOWN) && (this.input.value != "")){this.match();}
-      if ((code == Key.UP) && (this.input.value != "")){this.match();}
-      return;
-    }
-    if (code == Key.UP) {
-      if (this.suggestedWordPosition == null) {
-        this.suggestedWordPosition = this.suggestedWordListSize;
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._setItemStyle(currentWord);
-        this.input.value = currentWord.title;
-      } else if (this.suggestedWordPosition == 1) {
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this.suggestedWordPosition = null;
-        this._removeItemStyle(currentWord);
-        this.input.value = this.originalUserPaliInput;
-      } else {
-        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._removeItemStyle(previousWord);
-        this.suggestedWordPosition -= 1;
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._setItemStyle(currentWord);
-        this.input.value = currentWord.title;
-      }
-    }
-    if (code == Key.DOWN) {
-      if (this.suggestedWordPosition == null) {
-        this.suggestedWordPosition = 1;
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._setItemStyle(currentWord);
-        this.input.value = currentWord.title;
-      } else if (this.suggestedWordPosition == this.suggestedWordListSize) {
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this.suggestedWordPosition = null;
-        this._removeItemStyle(currentWord);
-        this.input.value = this.originalUserPaliInput;
-      } else {
-        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._removeItemStyle(previousWord);
-        this.suggestedWordPosition += 1;
-        var currentWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
-        this._setItemStyle(currentWord);
-        this.input.value = currentWord.title;
-      }
-    }
-    if (code == Key.RETURN) {
-      this.flush();
-      this.oldInput = this.input.value;
-    }
-    if (code == Key.ESC) {
-      this.input.value = this.originalUserPaliInput;
-      this.flush();
-      this.oldInput = this.input.value;
-    }
-  },
 
   onItemClick:function(event) {
-    this.flush();
-    this.oldInput = this.input.value;
+    this.clearSuggestionMenu();
+    this.oldInput_ = this.input.value;
   },
 
   onItemMouseOver:function(event) {
     var targetElement = event.target || event.srcElement;
     currentWord = this._checkParent(targetElement);
     var currentWordPosition = this._getWordElementNumberIndex(currentWord);
-    if (this.suggestedWordPosition == null) {
-      this.suggestedWordPosition = currentWordPosition;
+    if (this.suggestedWordPosition_ == null) {
+      this.suggestedWordPosition_ = currentWordPosition;
       this._setItemStyle(currentWord);
       this.input.value = currentWord.title;
     } else {
-      if (this.suggestedWordPosition != currentWordPosition) {
-        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition);
+      if (this.suggestedWordPosition_ != currentWordPosition) {
+        var previousWord = this._getWordElementByNumberIndex(this.suggestedWordPosition_);
         this._removeItemStyle(previousWord);
-        this.suggestedWordPosition = currentWordPosition;
+        this.suggestedWordPosition_ = currentWordPosition;
         this._setItemStyle(currentWord);
         this.input.value = currentWord.title;
       }
@@ -418,18 +432,18 @@ Suggest.prototype = {
   },
 
   updateSuggestion:function(userInputStr) {
-    this.suggestedWordPosition = null;
-    this.suggestedWordListSize = this.prefixMatchedArray.length;
-    this.originalUserPaliInput = userInputStr;
+    this.suggestedWordPosition_ = null;
+    this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
+    this.originalUserPaliInput_ = userInputStr;
     /* create dropdown input suggestion menu */
     this.suggestDiv.innerHTML = "";
     var _this = this;
-    for (var i=0; i < this.prefixMatchedArray.length; i++) {
+    for (var i=0; i < this.prefixMatchedPaliWords_.length; i++) {
       /* http://www.javascriptkit.com/javatutors/dom2.shtml */
       var word = document.createElement('div');
       word.id = this._getWordElementIdString((i+1));
-      word.title = this.prefixMatchedArray[i];
-      word.innerHTML = this.prefixMatchedArray[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
+      word.title = this.prefixMatchedPaliWords_[i];
+      word.innerHTML = this.prefixMatchedPaliWords_[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
 
       this._addEventListener(word, 'click', function(e){_this.onItemClick(e);});
       this._addEventListener(word, 'mouseover', function(e){_this.onItemMouseOver(e);});
@@ -485,14 +499,14 @@ Suggest.prototype = {
     e.style.color = "";
   },
 
-  flush: function() {
+  clearSuggestionMenu: function() {
     this.suggestDiv.innerHTML = "";
     this.suggestDiv.style.display = "none";
-    this.suggestedWordPosition = null;
-    this.suggestedWordListSize = null;
-    this.originalUserPaliInput = "";
-    this.oldInput = "";
-    delete this.prefixMatchedArray;
+    this.suggestedWordPosition_ = null;
+    this.numberOfPrefixMatchedPaliWords_ = null;
+    this.originalUserPaliInput_ = "";
+    this.oldInput_ = "";
+    delete this.prefixMatchedPaliWords_;
   },
 
   getKeyCode : function(e) {
