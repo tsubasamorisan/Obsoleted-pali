@@ -120,6 +120,33 @@ pali.InputSuggest.MAX_WORDS_IN_SUGGESTION_MENU = 25;
 pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
 
 
+/**
+ * check user input periodically.
+ * (oninput or onpropertychange is not usable because browser incompatibility)
+ * @private
+ */
+pali.Inputsuggest.prototype.checkInput = function() {
+  if (this.input_.value != this.oldInput_) { // user input changes
+    if (this.suggestedWordPosition_ == null) {
+      this.match();
+    } else {
+      if( this.prefixMatchedPaliWords_[this.suggestedWordPosition_ - 1]
+          != this.input_.value) {
+	this.match();
+      }
+    }
+    this.oldInput_ = this.input_.value; // keep new value of user input
+  }
+
+  // set this function to be executed once again
+  var _this = this;
+  this.checkInputTimingEventVar_ = setTimeout(
+    function(){_this.checkInput_();},
+    pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS
+  );
+};
+
+
 /*                              width: 80                                     */
 
 /**
@@ -187,26 +214,9 @@ var Key = {
   DOWN:   40
 };
 
-var Suggest = function() {
-  this.initialize.apply(this, arguments);
-};
 
 Suggest.prototype = {
-  checkInput:function() {
-  /* check user input periodically (oninput or onpropertychange is not usable because browser incompatibility) */
-    if (this.input.value != this.oldInput) {
-      if (this.suggestedWordPosition == null) {
-        this.match();
-      } else {
-        if(this.prefixMatchedArray[this.suggestedWordPosition - 1] != this.input.value) {
-          this.match();
-        }
-      }
-      this.oldInput = this.input.value;
-    }
-    var _this = this;
-    this.checkInputTimingEventVar = setTimeout(function(){_this.checkInput();}, this.checkInputEventInterval);
-  },
+
 
   stopCheckInput:function() {
     clearTimeout(this.checkInputTimingEventVar);
