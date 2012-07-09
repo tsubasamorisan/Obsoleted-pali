@@ -35,10 +35,10 @@ pali.InputSuggest = function(inputId, suggestDivId) {
 
 
   /**
-   References:
-   http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
-   http://www.quirksmode.org/js/keys.html
-   http://unixpapa.com/js/key.html
+   * References:
+   * @see http://stackoverflow.com/questions/5597060/detecting-arrow-keys-in-javascript
+   * @see http://www.quirksmode.org/js/keys.html
+   * @see http://unixpapa.com/js/key.html
    */
 
   // cannot use keyword 'this' directly because of context change
@@ -185,11 +185,11 @@ pali.InputSuggest.KeyCode = {
 pali.Inputsuggest.prototype.checkInput = function() {
   if (this.input_.value != this.oldInput_) { // user input changes
     if (this.suggestedWordPosition_ == null) {
-      this.match();
+      this.prefixMatch();
     } else {
       if( this.prefixMatchedPaliWords_[this.suggestedWordPosition_ - 1]
           != this.input_.value) {
-	this.match();
+	this.prefixMatch();
       }
     }
     this.oldInput_ = this.input_.value; // keep new value of user input
@@ -198,9 +198,104 @@ pali.Inputsuggest.prototype.checkInput = function() {
   // set this function to be executed once again
   var _this = this;
   this.checkInputTimingEventVar_ = setTimeout(
-    function(){_this.checkInput_();},
+    function(){_this.checkInput();},
     pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS
   );
+};
+
+
+/**
+ * stop checking user input periodically.
+ * @private
+ */
+pali.InputSuggest.prototype.stopCheckInput = function() {
+  clearTimeout(this.checkInputTimingEventVar_);
+  this.clearSuggestionMenu();
+};
+
+
+/**
+ * Prefix-match user input to pāli words.
+ * @private
+ */
+pali.InputSuggest.prototype.prefixMatch = function() {
+  /**
+   * Remove whitespace in the beginning and end of user input string
+   * @const
+   * @type {string}
+   * @private
+   */
+  var userInputStr = this.input_.value.replace(/(^\s+)|(\s+$)/g, "");
+
+  /**
+   * References:
+   * search keyword: javascript string prefix match
+   * @see http://stackoverflow.com/questions/457160/the-most-efficient-algorithm-to-find-first-prefix-match-from-a-sorted-string-arr
+   */
+
+  /* TODO: should we convert the string to lower case here? */
+
+  /* Here we give simple implementation for prefix matching */
+  if (userInputStr.length == 0) {
+    this.clearSuggestionMenu();
+    return;
+  }
+
+  //if the first letter in user input string is invalid, return
+  if (!pali.InputSuggest.PrefixMapping[userInputStr[0]]) {
+    return;
+  }
+
+  /**
+   * Get the name of arrays which contains pāli words
+   * with the same first prefix letter as user input string
+   * @const
+   * @type {string}
+   * @private
+   */
+  var arrayName = "prefix_" + pali.InputSuggest.PrefixMapping[userInputStr[0]];
+
+  /**
+   * number of prefix-matched words
+   * @type {number}
+   * @private
+   */
+  var matchedCount = 0;
+
+  if (this.prefixMatchedPaliWords_) {
+    delete this.prefixMatchedPaliWords_;
+  }
+  this.prefixMatchedPaliWords_ = new Array();
+
+  /**
+   * search keyword: javascript evaluate string as variable
+   * in this case, eval(arrayName)
+   */
+  for (var i=0; i < eval(arrayName).length; i++ ) {
+    // If the pāli word starts with user input string
+    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {
+      this.prefixMatchedPaliWords_.push(eval(arrayName)[i]);
+      matchedCount += 1;
+    }
+
+    if (matchedCount == pali.InputSuggest.MAX_WORDS_IN_SUGGESTION_MENU) {
+      break;
+    }
+  }
+
+  if (matchedCount == 0) {
+    this.clearSuggestionMenu();
+    return;
+  }
+
+  /**
+   * References:
+   * http://www.javascriptkit.com/javatutors/arraysort.shtml
+   * http://www.w3schools.com/jsref/jsref_sort.asp
+   */
+  this.prefixMatchedPaliWords_.sort();
+
+  this.updateSuggestionMenu(userInputStr);
 };
 
 
@@ -227,47 +322,6 @@ pali.Inputsuggest.prototype.checkInput = function() {
 
 Suggest.prototype = {
 
-
-  stopCheckInput:function() {
-    clearTimeout(this.checkInputTimingEventVar);
-    this.flush();
-  },
-
-  match:function() {
-    // remove whitespace in the beginning and end of the string
-    var userInputStr = this.input.value.replace(/(^\s+)|(\s+$)/g, "");
-
-/*
-  keyword: javascript string prefix match
-  http://stackoverflow.com/questions/457160/the-most-efficient-algorithm-to-find-first-prefix-match-from-a-sorted-string-arr
-*/
-    /* TODO: should we convert the string to lower case here? */
-
-    /* Here we give simple implementation for prefix matching */
-    if (userInputStr.length == 0) {this.flush();return;}
-
-    //if the first letter in user input string is invalid, return
-    if (!prefix_code[userInputStr[0]]) {return;}
-
-    var arrayName = "prefix_" + prefix_code[userInputStr[0]];
-
-    var matched_count = 0;
-    this.prefixMatchedArray = new Array();
-    /* keyword: javascript evaluate string as variable
-       in this case, eval(arrayName) */
-    for (var i=0; i < eval(arrayName).length; i++ ) {
-      if (eval(arrayName)[i].indexOf(userInputStr) == 0) {// If the Pali word starts with user input string
-        this.prefixMatchedArray.push(eval(arrayName)[i]);
-        matched_count += 1;
-      }
-      if (matched_count == this.prefixMatchedWordMaxCount) {break;}
-    }
-    if (matched_count == 0) {this.flush();return;}
-    /* http://www.javascriptkit.com/javatutors/arraysort.shtml */
-    /* http://www.w3schools.com/jsref/jsref_sort.asp */
-    this.prefixMatchedArray.sort();
-    this.updateSuggestion(userInputStr);
-  },
 
   keyEvent:function(event) {
     if (!this.checkInputTimingEventVar) {
