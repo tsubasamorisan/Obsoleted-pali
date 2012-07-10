@@ -43,7 +43,7 @@ function toggle() {
   else {
     kb.style.display = "block";
     dt.innerHTML = getStringHideKeypad();
-    kb.style.left = getOffset(dt).left + "px";
+    kb.style.left = pali.getOffset(dt).left + "px";
   }
 }
 
@@ -144,48 +144,6 @@ function JSONPlookupCallback(result) {
 }
 
 
-/* Dynamically retrieve Html element (X,Y) position with JavaScript */
-// http://stackoverflow.com/questions/442404/dynamically-retrieve-html-element-x-y-position-with-javascript
-/* Window size and scrolling */
-// http://www.howtocreate.co.uk/tutorials/javascript/browserwindow
-/* scrollLeft property */
-// http://help.dottoro.com/ljcjgrml.php
-/* jQuery source code: src/offset.js */
-// https://github.com/jquery/jquery/blob/master/src/offset.js
-/* How to get iframe scroll position in IE using Java Script? */
-// http://stackoverflow.com/questions/2347491/how-to-get-iframe-scroll-position-in-ie-using-java-script
-function getOffset( el ) {
-//  return { top: $(el).position().top, left: $(el).position().left };
-  var oriEl = el;
-  var _x = 0;
-  var _y = 0;
-  var offsetX = 0;
-  var offsetY = 0;
-  var scrollX = 0;
-  var scrollY = 0;
-  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-    offsetX += el.offsetLeft;
-    offsetY += el.offsetTop;
-    scrollX += el.scrollLeft;
-    scrollY += el.scrollTop;
-    el = el.offsetParent;
-  }
-  // getBoundingClientRect method - http://help.dottoro.com/ljvmcrrn.php
-  if (oriEl.getBoundingClientRect) {
-    /* FIXME: should take margin-left and margin-top into consideration */
-    var body = document.documentElement || document.body;
-    scrollX = window.pageXOffset || body.scrollLeft;
-    scrollY = window.pageYOffset || body.scrollTop;
-    _x = oriEl.getBoundingClientRect().left + scrollX;
-    _y = oriEl.getBoundingClientRect().top + scrollY;
-  } else {
-    /* FIXME: code in this else clause maybe not correct? */
-    _x = offsetX - scrollX;
-    _y = offsetY - scrollY;
-  }
-  return { top: _y, left: _x };
-}
-
 // hide popup div when clicking outside the div
 // http://www.webdeveloper.com/forum/showthread.php?t=98973
 document.onclick = check;
@@ -212,8 +170,8 @@ function check(e){
         // click on the language dropdown link
         // AND
         // the dropdown menu is invisible
-        langDropdownMenuDiv.style.left = getOffset(langDropdown).left +"px";
-        langDropdownMenuDiv.style.top = (getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
+        langDropdownMenuDiv.style.left = pali.getOffset(langDropdown).left +"px";
+        langDropdownMenuDiv.style.top = (pali.getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
         langDropdownMenuDiv.style.display = "block";
       } else {
         // click outside the language dropdown menu
@@ -242,8 +200,8 @@ function check(e){
         // click on the site dropdown link
         // AND
         // the dropdown menu is invisible
-        siteDropdownMenuDiv.style.left = getOffset(siteDropdown).left +"px";
-        siteDropdownMenuDiv.style.top = (getOffset(siteDropdown).top + siteDropdown.offsetHeight +3) +"px";
+        siteDropdownMenuDiv.style.left = pali.getOffset(siteDropdown).left +"px";
+        siteDropdownMenuDiv.style.top = (pali.getOffset(siteDropdown).top + siteDropdown.offsetHeight +3) +"px";
         siteDropdownMenuDiv.style.display = "block";
       } else {
         // click outside the site dropdown menu
