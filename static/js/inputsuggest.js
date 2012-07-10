@@ -14,8 +14,8 @@ pali.require('base');
 /**
  * Class to auto-suggest prefix-matched pāli Words
  *
- * @param {string=} inputId element id for text input
- * @param {string=} suggestDivId element id for suggestion Div Menu
+ * @param {string} inputId element id for text input
+ * @param {string} suggestDivId element id for suggestion Div Menu
  * @constructor
  */
 pali.InputSuggest = function(inputId, suggestDivId) {
@@ -364,7 +364,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
       this.suggestedWordPosition_ = this.numberOfPrefixMatchedPaliWords_;
       var currentWord = this.getWordElementByNumberIndex(
                                this.suggestedWordPosition_);
-      this._setItemStyle(currentWord);
+      this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     /**
      * Else if user chooses first suggested word in the suggestion menu before
@@ -375,7 +375,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
       var currentWord = this.getWordElementByNumberIndex(
                                this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
-      this._removeItemStyle(currentWord);
+      this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
     /**
      * Else user chooses some suggested word (not first word) in the suggestion
@@ -386,11 +386,11 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
     } else {
       var previousWord = this.getWordElementByNumberIndex(
                                 this.suggestedWordPosition_);
-      this._removeItemStyle(previousWord);
+      this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ -= 1;
       var currentWord = this.getWordElementByNumberIndex(
                                this.suggestedWordPosition_);
-      this._setItemStyle(currentWord);
+      this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     }
   }
@@ -406,7 +406,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
       this.suggestedWordPosition_ = 1;
       var currentWord = this.getWordElementByNumberIndex(
                                this.suggestedWordPosition_);
-      this._setItemStyle(currentWord);
+      this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     /**
      * Else if user chooses last suggested word in the suggestion menu before
@@ -418,7 +418,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
       var currentWord = this.getWordElementByNumberIndex(
                                this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
-      this._removeItemStyle(currentWord);
+      this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
     /**
      * Else user chooses some suggested word (not last word) in the suggestion
@@ -429,11 +429,11 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
     } else {
       var previousWord = this.getWordElementByNumberIndex(
                                 this.suggestedWordPosition_);
-      this._removeItemStyle(previousWord);
+      this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ += 1;
       var currentWord = this.getWordElementByNumberIndex(
                                 this.suggestedWordPosition_);
-      this._setItemStyle(currentWord);
+      this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     }
   }
@@ -454,6 +454,33 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
 
 
 /**
+ * Retrieve the key code number of key event.
+ * @param {DOM event} e The DOM event object, in W3C compliant browser, this is
+ *                      passed by browser implicitly. For IE, we have to use
+ *                      window.event manually. Please see the code. 
+ * @return {number} The key code number.
+ * @private
+ */
+pali.InputSuggest.prototype.getKeyCode = function(e) {
+  if (!e) {e = window.event;} // for IE compatible
+  var keycode = e.keyCode || e.which; // also for browser compatibility
+  return keycode;
+};
+
+
+/**
+ * Convert key code number to corresponding character.
+ * @param {number} keycode The key code number
+ * @return {string} The character corresponding to the input key code
+ * @private
+ * @deprecated Not used in the code.
+ */
+pali.InputSuggest.prototype.getKeyCodeChar = function(keycode) {
+  return String.fromCharCode(keycode);
+};
+
+
+/**
  * Each pāli words in the suggestion menu is included in a DOM element. Give a
  * index number to this function and this function will return the DOM element
  * which contains the pāli word.
@@ -464,11 +491,32 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
  * @private
  */
 pali.InputSuggest.prototype.getWordElementByNumberIndex = function(number) {
-    if (typeof number != "number") {
-      console.log('in getWordElementByNumberIndex: ' +
-                  'input is not of type number');
-    }
-    return document.getElementById( "suggestedWord" + number.toString() );
+  if (typeof number != "number") {
+    console.log('in getWordElementByNumberIndex: input is not of type number');
+  }
+  return document.getElementById( "suggestedWord" + number.toString() );
+};
+
+
+/**
+ * Highlight the word in the suggestion menu.
+ * @param {DOM element} element The DOM element object to be highlighted.
+ * @private
+ */
+pali.InputSuggest.prototype.setItemStyle = function(element) {
+  element.style.background = "#00C";
+  element.style.color = "white";
+};
+
+
+/**
+ * Remove the highlight the word in the suggestion menu.
+ * @param {DOM element} element The DOM element object to be removed highlight.
+ * @private
+ */
+pali.InputSuggest.prototype.removeItemStyle = function(element) {
+  element.style.background = "";
+  element.style.color = "";
 };
 
 
@@ -505,14 +553,14 @@ Suggest.prototype = {
     var currentWordPosition = this._getWordElementNumberIndex(currentWord);
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = currentWordPosition;
-      this._setItemStyle(currentWord);
+      this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     } else {
       if (this.suggestedWordPosition_ != currentWordPosition) {
         var previousWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
-        this._removeItemStyle(previousWord);
+        this.removeItemStyle(previousWord);
         this.suggestedWordPosition_ = currentWordPosition;
-        this._setItemStyle(currentWord);
+        this.setItemStyle(currentWord);
         this.input_.value = currentWord.title;
       }
     }
@@ -521,7 +569,7 @@ Suggest.prototype = {
   onItemMouseOut:function(event) {
     var targetElement = event.target || event.srcElement;
     currentWord = this._checkParent(targetElement);
-    this._removeItemStyle(currentWord);
+    this.removeItemStyle(currentWord);
   },
 
   updateSuggestionMenu:function(userInputStr) {
@@ -567,8 +615,6 @@ Suggest.prototype = {
     return null;
   },
 
-
-
   _getWordElementNumberIndex: function(element) {
     if (typeof element.id != "string") {console.log('in _getWordElementNumberIndexById: input element.id is not of type string');}
     return parseInt(element.id.replace("suggestedWord", ""));
@@ -577,16 +623,6 @@ Suggest.prototype = {
   _getWordElementIdString: function(number) {
     if (typeof number != "number") {console.log('in _getWordElementIdString: input is not of type number');}
     return ("suggestedWord" + number.toString());
-  },
-
-  _setItemStyle: function(e) {
-    e.style.background = "#00C";
-    e.style.color = "white";
-  },
-
-  _removeItemStyle: function(e) {
-    e.style.background = "";
-    e.style.color = "";
   },
 
   clearSuggestionMenu: function() {
@@ -598,16 +634,6 @@ Suggest.prototype = {
     this.oldInput_ = "";
     delete this.prefixMatchedPaliWords_;
   },
-
-  getKeyCode : function(e) {
-    if (!e) {e = window.event;}
-    var keycode = e.keyCode || e.which;
-    return keycode;
-  },
-
-  getKeyCodeChar : function(keycode) {
-    return String.fromCharCode(keycode);
-  }
 
 };
 
