@@ -68,6 +68,7 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    * size of prefixMatchedPaliWords_, i.e.,
    * number of prefix-match pāli words in suggestion menu.
    * This value can not be larger than MAX_WORDS_IN_SUGGESTION_MENU.
+   * FIXME: remove this variable. use prefixMatchedPaliWords_.length
    * @type {number|null}
    * @private
    */
@@ -303,7 +304,53 @@ pali.InputSuggest.prototype.prefixMatch = function() {
    */
   this.prefixMatchedPaliWords_.sort();
 
-  this.updateSuggestionMenu(userInputStr);
+  this.suggestionMenu(userInputStr);
+};
+
+
+/**
+ * Show suggestion menu if no menu exits, or update suggestion menu if menu
+ * already exists.
+ * @param {string} userInputStr The user input string
+ * @private
+ */
+pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
+  this.suggestedWordPosition_ = null;
+  this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
+  this.originalUserPaliInput_ = userInputStr;
+
+  // create dropdown input suggestion menu
+  this.suggestDiv_.innerHTML = "";
+  var _this = this;
+  for (var i=0; i < this.prefixMatchedPaliWords_.length; i++) {
+    /**
+     * create DOM element of suggested word
+     * Reference: http://www.javascriptkit.com/javatutors/dom2.shtml
+     */
+    var word = document.createElement('div');
+    word.id = this.getWordElementIdString((i+1));
+    word.title = this.prefixMatchedPaliWords_[i];
+    word.innerHTML = this.prefixMatchedPaliWords_[i].replace(
+                       userInputStr, "<b>" + userInputStr + "</b>");
+
+    // add mouse event listener for DOM element of suggested word
+    pali.addEventListener(word, 'click',
+                          function(e){_this.onItemClick(e);});
+    pali.addEventListener(word, 'mouseover',
+                          function(e){_this.onItemMouseOver(e);});
+    pali.addEventListener(word, 'mouseout',
+                          function(e){_this.onItemMouseOut(e);});
+
+    // append the DOM element of the suggested word to suggestion menu
+    this.suggestDiv_.appendChild(word);
+  }
+  // set the CSS style of suggestion menu
+  this.suggestDiv_.style.left = pali.getOffset(this.input_).left + "px";
+  this.suggestDiv_.style.minWidth = this.input_.offsetWidth + "px";
+  this.suggestDiv_.style.textAlign = 'left';
+  this.suggestDiv_.style.fontFamily = 'Gentium Basic, arial, serif';
+  this.suggestDiv_.style.fontSize = '100%';
+  this.suggestDiv_.style.display = 'block';
 };
 
 
@@ -362,7 +409,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      */
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = this.numberOfPrefixMatchedPaliWords_;
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
@@ -372,7 +419,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      * menu. Set user selction position to null.
      */
     } else if (this.suggestedWordPosition_ == 1) {
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
@@ -384,11 +431,11 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      * previous word. Set user selction position = previous position - 1.
      */
     } else {
-      var previousWord = this.getWordElementByNumberIndex(
+      var previousWord = this.getWordElementByIndexNumber(
                                 this.suggestedWordPosition_);
       this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ -= 1;
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
@@ -404,7 +451,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      */
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = 1;
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
@@ -415,7 +462,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      */
     } else if (this.suggestedWordPosition_ == 
                this.numberOfPrefixMatchedPaliWords_) {
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
@@ -427,11 +474,11 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      * previous word. Set user selction position = previous position + 1.
      */
     } else {
-      var previousWord = this.getWordElementByNumberIndex(
+      var previousWord = this.getWordElementByIndexNumber(
                                 this.suggestedWordPosition_);
       this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ += 1;
-      var currentWord = this.getWordElementByNumberIndex(
+      var currentWord = this.getWordElementByIndexNumber(
                                 this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
@@ -481,20 +528,49 @@ pali.InputSuggest.prototype.getKeyCodeChar = function(keycode) {
 
 
 /**
- * Each pāli words in the suggestion menu is included in a DOM element. Give a
- * index number to this function and this function will return the DOM element
- * which contains the pāli word.
- * @param {number} number The index number representing the suggested pāli word
- *                        selected by user
- * @return {DOM Element} DOM Element The DOM element representing the suggested
- *                                   pāli word selected by user
+ * Create id string of DOM element of the suggested word according to index
+ * number.
+ * @param {number} number The index number representing the suggested word
+ * @return {string} id string of the DOM element of suggested word
  * @private
  */
-pali.InputSuggest.prototype.getWordElementByNumberIndex = function(number) {
+pali.InputSuggest.prototype.getWordElementIdString = function(number) {
   if (typeof number != "number") {
-    console.log('in getWordElementByNumberIndex: input is not of type number');
+    console.log('in getWordElementIdString: input is not of type number');
+  }
+  return ("suggestedWord" + number.toString());
+};
+
+
+/**
+ * Each word in the suggestion menu is included in a DOM element. Give the index
+ * number of the DOM element of suggested word to this function. This function
+ * will return the DOM element which contains the word.
+ * @param {number} number The index number representing the suggested word.
+ * @return {DOM Element} DOM Element The DOM element representing the suggested
+ *                                   word.
+ * @private
+ */
+pali.InputSuggest.prototype.getWordElementByIndexNumber = function(number) {
+  if (typeof number != "number") {
+    console.log('in getWordElementByIndexNumber: input is not of type number');
   }
   return document.getElementById( "suggestedWord" + number.toString() );
+};
+
+
+/**
+ * Get the index number which represents the suggested word.
+ * @param {DOM Element} element The DOM element of suggested word
+ * @return {number} The index number representing the suggested word
+ * @private
+ */
+pali.InputSuggest.prototype.getWordElementIndexNumber = function(element) {
+  if (typeof element.id != "string") {
+    console.log('in getWordElementIndexNumber: ' +
+                'input element.id is not of type string');
+  }
+  return parseInt(element.id.replace("suggestedWord", ""));
 };
 
 
@@ -539,8 +615,6 @@ pali.InputSuggest.prototype.removeItemStyle = function(element) {
  */
 
 
-
-
 Suggest.prototype = {
   onItemClick:function(event) {
     this.clearSuggestionMenu();
@@ -550,14 +624,14 @@ Suggest.prototype = {
   onItemMouseOver:function(event) {
     var targetElement = event.target || event.srcElement;
     currentWord = this._checkParent(targetElement);
-    var currentWordPosition = this._getWordElementNumberIndex(currentWord);
+    var currentWordPosition = this.getWordElementIndexNumber(currentWord);
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = currentWordPosition;
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     } else {
       if (this.suggestedWordPosition_ != currentWordPosition) {
-        var previousWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+        var previousWord = this.getWordElementByIndexNumber(this.suggestedWordPosition_);
         this.removeItemStyle(previousWord);
         this.suggestedWordPosition_ = currentWordPosition;
         this.setItemStyle(currentWord);
@@ -570,34 +644,6 @@ Suggest.prototype = {
     var targetElement = event.target || event.srcElement;
     currentWord = this._checkParent(targetElement);
     this.removeItemStyle(currentWord);
-  },
-
-  updateSuggestionMenu:function(userInputStr) {
-    this.suggestedWordPosition_ = null;
-    this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
-    this.originalUserPaliInput_ = userInputStr;
-    /* create dropdown input suggestion menu */
-    this.suggestDiv_.innerHTML = "";
-    var _this = this;
-    for (var i=0; i < this.prefixMatchedPaliWords_.length; i++) {
-      /* http://www.javascriptkit.com/javatutors/dom2.shtml */
-      var word = document.createElement('div');
-      word.id = this._getWordElementIdString((i+1));
-      word.title = this.prefixMatchedPaliWords_[i];
-      word.innerHTML = this.prefixMatchedPaliWords_[i].replace(userInputStr, "<b>" + userInputStr + "</b>");
-
-      this._addEventListener(word, 'click', function(e){_this.onItemClick(e);});
-      this._addEventListener(word, 'mouseover', function(e){_this.onItemMouseOver(e);});
-      this._addEventListener(word, 'mouseout', function(e){_this.onItemMouseOut(e);});
-
-      this.suggestDiv_.appendChild(word);
-    }
-    this.suggestDiv_.style.left = getOffset(this.input_).left + "px";
-    this.suggestDiv_.style.minWidth = this.input_.offsetWidth + "px";
-    this.suggestDiv_.style.textAlign = 'left';
-    this.suggestDiv_.style.fontFamily = 'Gentium Basic, arial, serif';
-    this.suggestDiv_.style.fontSize = '100%';
-    this.suggestDiv_.style.display = 'block';
   },
 
   _checkParent: function(element) {
@@ -613,16 +659,6 @@ Suggest.prototype = {
     }
     console.log('in _checkParent: cannot find element with proper id!'); 
     return null;
-  },
-
-  _getWordElementNumberIndex: function(element) {
-    if (typeof element.id != "string") {console.log('in _getWordElementNumberIndexById: input element.id is not of type string');}
-    return parseInt(element.id.replace("suggestedWord", ""));
-  },
-
-  _getWordElementIdString: function(number) {
-    if (typeof number != "number") {console.log('in _getWordElementIdString: input is not of type number');}
-    return ("suggestedWord" + number.toString());
   },
 
   clearSuggestionMenu: function() {
