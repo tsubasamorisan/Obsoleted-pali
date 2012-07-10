@@ -192,6 +192,16 @@ pali.InputSuggest.KeyCode = {
  * @private
  */
 pali.InputSuggest.prototype.checkInput = function() {
+  /**
+   * Sometimes suggest menu is shown after text input loses focus.
+   * Fix this bug by checking document.activeElement
+   * Reference:
+   * @see http://stackoverflow.com/questions/497094/how-do-i-find-out-which-javascript-element-has-focus
+   */
+  if (document.activeElement.id != this.input_.id) {
+    return;
+  }
+
   if (this.input_.value != this.oldInput_) { // user input changes
     if (this.suggestedWordPosition_ == null) {
       this.prefixMatch();
