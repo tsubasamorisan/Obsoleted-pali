@@ -191,7 +191,7 @@ pali.InputSuggest.KeyCode = {
  * (oninput or onpropertychange is not usable because browser incompatibility)
  * @private
  */
-pali.Inputsuggest.prototype.checkInput = function() {
+pali.InputSuggest.prototype.checkInput = function() {
   if (this.input_.value != this.oldInput_) { // user input changes
     if (this.suggestedWordPosition_ == null) {
       this.prefixMatch();
@@ -710,9 +710,3 @@ pali.InputSuggest.prototype.removeItemStyle = function(element) {
 
   document.getElementsByTagName("head")[0].appendChild(style);
  */
-
-function startSuggest() {Suggest = new Suggest("PaliInput", "suggest");}
-
-window.addEventListener ?
-  window.addEventListener('load', startSuggest, false) :
-  window.attachEvent('onload', startSuggest);

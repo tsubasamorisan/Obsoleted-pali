@@ -1,3 +1,5 @@
+pali.require('base');
+
 $(document).ready(function() {
   document.getElementById('PaliInput').focus();
 
@@ -24,6 +26,9 @@ $(document).ready(function() {
     document.getElementById("PaliInput").value += this.value;
     document.getElementById("PaliInput").focus();
   });
+
+  pali.addEventListener(window, 'load',
+    function(){var suggest = new pali.InputSuggest("PaliInput", "suggest");});
 });
 
 

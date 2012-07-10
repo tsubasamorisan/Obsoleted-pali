@@ -13,7 +13,7 @@ output_bootstrap_adv = '--js_output_file templates/js/bootstrap-adv.js'
 
 input_base = '--js static/js/base.js'
 input_js1 =  '--js static/js/palidict.js'
-input_js2 =  '--js static/js/inputSuggest.js'
+input_js2 =  '--js static/js/inputsuggest.js'
 output_js_wso = '--js_output_file static/js/pali-wso.js'
 output_js_spo = '--js_output_file static/js/pali-spo.js'
 output_js_adv = '--js_output_file static/js/pali-adv.js'

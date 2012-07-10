@@ -55,7 +55,8 @@ if (queryURL.ugcfh == "yes") {
   prefix = 'http://pali.googlecode.com/git/';
   LoadFavicon(prefix + "static/favicon.ico");
   LoadJS(prefix + "static/jsvarindex.js");
-  LoadJS(prefix + "static/js/inputSuggest.js");
+  LoadJS(prefix + "static/js/base.js");
+  LoadJS(prefix + "static/js/inputsuggest.js");
   LoadJS(prefix + "static/js/palidict.js");
   LoadCSS(prefix + "static/css/palidict.css");
 } else if (window.location.host == 'localhost:8080') {
@@ -69,7 +70,8 @@ if (queryURL.ugcfh == "yes") {
     LoadJS("static/js/pali-spo.js");
   }
   else {
-    LoadJS("static/js/inputSuggest.js");
+    LoadJS("static/js/base.js");
+    LoadJS("static/js/inputsuggest.js");
     LoadJS("static/js/palidict.js");
   }
   LoadCSS("static/css/palidict.css");
