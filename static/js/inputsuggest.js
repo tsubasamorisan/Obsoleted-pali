@@ -308,7 +308,7 @@ pali.InputSuggest.prototype.prefixMatch = function() {
 
 
 /**
- * Handle user keyboard event
+ * Handle user keyboard event of text input
  * @param {Object} event The keyboard event
  * @private
  */
@@ -330,7 +330,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
   }
 
   /**
-   * User input key code
+   * The code of the key pressed by user
    * @const
    * @type {number}
    * @private
@@ -339,12 +339,12 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
 
   // If there is no suggestion menu
   if (this.suggestDiv_.style.display == "none") {
-
+    // If user press down arrow key and user input is not empty
     if ( (code == pali.InputSuggest.KeyCode.DOWN) &&
          (this.input_.value != "")) {
       this.prefixMatch();
     }
-
+    // If user press up arrow key and user input is not empty
     if ( (code == pali.InputSuggest.KeyCode.UP) &&
          (this.input_.value != "")) {
       this.prefixMatch();
@@ -353,50 +353,98 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
     return;
   }
 
+  // If user presses UP arrow key
   if (code == pali.InputSuggest.KeyCode.UP) {
+    /**
+     * If user does not choose any suggested word in the suggestion menu
+     * before pressing UP key, highlight the last word in the menu. Set user
+     * selection position to the last word in the suggestion menu
+     */
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = this.numberOfPrefixMatchedPaliWords_;
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var currentWord = this.getWordElementByNumberIndex(
+                               this.suggestedWordPosition_);
       this._setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+    /**
+     * Else if user chooses first suggested word in the suggestion menu before
+     * pressing UP key, remove the highlight of the first word in the suggestion
+     * menu. Set user selction position to null.
+     */
     } else if (this.suggestedWordPosition_ == 1) {
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var currentWord = this.getWordElementByNumberIndex(
+                               this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
       this._removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
+    /**
+     * Else user chooses some suggested word (not first word) in the suggestion
+     * menu before pressing UP key, remove the highlight of the previous
+     * selected word in the suggestion menu. Highlight the word on top of
+     * previous word. Set user selction position = previous position - 1.
+     */
     } else {
-      var previousWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var previousWord = this.getWordElementByNumberIndex(
+                                this.suggestedWordPosition_);
       this._removeItemStyle(previousWord);
       this.suggestedWordPosition_ -= 1;
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var currentWord = this.getWordElementByNumberIndex(
+                               this.suggestedWordPosition_);
       this._setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     }
   }
+
+  // If user presses DOWN arrow key
   if (code == pali.InputSuggest.KeyCode.DOWN) {
+    /**
+     * If user does not choose any suggested word in the suggestion menu
+     * before pressing DOWN key, highlight the first word in the menu. Set user
+     * selection position to the first word in the suggestion menu
+     */
     if (this.suggestedWordPosition_ == null) {
       this.suggestedWordPosition_ = 1;
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var currentWord = this.getWordElementByNumberIndex(
+                               this.suggestedWordPosition_);
       this._setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-    } else if (this.suggestedWordPosition_ == this.numberOfPrefixMatchedPaliWords_) {
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+    /**
+     * Else if user chooses last suggested word in the suggestion menu before
+     * pressing DOWN key, remove the highlight of the last word in the 
+     * suggestion menu. Set user selction position to null.
+     */
+    } else if (this.suggestedWordPosition_ == 
+               this.numberOfPrefixMatchedPaliWords_) {
+      var currentWord = this.getWordElementByNumberIndex(
+                               this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
       this._removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
+    /**
+     * Else user chooses some suggested word (not last word) in the suggestion
+     * menu before pressing DOWN key, remove the highlight of the previous
+     * selected word in the suggestion menu. Highlight the word on bottom of
+     * previous word. Set user selction position = previous position + 1.
+     */
     } else {
-      var previousWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var previousWord = this.getWordElementByNumberIndex(
+                                this.suggestedWordPosition_);
       this._removeItemStyle(previousWord);
       this.suggestedWordPosition_ += 1;
-      var currentWord = this.getWordElementByNumberIndex(this.suggestedWordPosition_);
+      var currentWord = this.getWordElementByNumberIndex(
+                                this.suggestedWordPosition_);
       this._setItemStyle(currentWord);
       this.input_.value = currentWord.title;
     }
   }
+
+  // If user presses ENTER key
   if (code == pali.InputSuggest.KeyCode.RETURN) {
     this.clearSuggestionMenu();
     this.oldInput_ = this.input_.value;
   }
+
+  // If user presses ESC key
   if (code == pali.InputSuggest.KeyCode.ESC) {
     this.input_.value = this.originalUserPaliInput_;
     this.clearSuggestionMenu();
@@ -406,14 +454,19 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
 
 
 /**
- * TODO:
- * @param {number} number TODO:
- * @return {DOM Element} DOM Element TODO:
+ * Each pāli words in the suggestion menu is included in a DOM element. Give a
+ * index number to this function and this function will return the DOM element
+ * which contains the pāli word.
+ * @param {number} number The index number representing the suggested pāli word
+ *                        selected by user
+ * @return {DOM Element} DOM Element The DOM element representing the suggested
+ *                                   pāli word selected by user
  * @private
  */
 pali.InputSuggest.prototype.getWordElementByNumberIndex = function(number) {
     if (typeof number != "number") {
-      console.log('in getWordElementByNumberIndex: input is not of type number');
+      console.log('in getWordElementByNumberIndex: ' +
+                  'input is not of type number');
     }
     return document.getElementById( "suggestedWord" + number.toString() );
 };
