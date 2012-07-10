@@ -575,6 +575,103 @@ pali.InputSuggest.prototype.getWordElementIndexNumber = function(element) {
 
 
 /**
+ * Handle the mouse click event of the suggested word in the suggestion menu.
+ * @param {DOM event} event The DOM event object, in W3C compliant browser,
+ *                      this is passed by browser implicitly. For IE, we have
+ *                      to use window.event manually. Please see the code. 
+ * @private
+ */
+pali.InputSuggest.prototype.onItemClick = function(event) {
+  this.clearSuggestionMenu();
+  this.oldInput_ = this.input_.value;
+};
+
+
+/**
+ * Handle the mouse over event of the suggested word in the suggestion menu.
+ * @param {DOM event} event The DOM event object, in W3C compliant browser,
+ *                      this is passed by browser implicitly. For IE, we have
+ *                      to use window.event manually. Please see the code. 
+ * @private
+ */
+pali.InputSuggest.prototype.onItemMouseOver = function(event) {
+  var targetElement = event.target || event.srcElement;
+  currentWord = this.checkTargetElement(targetElement);
+  var currentWordPosition = this.getWordElementIndexNumber(currentWord);
+  // If user does not choose suggested word before the mouse over event
+  if (this.suggestedWordPosition_ == null) {
+    this.suggestedWordPosition_ = currentWordPosition;
+    this.setItemStyle(currentWord);
+    this.input_.value = currentWord.title;
+  } else {
+    /**
+     * If the suggested word user chooses before mouse over event is not
+     * the same as the suggested word in the mouse over event.
+     */
+    if (this.suggestedWordPosition_ != currentWordPosition) {
+      var previousWord = this.getWordElementByIndexNumber(this.suggestedWordPosition_);
+      this.removeItemStyle(previousWord);
+      this.suggestedWordPosition_ = currentWordPosition;
+      this.setItemStyle(currentWord);
+      this.input_.value = currentWord.title;
+    }
+  }
+};
+
+
+/**
+ * Handle the mouse out event of the suggested word in the suggestion menu.
+ * @param {DOM event} event The DOM event object, in W3C compliant browser,
+ *                      this is passed by browser implicitly. For IE, we have
+ *                      to use window.event manually. Please see the code. 
+ * @private
+ */
+pali.InputSuggest.prototype.onItemMouseOut = function(event) {
+  var targetElement = event.target || event.srcElement;
+  currentWord = this.checkTargetElement(targetElement);
+  this.removeItemStyle(currentWord);
+};
+
+
+/**
+ * Sometimes mouse event returns the child element of the element to which we
+ * add mouse event listener. So we need to check the target element of the mouse
+ * event.
+ * @param {DOM Element} element The target element of mouse event
+ * @return {DOM Element|null} The DOM element to which we add mouse event
+ * @private
+ */
+pali.InputSuggest.prototype.checkTargetElement = function(element) {
+  // Chrome and Firefox use parentNode, while Opera uses offsetParent
+  while(element.parentNode) {
+    if( element.id.indexOf('suggest') == 0 ) {return element;}
+    element = element.parentNode;
+  }
+  while(element.offsetParent) {
+    if( element.id.indexOf('suggest') == 0 ) {return element;}
+    element = element.offsetParent;
+  }
+  console.log('in checkTargetElement: cannot find element with proper id!'); 
+  return null;
+};
+
+
+/**
+ * Clear and hide suggestion menu.
+ * @private
+ */
+pali.InputSuggest.prototype.clearSuggestionMenu = function() {
+  this.suggestDiv_.innerHTML = "";
+  this.suggestDiv_.style.display = "none";
+  this.suggestedWordPosition_ = null;
+  this.numberOfPrefixMatchedPaliWords_ = null;
+  this.originalUserPaliInput_ = "";
+  this.oldInput_ = "";
+  delete this.prefixMatchedPaliWords_;
+};
+
+
+/**
  * Highlight the word in the suggestion menu.
  * @param {DOM element} element The DOM element object to be highlighted.
  * @private
@@ -586,7 +683,7 @@ pali.InputSuggest.prototype.setItemStyle = function(element) {
 
 
 /**
- * Remove the highlight the word in the suggestion menu.
+ * Remove the highlight of the word in the suggestion menu.
  * @param {DOM element} element The DOM element object to be removed highlight.
  * @private
  */
@@ -613,65 +710,6 @@ pali.InputSuggest.prototype.removeItemStyle = function(element) {
 
   document.getElementsByTagName("head")[0].appendChild(style);
  */
-
-
-Suggest.prototype = {
-  onItemClick:function(event) {
-    this.clearSuggestionMenu();
-    this.oldInput_ = this.input_.value;
-  },
-
-  onItemMouseOver:function(event) {
-    var targetElement = event.target || event.srcElement;
-    currentWord = this._checkParent(targetElement);
-    var currentWordPosition = this.getWordElementIndexNumber(currentWord);
-    if (this.suggestedWordPosition_ == null) {
-      this.suggestedWordPosition_ = currentWordPosition;
-      this.setItemStyle(currentWord);
-      this.input_.value = currentWord.title;
-    } else {
-      if (this.suggestedWordPosition_ != currentWordPosition) {
-        var previousWord = this.getWordElementByIndexNumber(this.suggestedWordPosition_);
-        this.removeItemStyle(previousWord);
-        this.suggestedWordPosition_ = currentWordPosition;
-        this.setItemStyle(currentWord);
-        this.input_.value = currentWord.title;
-      }
-    }
-  },
-
-  onItemMouseOut:function(event) {
-    var targetElement = event.target || event.srcElement;
-    currentWord = this._checkParent(targetElement);
-    this.removeItemStyle(currentWord);
-  },
-
-  _checkParent: function(element) {
-    /* sometimes muose event return the child element of actual element we need, so we need to check parent element */
-    /* Chrome and Firefox use parentNode, while Opera uses offsetParent */
-    while(element.parentNode) { 
-      if( element.id.indexOf('suggest') == 0 ) {return element;}
-      element = element.parentNode;
-    }
-    while(element.offsetParent) { 
-      if( element.id.indexOf('suggest') == 0 ) {return element;}
-      element = element.offsetParent;
-    }
-    console.log('in _checkParent: cannot find element with proper id!'); 
-    return null;
-  },
-
-  clearSuggestionMenu: function() {
-    this.suggestDiv_.innerHTML = "";
-    this.suggestDiv_.style.display = "none";
-    this.suggestedWordPosition_ = null;
-    this.numberOfPrefixMatchedPaliWords_ = null;
-    this.originalUserPaliInput_ = "";
-    this.oldInput_ = "";
-    delete this.prefixMatchedPaliWords_;
-  },
-
-};
 
 function startSuggest() {Suggest = new Suggest("PaliInput", "suggest");}
 
