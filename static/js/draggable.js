@@ -33,6 +33,21 @@ pali.Draggable = function(id) {
   }
 
   /**
+   * Passing this.startMouseDraggable.bind(this) directly to addEventListener
+   * and removeEventListener is WRONG because this is actually passing an
+   * anonymous function as argument, which has no effect on removeEventListener.
+   * The workaround is as below. Use an event handler object to wrap functions.
+   * @see http://stackoverflow.com/questions/4386300/javascript-dom-how-to-remove-all-events-of-a-dom-object
+   * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+   * @enum {function}
+   */
+  this.eventHandlers_ = {
+    'startMouseDraggable': this.startMouseDraggable.bind(this),
+    'mouseDrag'          : this.mouseDrag.bind(this),
+    'releaseElement'     : this.releaseElement.bind(this)
+  }
+
+  /**
    * The initial X position of draggable DOM element.
    * @type {number}
    * @private
@@ -62,7 +77,7 @@ pali.Draggable = function(id) {
 
   // start to listen to mouse down event of draggable element
   pali.addEventListener(this.draggedElement_, 'mousedown',
-                        this.startMouseDraggable.bind(this));
+                        this.eventHandlers_.startMouseDraggable);
 };
 
 
@@ -96,9 +111,9 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
    * more. That's bad usability.
    */
   pali.addEventListener(document, 'mousemove',
-                        this.mouseDrag.bind(this));
+                        this.eventHandlers_.mouseDrag);
   pali.addEventListener(document, 'mouseup',
-                        this.releaseElement.bind(this));
+                        this.eventHandlers_.releaseElement);
 
   /**
    * From 'Drag and drop - QuirksMode':
@@ -151,7 +166,7 @@ pali.Draggable.prototype.setPosition = function(dx, dy) {
  */
 pali.Draggable.prototype.releaseElement = function(e) {
   pali.removeEventListener(document, 'mousemove',
-                           this.mouseDrag);
+                           this.eventHandlers_.mouseDrag);
   pali.removeEventListener(document, 'mouseup',
-                           this.releaseElement);
+                           this.eventHandlers_.releaseElement);
 };
