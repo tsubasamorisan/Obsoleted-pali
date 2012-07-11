@@ -27,7 +27,25 @@ pali.addEventListener = function(element, evt, fn) {
     element.addEventListener(evt, fn, false);
   } else {
     /* IE */
-    element.attachEvent( 'on' + evt, fn);
+    element.attachEvent('on' + evt, fn);
+  }
+};
+
+
+/**
+ * Cross-browser removeEventListener function.
+ *
+ * @param {DOM element} element The element to remove event listener.
+ * @param {string} evt The event to be un-listened.
+ * @param {function} fn The callback function when event occurs.
+ */
+pali.removeEventListener = function(element, evt, fn) {
+  if (window.removeEventListener) {
+    /* W3C compliant browser */
+    element.removeEventListener(evt, fn, false);
+  } else {
+    /* IE */
+    element.detachEvent('on' + evt, fn);
   }
 };
 
