@@ -29,7 +29,6 @@ pali.Draggable = function(id) {
 
   if (!this.draggedElement_) {
     throw "pali.Draggable.NoElement";
-    console.log("In pali.Draggable constructor: No Dragged Element!");
   }
 
   /**

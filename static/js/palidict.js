@@ -1,13 +1,12 @@
 pali.require('base');
 
 window.onload = function() {
-  var suggest = new pali.InputSuggest("PaliInput", "suggest");
-};
-
-$(document).ready(function() {
   document.getElementById('PaliInput').focus();
 
-  /* check users are now at which site, and fill site innerHTML */
+  // start input suggest
+  var suggest = new pali.InputSuggest("PaliInput", "suggest");
+
+  // check users are now at which site, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')
     {document.getElementById('site').innerHTML = getStringBackupSite1();}
   else if (window.location.host == 'siongui.webfactional.com')
@@ -15,22 +14,26 @@ $(document).ready(function() {
   else {document.getElementById('site').innerHTML = getStringMainSite();}
   document.getElementById('site').style.wordSpacing = "normal";
 
-  /* check user's locale, and fill lang innerHTML */
+  // check user's locale, and fill lang innerHTML
   var locale = document.getElementById('locale').innerHTML;
   if (locale == 'zh_CN') {document.getElementById('lang').innerHTML = '中文 (简体)';}
   else if (locale == 'zh_TW') {document.getElementById('lang').innerHTML = '中文 (繁體)';}
   else {document.getElementById('lang').innerHTML = 'English';}
   document.getElementById('lang').style.wordSpacing = "normal";
 
-  // <!-- make keypad draggable -->
-  $("#keyboard").draggable();
+  // make keypad draggable
+  var drag = new pali.Draggable('keyboard');
 
-  // <!-- bind the click function of input element inside keypad -->
-  $("#keyboard input").bind("click", function(e) {
-    document.getElementById("PaliInput").value += this.value;
-    document.getElementById("PaliInput").focus();
-  });
-});
+  // bind the click function of input element inside keypad
+  var keypad = document.getElementById('keyboard');
+  var buttons = keypad.getElementsByTagName('input');
+  for (var i=0; i<buttons.length; i++) {
+    buttons[i].onclick = function(e) {
+      document.getElementById("PaliInput").value += this.value;
+      document.getElementById("PaliInput").focus();
+    };
+  }
+};
 
 
 //<!-- make keypad show if hidden, hide if shown -->

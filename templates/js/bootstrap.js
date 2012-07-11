@@ -56,6 +56,7 @@ if (queryURL.ugcfh == "yes") {
   LoadFavicon(prefix + "static/favicon.ico");
   LoadJS(prefix + "static/jsvarindex.js");
   LoadJS(prefix + "static/js/base.js");
+  LoadJS(prefix + "static/js/draggable.js");
   LoadJS(prefix + "static/js/inputsuggest.js");
   LoadJS(prefix + "static/js/palidict.js");
   LoadCSS(prefix + "static/css/palidict.css");
@@ -71,6 +72,7 @@ if (queryURL.ugcfh == "yes") {
   }
   else {
     LoadJS("static/js/base.js");
+    LoadJS("static/js/draggable.js");
     LoadJS("static/js/inputsuggest.js");
     LoadJS("static/js/palidict.js");
   }
