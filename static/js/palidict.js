@@ -278,3 +278,15 @@ function onLocaleClick(element, flag) {
 
   window.location = url;
 }
+
+// Store the function in a global property referenced by a string:
+window['toggle'] = toggle;
+window['showAbout'] = showAbout;
+window['showLink'] = showLink;
+window['onPaliInputSubmit'] = onPaliInputSubmit;
+window['lookup'] = lookup;
+window['JSONPlookup'] = JSONPlookup;
+window['JSONPlookupCallback'] = JSONPlookupCallback;
+window['check'] = check;
+window['onSiteClick'] = onSiteClick;
+window['onLocaleClick'] = onLocaleClick;
