@@ -27,7 +27,7 @@ http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-paramete
 http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
 http://papermashup.com/read-url-get-variables-withjavascript/
 */
-var queryURL = function() {
+window['queryURL'] = function() {
   // This function is anonymous, is executed immediately and the return value is assigned to queryURL
   var queryPairs = {};
   if (!window.location.search) {return queryPairs;}
