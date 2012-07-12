@@ -53,53 +53,44 @@ LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subs
 if (queryURL['ugcfh'] == "yes") {
   /* use google code to serve files */
   prefix = 'http://pali.googlecode.com/git/';
+  LoadCSS(    prefix + "static/css/palidict.css");
   LoadFavicon(prefix + "static/favicon.ico");
-  LoadJS(prefix + "static/jsvarindex.js");
-  LoadJS(prefix + "static/js/base.js");
-  LoadJS(prefix + "static/js/draggable.js");
-  LoadJS(prefix + "static/js/inputsuggest.js");
-  LoadJS(prefix + "static/js/palidict.js");
-  LoadCSS(prefix + "static/css/palidict.css");
+  LoadJS(     prefix + "static/jsvarindex.js");
+  LoadJS(     prefix + "static/js/jsdeploader.js");
 } else if (window.location.host == 'localhost:8080') {
   /*
   * NOT use google code to serve files
   * host is "localhost:8080"
   */
+  LoadCSS(    "static/css/palidict.css");
   LoadFavicon("favicon.ico");
-  LoadJS("static/jsvarindex.js");
+  LoadJS(     "static/jsvarindex.js");
   if (queryURL['compiledjs'] == 'yes') {
-    LoadJS("static/js/pali-adv.js");
+    LoadJS(   "static/js/pali-adv.js");
   }
   else {
-    LoadJS("static/js/jsdeploader.js");
-/*
-    LoadJS("static/js/base.js");
-    LoadJS("static/js/draggable.js");
-    LoadJS("static/js/inputsuggest.js");
-    LoadJS("static/js/palidict.js");
-*/
+    LoadJS(   "static/js/jsdeploader.js");
   }
-  LoadCSS("static/css/palidict.css");
 } else if (window.location.host == 'palidictionary.appspot.com') {
   /*
   * NOT use google code to serve files
   * host is NOT "localhost:8080"
   * host is "palidictionary.appspot.com"
   */
+  LoadCSS(    "static/css/palidict.css");
   LoadFavicon("favicon.ico");
-  LoadJS("static/jsvarindex.js");
-  LoadJS("static/js/pali-spo.js");
-  LoadCSS("static/css/palidict.css");
+  LoadJS(     "static/jsvarindex.js");
+  LoadJS(     "static/js/pali-adv.js");
 } else {
   /*
   * NOT use google code to serve files
   * host is NOT "localhost:8080"
   * host is NOT "palidictionary.appspot.com"
   */
+  LoadCSS(    "statics/css/palidict.css");
   LoadFavicon("statics/favicon.ico");
-  LoadJS("statics/jsvarindex.js");
-  LoadJS("statics/js/pali-spo.js");
-  LoadCSS("statics/css/palidict.css");
+  LoadJS(     "statics/jsvarindex.js");
+  LoadJS(     "statics/js/pali-adv.js");
 }
 
 if (queryURL['track'] != "no") {
