@@ -76,7 +76,7 @@ pali.Draggable = function(id) {
 
   // start to listen to mouse down event of draggable element
   pali.addEventListener(this.draggedElement_, 'mousedown',
-                        this.eventHandlers_.startMouseDraggable);
+                        this.eventHandlers_['startMouseDraggable']);
 };
 
 
@@ -110,9 +110,9 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
    * more. That's bad usability.
    */
   pali.addEventListener(document, 'mousemove',
-                        this.eventHandlers_.mouseDrag);
+                        this.eventHandlers_['mouseDrag']);
   pali.addEventListener(document, 'mouseup',
-                        this.eventHandlers_.releaseElement);
+                        this.eventHandlers_['releaseElement']);
 
   /**
    * From 'Drag and drop - QuirksMode':
@@ -165,7 +165,7 @@ pali.Draggable.prototype.setPosition = function(dx, dy) {
  */
 pali.Draggable.prototype.releaseElement = function(e) {
   pali.removeEventListener(document, 'mousemove',
-                           this.eventHandlers_.mouseDrag);
+                           this.eventHandlers_['mouseDrag']);
   pali.removeEventListener(document, 'mouseup',
-                           this.eventHandlers_.releaseElement);
+                           this.eventHandlers_['releaseElement']);
 };

@@ -56,7 +56,7 @@ function showAbout(){document.getElementById("result").innerHTML = document.getE
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
 function onPaliInputSubmit() {
-  if (queryURL.jsonp == "no") {lookup();}
+  if (queryURL['jsonp'] == "no") {lookup();}
   else {JSONPlookup(document.getElementById('PaliInput').value);}
 }
 
@@ -76,9 +76,9 @@ function lookup() {
     }
   }
   document.getElementById('result').innerHTML = getStringLookingUp();
-  if (queryURL.lookup == "gae") {xmlhttp.open("POST","http://palidictionary.appspot.com/lookup",true);}
-  else if (queryURL.lookup == "paw") {xmlhttp.open("POST","http://siongui.pythonanywhere.com/lookup",true);}
-  else if (queryURL.lookup == "wfn") {xmlhttp.open("POST","http://siongui.webfactional.com/lookup",true);}
+  if (queryURL['lookup'] == "gae") {xmlhttp.open("POST","http://palidictionary.appspot.com/lookup",true);}
+  else if (queryURL['lookup'] == "paw") {xmlhttp.open("POST","http://siongui.pythonanywhere.com/lookup",true);}
+  else if (queryURL['lookup'] == "wfn") {xmlhttp.open("POST","http://siongui.webfactional.com/lookup",true);}
   else {xmlhttp.open("POST","/lookup",true);}
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send("word=" + encodeURI(document.getElementById('PaliInput').value));
@@ -89,9 +89,9 @@ function lookup() {
 function JSONPlookup(paliword) {
   document.getElementById('result').innerHTML = getStringLookingUp();
   url = "/lookup?callback=JSONPlookupCallback&word=" + encodeURIComponent(paliword);
-  if (queryURL.lookup == "gae") {url="http://palidictionary.appspot.com"+url;}
-  if (queryURL.lookup == "paw") {url="http://siongui.pythonanywhere.com"+url;}
-  if (queryURL.lookup == "wfn") {url="http://siongui.webfactional.com"+url;}
+  if (queryURL['lookup'] == "gae") {url="http://palidictionary.appspot.com"+url;}
+  if (queryURL['lookup'] == "paw") {url="http://siongui.pythonanywhere.com"+url;}
+  if (queryURL['lookup'] == "wfn") {url="http://siongui.webfactional.com"+url;}
   var ext = document.createElement('script');
   ext.setAttribute('src', url);
   if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
