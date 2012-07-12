@@ -39,7 +39,11 @@ var path = 'static/js/';
 var modules = ['base.js', 'draggable.js', 'inputsuggest.js', 'palidict.js'];
 
 var main = function() {
+  var prefix = path;
+  if (window.location.host == 'pali.googlecode.com') {
+    prefix = host + path;
+  }
   for (var i=0; i < modules.length; i++) {
-    XHRLoadJS(path+modules[i]);
+    XHRLoadJS( prefix + modules[i] );
   }
 }();
