@@ -31,12 +31,48 @@ myloader.xhrLoadJS = function(url_p, name_p) {
 
 myloader.handleDependency = function(jsName, jsContent) {
   if (myloader.dep[jsName] == null) {
+    // this js file is not dependent on other js file
+    console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
+    //console.log('loaded? ' + myloader.loaded[jsName]);
+    console.log(jsName + ' has no dependency. insert directly.');
     myloader.insertJS(jsName, jsContent);
-    console.log('dep of ' + jsName + ' : ' + myloader.dep[jsName]);
+    myloader.loaded[jsName] = 'yes';
+    //console.log('loaded? ' + myloader.loaded[jsName]);
+    console.log('---');
   } else {
-    myloader.insertJS(jsName, jsContent);
-    console.log('dep of ' + jsName + ' : ' + myloader.dep[jsName]);
+    // this js file is dependent on other js file
+    console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
+    if (myloader.loaded[myloader.dep[jsName]] == 'no') {
+      // The dependent file is not loaded
+      console.log(myloader.dep[jsName] + ' is not loaded.');
+      myloader.jsContent[jsName] = jsContent;
+      // wait for a while and re-check whether loaded.
+      setTimeout(myloader.checkAgain(jsName), 10);
+    } else {
+      // The dependent file is loaded
+      console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
+      myloader.insertJS(jsName, jsContent);
+      myloader.loaded[jsName] = 'yes';
+    }
+    console.log('---');
   }
+};
+
+myloader.checkAgain = function(jsName) {
+  // check again whether the dependent file is loaded
+  console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
+  if (myloader.loaded[myloader.dep[jsName]] == 'no') {
+    // The dependent file is not loaded
+    console.log(myloader.dep[jsName] + ' is not loaded.');
+    // wait for a while and re-check whether loaded.
+    setTimeout(myloader.checkAgain(jsName), 10);
+  } else {
+    // The dependent file is loaded
+    console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
+    myloader.insertJS(jsName, jsContent);
+    myloader.loaded[jsName] = 'yes';
+  }
+  console.log('---');
 };
 
 myloader.insertJS = function(jsName, jsContent) {
@@ -54,6 +90,22 @@ myloader.dep = {
   'inputsuggest.js': 'base.js',
   'palidict.js': 'base.js',
 };
+
+myloader.loaded = function() {
+  var loadedObj = {};
+  for (var key in myloader.dep) {
+    loadedObj[key] = 'no';
+  }
+  return loadedObj;
+}();
+
+myloader.jsContent = function() {
+  var jsContentObj = {};
+  for (var key in myloader.dep) {
+    jsContentObj[key] = null;
+  }
+  return jsContentObj;
+}();
 
 myloader.main = function() {
   var host = 'http://pali.googlecode.com/git/';
