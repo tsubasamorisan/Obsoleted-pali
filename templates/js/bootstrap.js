@@ -50,7 +50,7 @@ var queryURL = function() {
 /* Load Google Web Fonts */
 LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
 /* Load JS, CSS and Favicon */
-if (queryURL.ugcfh == "yes") {
+if (queryURL['ugcfh'] == "yes") {
   /* use google code to serve files */
   prefix = 'http://pali.googlecode.com/git/';
   LoadFavicon(prefix + "static/favicon.ico");
@@ -67,14 +67,17 @@ if (queryURL.ugcfh == "yes") {
   */
   LoadFavicon("favicon.ico");
   LoadJS("static/jsvarindex.js");
-  if (queryURL.compiledjs == 'yes') {
-    LoadJS("static/js/pali-spo.js");
+  if (queryURL['compiledjs'] == 'yes') {
+    LoadJS("static/js/pali-adv.js");
   }
   else {
+    LoadJS("static/js/jsdeploader.js");
+/*
     LoadJS("static/js/base.js");
     LoadJS("static/js/draggable.js");
     LoadJS("static/js/inputsuggest.js");
     LoadJS("static/js/palidict.js");
+*/
   }
   LoadCSS("static/css/palidict.css");
 } else if (window.location.host == 'palidictionary.appspot.com') {
@@ -99,7 +102,7 @@ if (queryURL.ugcfh == "yes") {
   LoadCSS("statics/css/palidict.css");
 }
 
-if (queryURL.track != "no") {
+if (queryURL['track'] != "no") {
   if (window.location.host != 'localhost:8080') {
   /* Load Google Analytics Code */
 var _gaq = _gaq || [];
