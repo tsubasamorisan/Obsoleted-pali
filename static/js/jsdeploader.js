@@ -38,6 +38,16 @@ myloader.handleDependency = function(jsName, jsContent) {
     myloader.insertJS(jsName, jsContent);
     myloader.loaded[jsName] = 'yes';
     //console.log('loaded? ' + myloader.loaded[jsName]);
+    for (var key in myloader.loaded) {
+      if (myloader.loaded[key] == 'no' &&
+          myloader.jsContentLoaded[key] == 'yes' &&
+          myloader.loaded[myloader.dep[key]] == 'yes') {
+        console.log('dependency of ' + key + ' : ' + myloader.dep[key]);
+        console.log('the dependent file '+ myloader.dep[key] +' is already loaded.');
+        myloader.insertJS(key, myloader.jsContent[key]);
+        myloader.loaded[key] = 'yes';
+      }
+    }
     console.log('---');
   } else {
     // this js file is dependent on other js file
@@ -46,8 +56,7 @@ myloader.handleDependency = function(jsName, jsContent) {
       // The dependent file is not loaded
       console.log(myloader.dep[jsName] + ' is not loaded.');
       myloader.jsContent[jsName] = jsContent;
-      // wait for a while and re-check whether loaded.
-      setTimeout(myloader.checkAgain(jsName), 10);
+      myloader.jsContentLoaded[jsName] = 'yes';
     } else {
       // The dependent file is loaded
       console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
@@ -56,23 +65,6 @@ myloader.handleDependency = function(jsName, jsContent) {
     }
     console.log('---');
   }
-};
-
-myloader.checkAgain = function(jsName) {
-  // check again whether the dependent file is loaded
-  console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
-  if (myloader.loaded[myloader.dep[jsName]] == 'no') {
-    // The dependent file is not loaded
-    console.log(myloader.dep[jsName] + ' is not loaded.');
-    // wait for a while and re-check whether loaded.
-    setTimeout(myloader.checkAgain(jsName), 10);
-  } else {
-    // The dependent file is loaded
-    console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
-    myloader.insertJS(jsName, jsContent);
-    myloader.loaded[jsName] = 'yes';
-  }
-  console.log('---');
 };
 
 myloader.insertJS = function(jsName, jsContent) {
@@ -105,6 +97,14 @@ myloader.jsContent = function() {
     jsContentObj[key] = null;
   }
   return jsContentObj;
+}();
+
+myloader.jsContentLoaded = function() {
+  var jsContentLoadedObj = {};
+  for (var key in myloader.dep) {
+    jsContentLoadedObj[key] = 'no';
+  }
+  return jsContentLoadedObj;
 }();
 
 myloader.main = function() {
