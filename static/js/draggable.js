@@ -89,6 +89,8 @@ pali.Draggable = function(id) {
 pali.Draggable.prototype.startMouseDraggable = function(e) {
   var evt = e || window.event; // For IE compatible
 
+  // suppress the default action of the mouse event: start selecting text.
+  // maybe no need to 'return false;' at the end of this function.
   evt.preventDefault();
   evt.stopPropagation();
 
@@ -138,6 +140,8 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
 pali.Draggable.prototype.mouseDrag = function(e) {
   var evt = e || window.event; // For IE compatible
 
+  // suppress the default action of mouse event
+  // maybe no need to 'return false;' at the end of this function.
   evt.preventDefault();
   evt.stopPropagation();
 
