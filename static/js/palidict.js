@@ -1,6 +1,29 @@
 pali.require('base');
 
-window.onload = function() {
+/**
+ * simple dom ready
+ * @see http://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
+ * @see http://www.javascriptkit.com/dhtmltutors/domready.shtml
+ * @see https://github.com/jquery/jquery/blob/master/src/core.js
+ * @see https://github.com/ded/domready/
+ * @see http://code.google.com/p/domready/
+ */
+
+var domIsReady = false;
+
+
+if ( document.readyState === "complete" || ( document.readyState !== "loading" && document.addEventListener ) ) {
+  if (!domIsReady) {domIsReady = true;domReady();}
+} else if ( document.addEventListener ) {
+document.addEventListener( "DOMContentLoaded", function(){if (!domIsReady) {domIsReady = true;domReady();}}, false );
+window.addEventListener( "load", function(){if (!domIsReady) {domIsReady = true;domReady();}}, false );
+// If IE event model is used
+} else {
+document.attachEvent( "onreadystatechange", function(){if (!domIsReady) {domIsReady = true;domReady();}} );
+window.attachEvent( "onload", function(){if (!domIsReady) {domIsReady = true;domReady();}} );
+}
+
+function domReady() {
   document.getElementById('PaliInput').focus();
 
   // start input suggest
@@ -33,7 +56,7 @@ window.onload = function() {
       document.getElementById("PaliInput").focus();
     };
   }
-};
+}
 
 
 //<!-- make keypad show if hidden, hide if shown -->
