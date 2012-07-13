@@ -87,14 +87,17 @@ pali.Draggable = function(id) {
  * @private
  */
 pali.Draggable.prototype.startMouseDraggable = function(e) {
+  var evt = e || window.event; // For IE compatible
+
+  evt.preventDefault();
+  evt.stopPropagation();
+
   // In case mouse move and up event have been previously registered
   this.releaseElement();
 
   // Set current position of dragged element
   this.startX_ = this.draggedElement_.offsetLeft;
   this.startY_ = this.draggedElement_.offsetTop;
-
-  var evt = e || window.event; // For IE compatible
 
   // Set current position of mouse cursor
   this.initialMouseX_ = evt.clientX;
@@ -119,6 +122,7 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
    * suppress the default action of the mouse event: start selecting text.
    *
    * return false = evt.preventDefault + evt.stopPropagation
+   * @see http://stackoverflow.com/questions/128923/whats-the-effect-of-adding-return-false-to-an-onclick-event
    * @see http://stackoverflow.com/questions/1357118/event-preventdefault-vs-return-false 
    */
   return false;
@@ -133,6 +137,9 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
  */
 pali.Draggable.prototype.mouseDrag = function(e) {
   var evt = e || window.event; // For IE compatible
+
+  evt.preventDefault();
+  evt.stopPropagation();
 
   // calculate the delta of mouse cursor movement
   var dX = evt.clientX - this.initialMouseX_;
