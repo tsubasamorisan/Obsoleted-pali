@@ -29,19 +29,25 @@ myloader.xhrLoadJS = function(url_p, name_p) {
   xmlhttp.send();
 };
 
+myloader.isDependencySatisfied = function(jsName) {
+  if (myloader.loaded[myloader.dep[jsName]] == 'yes') {
+    return true;
+  }
+  return false;
+}
+
 myloader.handleDependency = function(jsName, jsContent) {
   if (myloader.dep[jsName] == null) {
     // this js file is not dependent on other js file
     console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
-    //console.log('loaded? ' + myloader.loaded[jsName]);
     console.log(jsName + ' has no dependency. insert directly.');
     myloader.insertJS(jsName, jsContent);
     myloader.loaded[jsName] = 'yes';
-    //console.log('loaded? ' + myloader.loaded[jsName]);
+    // load other script(s) dependent on this script if already completely downloaded
     for (var key in myloader.loaded) {
       if (myloader.loaded[key] == 'no' &&
           myloader.jsContentLoaded[key] == 'yes' &&
-          myloader.loaded[myloader.dep[key]] == 'yes') {
+          myloader.isDependencySatisfied(key)) {
         console.log('dependency of ' + key + ' : ' + myloader.dep[key]);
         console.log('the dependent file '+ myloader.dep[key] +' is already loaded.');
         myloader.insertJS(key, myloader.jsContent[key]);
@@ -52,16 +58,16 @@ myloader.handleDependency = function(jsName, jsContent) {
   } else {
     // this js file is dependent on other js file
     console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
-    if (myloader.loaded[myloader.dep[jsName]] == 'no') {
-      // The dependent file is not loaded
-      console.log(myloader.dep[jsName] + ' is not loaded.');
-      myloader.jsContent[jsName] = jsContent;
-      myloader.jsContentLoaded[jsName] = 'yes';
-    } else {
+    if (myloader.isDependencySatisfied(jsName)) {
       // The dependent file is loaded
       console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
       myloader.insertJS(jsName, jsContent);
       myloader.loaded[jsName] = 'yes';
+    } else {
+      // The dependent file is not loaded
+      console.log(myloader.dep[jsName] + ' is not loaded.');
+      myloader.jsContent[jsName] = jsContent;
+      myloader.jsContentLoaded[jsName] = 'yes';
     }
     console.log('---');
   }
@@ -80,7 +86,8 @@ myloader.dep = {
   'base.js' : null,
   'draggable.js': 'base.js',
   'inputsuggest.js': 'base.js',
-  'palidict.js': 'base.js',
+//  'palidict.js': 'draggable.js, inputsuggest.js'
+  'palidict.js': 'base.js'
 };
 
 myloader.loaded = function() {
