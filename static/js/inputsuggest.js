@@ -273,6 +273,18 @@ pali.InputSuggest.prototype.prefixMatch = function() {
    * @private
    */
   var arrayName = "prefix_" + pali.InputSuggest.PrefixMapping[userInputStr[0]];
+  try {
+    /**
+     * search keyword: javascript evaluate string as variable
+     * in this case, eval(arrayName)
+     */
+    var array = eval(arrayName);
+  }
+  catch (e) {
+    console.log('Error at: eval(arrayName)');
+    console.log(e);
+    return;
+  }
 
   /**
    * number of prefix-matched words
@@ -286,14 +298,10 @@ pali.InputSuggest.prototype.prefixMatch = function() {
   }
   this.prefixMatchedPaliWords_ = new Array();
 
-  /**
-   * search keyword: javascript evaluate string as variable
-   * in this case, eval(arrayName)
-   */
-  for (var i=0; i < eval(arrayName).length; i++ ) {
+  for (var i=0; i < array.length; i++ ) {
     // If the pāli word starts with user input string
-    if (eval(arrayName)[i].indexOf(userInputStr) == 0) {
-      this.prefixMatchedPaliWords_.push(eval(arrayName)[i]);
+    if (array[i].indexOf(userInputStr) == 0) {
+      this.prefixMatchedPaliWords_.push(array[i]);
       matchedCount += 1;
     }
 
