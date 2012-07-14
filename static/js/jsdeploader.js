@@ -65,8 +65,18 @@ myloader.isDependencySatisfied = function(jsName) {
   return isAllDepSatisfied;
 };
 
-myloader.logDependency = function(jsName) {
-  return;
+myloader.loadOthers = function() {
+  var loadNew = false;
+  for (var jsName in myloader.isLoaded) {
+    if (!myloader.isLoaded[jsName] && myloader.isJSContentLoaded[jsName] && myloader.isDependencySatisfied(jsName)) {
+      myloader.insertJS(jsName, myloader.jsContent[jsName]);
+      myloader.isLoaded[jsName] = true;
+      loadNew = true;
+    }
+  }
+  if (loadNew) {
+    myloader.loadOthers();
+  }
 };
 
 myloader.handleDependency = function(jsName, jsContent) {
@@ -74,12 +84,7 @@ myloader.handleDependency = function(jsName, jsContent) {
     myloader.insertJS(jsName, jsContent);
     myloader.isLoaded[jsName] = true;
     // load other script(s) dependent on this script if already completely downloaded
-    for (var key in myloader.isLoaded) {
-      if (!myloader.isLoaded[key] && myloader.isJSContentLoaded[key] && myloader.isDependencySatisfied(key)) {
-        myloader.insertJS(key, myloader.jsContent[key]);
-        myloader.isLoaded[key] = true;
-      }
-    }
+    myloader.loadOthers();
   } else {
     myloader.jsContent[jsName] = jsContent;
     myloader.isJSContentLoaded[jsName] = true;
