@@ -51,7 +51,9 @@ myloader.isDependencySatisfied = function(jsName) {
 
   var isAllDepSatisfied = true;
   for (var i=0; i < depJSFileArray.length; i++) {
-    isAllDepSatisfied |= myloader.isLoaded[depJSFileArray[i]];
+    if (!myloader.isLoaded[depJSFileArray[i]]) {
+      isAllDepSatisfied = false;
+    }
   }
 
   if (isAllDepSatisfied) {
