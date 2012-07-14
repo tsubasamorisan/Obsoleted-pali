@@ -30,50 +30,63 @@ myloader.xhrLoadJS = function(url_p, name_p) {
 };
 
 myloader.isDependencySatisfied = function(jsName) {
-  if (myloader.loaded[myloader.dep[jsName]] == 'yes') {
+  if (myloader.dep[jsName] == null) {
+    console.log(jsName + ' has no dependency.');
+    console.log(jsName + ' dependency satisfied? true');
+    console.log('---');
     return true;
   }
-  return false;
-}
+
+  var depJSFileArray = myloader.dep[jsName].split(',');
+
+  for (var i=0; i < depJSFileArray.length; i++) {
+    // Remove whitespace in the beginning and end of user input string
+    depJSFileArray[i] = depJSFileArray[i].replace(/(^\s+)|(\s+$)/g, "");
+  }
+
+  console.log(jsName + ' depends on :');
+  for (var i=0; i < depJSFileArray.length; i++) {
+    console.log(depJSFileArray[i]);
+  }
+
+  var isAllDepSatisfied = true;
+  for (var i=0; i < depJSFileArray.length; i++) {
+    isAllDepSatisfied |= myloader.isLoaded[depJSFileArray[i]];
+  }
+
+  if (isAllDepSatisfied) {
+    console.log(jsName + ' dependency satisfied? true');
+  } else {
+    console.log(jsName + ' dependency satisfied? false');
+  }
+  console.log('---');
+  return isAllDepSatisfied;
+};
+
+myloader.logDependency = function(jsName) {
+  return;
+};
 
 myloader.handleDependency = function(jsName, jsContent) {
-  if (myloader.dep[jsName] == null) {
-    // this js file is not dependent on other js file
-    console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
-    console.log(jsName + ' has no dependency. insert directly.');
+  if (myloader.isDependencySatisfied(jsName)) {
     myloader.insertJS(jsName, jsContent);
-    myloader.loaded[jsName] = 'yes';
+    myloader.isLoaded[jsName] = true;
     // load other script(s) dependent on this script if already completely downloaded
-    for (var key in myloader.loaded) {
-      if (myloader.loaded[key] == 'no' &&
-          myloader.jsContentLoaded[key] == 'yes' &&
-          myloader.isDependencySatisfied(key)) {
-        console.log('dependency of ' + key + ' : ' + myloader.dep[key]);
-        console.log('the dependent file '+ myloader.dep[key] +' is already loaded.');
+    for (var key in myloader.isLoaded) {
+      if (!myloader.isLoaded[key] && myloader.isJSContentLoaded[key] && myloader.isDependencySatisfied(key)) {
         myloader.insertJS(key, myloader.jsContent[key]);
-        myloader.loaded[key] = 'yes';
+        myloader.isLoaded[key] = true;
       }
     }
-    console.log('---');
   } else {
-    // this js file is dependent on other js file
-    console.log('dependency of ' + jsName + ' : ' + myloader.dep[jsName]);
-    if (myloader.isDependencySatisfied(jsName)) {
-      // The dependent file is loaded
-      console.log('the dependent file '+ myloader.dep[jsName] +' is already loaded.');
-      myloader.insertJS(jsName, jsContent);
-      myloader.loaded[jsName] = 'yes';
-    } else {
-      // The dependent file is not loaded
-      console.log(myloader.dep[jsName] + ' is not loaded.');
-      myloader.jsContent[jsName] = jsContent;
-      myloader.jsContentLoaded[jsName] = 'yes';
-    }
-    console.log('---');
+    myloader.jsContent[jsName] = jsContent;
+    myloader.isJSContentLoaded[jsName] = true;
   }
 };
 
 myloader.insertJS = function(jsName, jsContent) {
+  console.log(jsName + ' loaded');
+  console.log('---');
   var script = document.createElement('script');
   script.setAttribute("type","text/javascript");
   var textNode = document.createTextNode(jsContent);
@@ -86,14 +99,14 @@ myloader.dep = {
   'base.js' : null,
   'draggable.js': 'base.js',
   'inputsuggest.js': 'base.js',
-//  'palidict.js': 'draggable.js, inputsuggest.js'
-  'palidict.js': 'base.js'
+//  'palidict.js': 'base.js'
+  'palidict.js': 'draggable.js, inputsuggest.js'
 };
 
-myloader.loaded = function() {
+myloader.isLoaded = function() {
   var loadedObj = {};
   for (var key in myloader.dep) {
-    loadedObj[key] = 'no';
+    loadedObj[key] = false;
   }
   return loadedObj;
 }();
@@ -106,10 +119,10 @@ myloader.jsContent = function() {
   return jsContentObj;
 }();
 
-myloader.jsContentLoaded = function() {
+myloader.isJSContentLoaded = function() {
   var jsContentLoadedObj = {};
   for (var key in myloader.dep) {
-    jsContentLoadedObj[key] = 'no';
+    jsContentLoadedObj[key] = false;
   }
   return jsContentLoadedObj;
 }();
