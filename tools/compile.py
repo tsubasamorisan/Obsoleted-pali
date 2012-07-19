@@ -68,6 +68,12 @@ if __name__ == '__main__':
     print(    '%s %s %s' % (partial_cmd, adv, output_js_adv))
     os.system('%s %s %s' % (partial_cmd, adv, output_js_adv))
     sys.exit(0)
+  elif sys.argv[1] == "prd":
+    print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
+    os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
+    print(    '%s %s %s' % (partial_cmd, adv, output_js_adv))
+    os.system('%s %s %s' % (partial_cmd, adv, output_js_adv))
+    sys.exit(0)
   else:
     usage()
     sys.exit(1)
