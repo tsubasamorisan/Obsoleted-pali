@@ -91,8 +91,10 @@ pali.Draggable.prototype.startMouseDraggable = function(e) {
 
   // suppress the default action of the mouse event: start selecting text.
   // maybe no need to 'return false;' at the end of this function.
-  evt.preventDefault();
-  evt.stopPropagation();
+  // @see http://stackoverflow.com/questions/1000597/event-preventdefault-function-not-working-in-ie
+  if (evt.preventDefault) evt.preventDefault();
+  if (evt.stopPropagation) evt.stopPropagation();
+  if (window.event) evt.returnValue = false; // IE version of preventDefault
 
   // In case mouse move and up event have been previously registered
   this.releaseElement();
@@ -142,8 +144,10 @@ pali.Draggable.prototype.mouseDrag = function(e) {
 
   // suppress the default action of mouse event
   // maybe no need to 'return false;' at the end of this function.
-  evt.preventDefault();
-  evt.stopPropagation();
+  // @see http://stackoverflow.com/questions/1000597/event-preventdefault-function-not-working-in-ie
+  if (evt.preventDefault) evt.preventDefault();
+  if (evt.stopPropagation) evt.stopPropagation();
+  if (window.event) evt.returnValue = false; // IE version of preventDefault
 
   // calculate the delta of mouse cursor movement
   var dX = evt.clientX - this.initialMouseX_;

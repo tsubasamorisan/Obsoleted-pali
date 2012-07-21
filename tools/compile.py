@@ -33,6 +33,7 @@ def usage():
   print("$ python compile.py wso")
   print("$ python compile.py spo")
   print("$ python compile.py adv")
+  print("$ python compile.py prd")
 
 if __name__ == '__main__':
   if len(sys.argv) != 2:
