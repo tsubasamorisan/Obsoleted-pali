@@ -48,8 +48,8 @@ pali.Dropdown = function(dropdownId, dropdownMenuDivId) {
    * @enum {function}
    */
   this.eventHandlers_ = {
-    'onDocumentClick': this.onDocumentClick.bind(this),
-  } 
+    'onDocumentClick': this.onDocumentClick.bind(this)
+  };
 
   // listen to document click event
   pali.addEventListener(document, 'click',

@@ -44,7 +44,7 @@ pali.Draggable = function(id) {
     'startMouseDraggable': this.startMouseDraggable.bind(this),
     'mouseDrag'          : this.mouseDrag.bind(this),
     'releaseElement'     : this.releaseElement.bind(this)
-  }
+  };
 
   /**
    * The initial X position of draggable DOM element.
