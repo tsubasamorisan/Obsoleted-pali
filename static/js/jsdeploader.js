@@ -101,13 +101,13 @@ myloader.insertJS = function(jsName, jsContent) {
   document.getElementsByTagName("head")[0].appendChild(script);
 };
 
-myloader.modules = ['base.js', 'draggable.js', 'inputsuggest.js', 'palidict.js'];
+myloader.modules = ['base.js', 'dropdown.js', 'draggable.js', 'inputsuggest.js', 'palidict.js'];
 myloader.dep = {
   'base.js' : null,
+  'dropdown.js': 'base.js',
   'draggable.js': 'base.js',
   'inputsuggest.js': 'base.js',
-//  'palidict.js': 'base.js'
-  'palidict.js': 'draggable.js, inputsuggest.js'
+  'palidict.js': 'dropdown.js, draggable.js, inputsuggest.js'
 };
 
 myloader.isLoaded = function() {

@@ -1,4 +1,7 @@
 pali.require('base');
+pali.require('dropdown');
+pali.require('draggable');
+pali.require('inputsuggest');
 
 /**
  * simple dom ready
@@ -28,6 +31,10 @@ function domReady() {
 
   // start input suggest
   var suggest = new pali.InputSuggest("PaliInput", "suggest");
+
+  // start dropdown menu
+  var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
+  var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
   // check users are now at which site, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')
@@ -170,94 +177,6 @@ function JSONPlookupCallback(result) {
   document.getElementById('result').appendChild(resultOuterTable);
 }
 
-
-// hide popup div when clicking outside the div
-// http://www.webdeveloper.com/forum/showthread.php?t=98973
-document.onclick = check;
-// Event accessing
-// http://www.quirksmode.org/js/events_access.html
-// Event properties
-// http://www.quirksmode.org/js/events_properties.html
-function check(e){
-  var target = (e && e.target) || (event && event.srcElement); 
-  var langDropdownMenuDiv = document.getElementById("menuDiv-lang-dropdown"); 
-  var langDropdown = document.getElementById("lang-dropdown"); 
-  var siteDropdownMenuDiv = document.getElementById("menuDiv-site-dropdown"); 
-  var siteDropdown = document.getElementById("site-dropdown"); 
-
-  if (!checkParent(target, "menuDiv-lang-dropdown")) {
-    // click outside the language dropdown menu
-    if (checkParent(target, "lang-dropdown")) {
-      // click outside the language dropdown menu
-      // AND 
-      // click on the language dropdown link
-      if (langDropdownMenuDiv.style.display == "none") {
-        // click outside the language dropdown menu
-        // AND 
-        // click on the language dropdown link
-        // AND
-        // the dropdown menu is invisible
-        langDropdownMenuDiv.style.left = pali.getOffset(langDropdown).left +"px";
-        langDropdownMenuDiv.style.top = (pali.getOffset(langDropdown).top + langDropdown.offsetHeight +3) +"px";
-        langDropdownMenuDiv.style.display = "block";
-      } else {
-        // click outside the language dropdown menu
-        // AND 
-        // click on the language dropdown link
-        // AND
-        // the dropdown menu is visible
-        langDropdownMenuDiv.style.display = "none";}
-    } else {
-      // click outside the language dropdown menu
-      // AND 
-      // click outside the language dropdown link
-      langDropdownMenuDiv.style.display = "none";
-    }
-  }
-
-  if (!checkParent(target, "menuDiv-site-dropdown")) {
-    // click outside the site dropdown menu
-    if (checkParent(target, "site-dropdown")) {
-      // click outside the site dropdown menu
-      // AND 
-      // click on the site dropdown link
-      if (siteDropdownMenuDiv.style.display == "none") {
-        // click outside the site dropdown menu
-        // AND 
-        // click on the site dropdown link
-        // AND
-        // the dropdown menu is invisible
-        siteDropdownMenuDiv.style.left = pali.getOffset(siteDropdown).left +"px";
-        siteDropdownMenuDiv.style.top = (pali.getOffset(siteDropdown).top + siteDropdown.offsetHeight +3) +"px";
-        siteDropdownMenuDiv.style.display = "block";
-      } else {
-        // click outside the site dropdown menu
-        // AND 
-        // click on the site dropdown link
-        // AND
-        // the dropdown menu is visible
-        siteDropdownMenuDiv.style.display = "none";}
-    } else {
-      // click outside the site dropdown menu
-      // AND 
-      // click outside the site dropdown link
-      siteDropdownMenuDiv.style.display = "none";
-    }
-  }
-}
-function checkParent(t,id) {
-  /* Chrome and Firefox use parentNode, while Opera use offsetParent */
-  while(t.parentNode) { 
-    if( t == document.getElementById(id) ) {return true;} 
-    t = t.parentNode;
-  } 
-  while(t.offsetParent) { 
-    if( t == document.getElementById(id) ) {return true;} 
-    t = t.offsetParent;
-  } 
-  return false;
-}
-
 function onSiteClick(element, flag) {
   var url = '';
   if (flag == '1') { url = 'http://palidictionary.appspot.com/'; }
@@ -310,6 +229,5 @@ window['onPaliInputSubmit'] = onPaliInputSubmit;
 window['lookup'] = lookup;
 window['JSONPlookup'] = JSONPlookup;
 window['JSONPlookupCallback'] = JSONPlookupCallback;
-window['check'] = check;
 window['onSiteClick'] = onSiteClick;
 window['onLocaleClick'] = onLocaleClick;
