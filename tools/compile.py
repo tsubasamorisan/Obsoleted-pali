@@ -15,12 +15,13 @@ input_base = '--js static/js/base.js'
 input_js1 =  '--js static/js/dropdown.js'
 input_js2 =  '--js static/js/draggable.js'
 input_js3 =  '--js static/js/inputsuggest.js'
-input_js4 =  '--js static/js/palidict.js'
+input_js4 =  '--js static/js/lookup.js'
+input_js5 =  '--js static/js/palidict.js'
 output_js_wso = '--js_output_file static/js/pali-wso.js'
 output_js_spo = '--js_output_file static/js/pali-spo.js'
 output_js_adv = '--js_output_file static/js/pali-adv.js'
 
-partial_cmd = '%s %s %s %s %s %s' % (compiler, input_base, input_js1, input_js2, input_js3, input_js4)
+partial_cmd = '%s %s %s %s %s %s %s' % (compiler, input_base, input_js1, input_js2, input_js3, input_js4, input_js5)
 
 wso = '--compilation_level WHITESPACE_ONLY'
 spo = '--compilation_level SIMPLE_OPTIMIZATIONS'
