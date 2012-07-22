@@ -78,6 +78,7 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
 
 /**
  * Generate random id string
+ * @return {string} String of 5 random characters
  * @private
  */
 Lookup.prototype.randomId = function() {
@@ -155,53 +156,65 @@ Lookup.prototype.lookupByJSONP = function() {
  * Callback function of JSONP lookup
  * @param {string} result The JSON-format data which contains the result of word
  *                        lookup. "list of 3-tuple" in Python
+ * @private
  */
-Lookup.prototype.JSONPCallback = function(result) {
+Lookup.prototype.JSONPCallback = function(jsonData) {
   // FIXME: re-write this function
   this.result_.innerHTML = "";
-  if (result == null) {
+  if (jsonData == null) {
     this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
-  //result = eval(result);
-  for (var index1 in result) {
-    var dictWordExp = eval(result[index1]);
+  //jsonData = eval(jsonData);
+  for (var index1 in jsonData) {
+    var dictWordExp = eval(jsonData[index1]);
     var resultInnerTable = document.createElement("table");
     var count = 0;
     resultInnerTable.className = "dicTable";
     for (var index2 in dictWordExp) {
+      if (count > 2) throw "In JSONPCallback: count > 2";
       var tr = document.createElement("tr");
       var td = document.createElement("td");
       var th = document.createElement("th");
       if (count == 0) {th.innerHTML = getStringDictionary();}
-      else if (count == 1) {th.innerHTML = getStringPaliWord();}
-      else {th.innerHTML = getStringExplain();}
+      if (count == 1) {th.innerHTML = getStringPaliWord();}
+      if (count == 2) {th.innerHTML = getStringExplain();}
       td.innerHTML = dictWordExp[index2];
       tr.appendChild(th);
       tr.appendChild(td);
       resultInnerTable.appendChild(tr);
-      if (count > 2) {console.log("in JSONPlookupCallback: something strange. count > 2");}
       count += 1;
     }
     var tr = document.createElement("tr");
     var td = document.createElement("td");
     td.appendChild(resultInnerTable);
-
-    var backToTop = document.createElement("a");
-    backToTop.href = '/';
-    backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
-//    backToTop.href = "javascript:window.scrollTo(0,0);";
-    backToTop.style.textDecoration = "none";
-    backToTop.style.color = "#00C";
-    backToTop.style.fontSize = "small";
-    backToTop.style.cursor = "pointer";
-    backToTop.innerHTML = '<span style="text-decoration:underline">' + getStringBackToTop() + '</span><span style="font-size:.75em;">&#9650;</span>';
-    td.appendChild(backToTop);
+    td.appendChild(this.createBackToTop());
 
     tr.appendChild(td);
     resultOuterTable.appendChild(tr);
   }
   this.result_.appendChild(resultOuterTable);
+};
+
+
+/**
+ * Create a back-to-top DOM element
+ * @return {DOM Element} Back-to-top DOM Element
+ * @private
+ */
+Lookup.prototype.createBackToTop = function() {
+  var backToTop = document.createElement("a");
+  backToTop.href = '/';
+  backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
+//  backToTop.href = "javascript:window.scrollTo(0,0);";
+  backToTop.style.textDecoration = "none";
+  backToTop.style.color = "#00C";
+  backToTop.style.fontSize = "small";
+  backToTop.style.cursor = "pointer";
+  backToTop.innerHTML = '<span style="text-decoration:underline">' +
+                        getStringBackToTop() +
+                        '</span><span style="font-size:.75em;">&#9650;</span>';
+  return backToTop;
 };
