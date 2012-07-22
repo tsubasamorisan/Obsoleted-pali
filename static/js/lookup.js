@@ -89,7 +89,7 @@ Lookup.prototype.lookupByHTTPPost = function() {
         throw "In lookupByHTTPPost: XMLHttpRequest error!";
       }
     }
-  }
+  }.bind(this);
 
   this.result_.innerHTML = getStringLookingUp();
   xmlhttp.open("POST", this.url_, true);
