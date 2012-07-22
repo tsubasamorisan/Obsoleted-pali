@@ -159,7 +159,6 @@ Lookup.prototype.lookupByJSONP = function() {
  * @private
  */
 Lookup.prototype.JSONPCallback = function(jsonData) {
-  // FIXME: re-write this function
   this.result_.innerHTML = "";
   if (jsonData == null) {
     this.result_.innerHTML = getStringNoSuchWord();
@@ -168,34 +167,51 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
   //jsonData = eval(jsonData);
-  for (var index1 in jsonData) {
-    var dictWordExp = eval(jsonData[index1]);
-    var resultInnerTable = document.createElement("table");
-    var count = 0;
-    resultInnerTable.className = "dicTable";
-    for (var index2 in dictWordExp) {
-      if (count > 2) throw "In JSONPCallback: count > 2";
-      var tr = document.createElement("tr");
-      var td = document.createElement("td");
-      var th = document.createElement("th");
-      if (count == 0) {th.innerHTML = getStringDictionary();}
-      if (count == 1) {th.innerHTML = getStringPaliWord();}
-      if (count == 2) {th.innerHTML = getStringExplain();}
-      td.innerHTML = dictWordExp[index2];
-      tr.appendChild(th);
-      tr.appendChild(td);
-      resultInnerTable.appendChild(tr);
-      count += 1;
-    }
+  for (var index in jsonData) {
+    var dictWordExp = eval(jsonData[index]);
+
     var tr = document.createElement("tr");
     var td = document.createElement("td");
-    td.appendChild(resultInnerTable);
+    td.appendChild(this.createDictionaryWordExplanationTable(dictWordExp));
     td.appendChild(this.createBackToTop());
 
     tr.appendChild(td);
     resultOuterTable.appendChild(tr);
   }
   this.result_.appendChild(resultOuterTable);
+};
+
+
+/**
+ * Create a DOM element which contains a table for dictionary-word-explanation.
+ * @param {Array} dictWordExp Array which contains data to be processed.
+ * @return {DOM Element} HTML table of dictionary-word-explanation.
+ * @private
+ */
+Lookup.prototype.createDictionaryWordExplanationTable = function(dictWordExp) {
+  // check data sanity
+  if (Object.prototype.toString.apply(dictWordExp) != '[object Array]')
+    throw "In createDictionaryWordExplanationTable: parameter is not Array!";
+  if (dictWordExp.length != 3)
+    throw "In createDictionaryWordExplanationTable: parameter length != 3";
+
+  var resultInnerTable = document.createElement("table");
+  var count = 0;
+  resultInnerTable.className = "dicTable";
+  for (var i=0; i < dictWordExp.length; i++) {
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    var th = document.createElement("th");
+    if (count == 0) {th.innerHTML = getStringDictionary();}
+    if (count == 1) {th.innerHTML = getStringPaliWord();}
+    if (count == 2) {th.innerHTML = getStringExplain();}
+    td.innerHTML = dictWordExp[i];
+    tr.appendChild(th);
+    tr.appendChild(td);
+    resultInnerTable.appendChild(tr);
+    count += 1;
+  }
+  return resultInnerTable;
 };
 
 
