@@ -22,6 +22,7 @@ pali.require("base");
 pali.Draggable = function(id) {
   /**
    * The DOM element to be made draggable.
+   * @const
    * @type {DOM Element}
    * @private
    */

@@ -21,6 +21,7 @@ pali.require('base');
 pali.InputSuggest = function(inputId, suggestDivId) {
   /**
    * DOM element of pāli text input
+   * @const
    * @type {DOM Element}
    * @private
    */
@@ -28,6 +29,7 @@ pali.InputSuggest = function(inputId, suggestDivId) {
 
   /**
    * DOM element of suggestion menu of pāli words
+   * @const
    * @type {DOM Element}
    * @private
    */
@@ -131,6 +133,7 @@ pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
 
 /**
  * Map romanized pāli letters to English name.
+ * @const
  * @enum {string}
  * @private
  */
@@ -174,6 +177,7 @@ pali.InputSuggest.PrefixMapping = {
 
 /**
  * Keys code numbers.
+ * @const
  * @enum {number}
  * @private
  */

@@ -17,13 +17,14 @@ pali.require("base");
 /**
  * Class to make a dropdown menu.
  *
- * @param {string} id The id of DOM element to toggle menu div.
- * @param {string} id The id of DOM element of menu div.
+ * @param {string} dropdownId The id of DOM element to toggle menu div.
+ * @param {string} dropdownMenuDivId The id of DOM element of menu div.
  * @constructor
  */
 pali.Dropdown = function(dropdownId, dropdownMenuDivId) {
   /**
    * The DOM element to toggle menu div.
+   * @const
    * @type {DOM Element}
    * @private
    */
@@ -32,6 +33,7 @@ pali.Dropdown = function(dropdownId, dropdownMenuDivId) {
 
   /**
    * The DOM element of menu div.
+   * @const
    * @type {DOM Element}
    * @private
    */
@@ -45,6 +47,7 @@ pali.Dropdown = function(dropdownId, dropdownMenuDivId) {
    * The workaround is as below. Use an event handler object to wrap functions.
    * @see http://stackoverflow.com/questions/4386300/javascript-dom-how-to-remove-all-events-of-a-dom-object
    * @see https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+   * @const
    * @enum {function}
    */
   this.eventHandlers_ = {
