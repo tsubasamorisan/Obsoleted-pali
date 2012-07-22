@@ -29,7 +29,7 @@
          <div id="upperAD">{% include "google_upper_ad_code" %}</div>
          <br style="line-height: 2em;" />
          <!-- input pāli word -->
-         <form action="javascript:onPaliInputSubmit();" style="text-align: center;" autocomplete="off">
+         <form id="inputForm" style="text-align: center;" autocomplete="off">
            <div>
             <input id="PaliInput" type="text" name="word" value="" />
             <input type="submit" value="Search" /><sub><a id="displayText" href="javascript:toggle();">{{_("Show Pāli Keypad")}}</a></sub>
