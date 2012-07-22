@@ -62,6 +62,39 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
     this.form_.action = "javascript:void(0);";
     this.form_.onsubmit = this.lookupByHTTPPost.bind(this);
   }
+
+  this.globalName_ = this.randomId();
+  // check if this name is already in global scope. if already exists, get
+  // another name.
+  while (window[this.globalName_]) {
+    this.globalName_ = this.randomId();
+  }
+  // put this object instance in global scope
+  window[this.globalName_] = this;
+
+  if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
+};
+
+
+/**
+ * Generate random id string
+ * @private
+ */
+Lookup.prototype.randomId = function() {
+  /**
+   * Referece:
+   * @see http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
+   */
+  var id = '';
+  /**
+   * javascript function name cannot start with number
+   * so do NOT use number in chars
+   */
+  //var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  for( var i=0; i < 5; i++ )
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  return id;
 };
 
 
@@ -107,8 +140,9 @@ Lookup.prototype.lookupByHTTPPost = function() {
  */
 Lookup.prototype.lookupByJSONP = function() {
   this.result_.innerHTML = getStringLookingUp();
-  var qry = '?callback=' + 'JSONPlookupCallback' + '&word=' +
-            encodeURIComponent(this.textInput_.value);
+  var qry = '?word=' + encodeURIComponent(this.textInput_.value) +
+            '&callback=' + encodeURIComponent(this.globalName_ + '["JSONPCallback"]');
+//            '&callback=' + encodeURIComponent('(function(jsonData){console.log(jsonData);})');
   var ext = document.createElement('script');
   ext.setAttribute('src', this.url_ + qry);
   if (typeof ext != "undefined") {
@@ -119,16 +153,14 @@ Lookup.prototype.lookupByJSONP = function() {
 
 /**
  * Callback function of JSONP lookup
- * Static Function (Static Method)
  * @param {string} result The JSON-format data which contains the result of word
  *                        lookup. "list of 3-tuple" in Python
  */
-window['JSONPlookupCallback'] = function(result) {
-  // FIXME: replace document.getElementById('result')
+Lookup.prototype.JSONPCallback = function(result) {
   // FIXME: re-write this function
-  document.getElementById('result').innerHTML = "";
+  this.result_.innerHTML = "";
   if (result == null) {
-    document.getElementById('result').innerHTML = getStringNoSuchWord();
+    this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
   var resultOuterTable = document.createElement("table");
@@ -171,5 +203,5 @@ window['JSONPlookupCallback'] = function(result) {
     tr.appendChild(td);
     resultOuterTable.appendChild(tr);
   }
-  document.getElementById('result').appendChild(resultOuterTable);
+  this.result_.appendChild(resultOuterTable);
 };
