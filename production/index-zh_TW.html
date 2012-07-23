@@ -66,31 +66,31 @@ function getStringBackupSite2() { return '備用站二'; } </script>
    <div class="main-menu">
  <div class="left-main-menu">
   <span style="text-decoration: underline; cursor: pointer; color: blue;" onclick="window.location.reload()">首頁</span>
-  <a href="javascript:showAbout();">關於</a>
-  <a href="javascript:showLink();">連結</a>
+  <span id="aboutLink" class="fakeLink">關於</span>
+  <span id="linkLink" class="fakeLink">連結</span>
  </div>
  <div class="right-main-menu">
-  <a id="lang-dropdown" class="dropdown" href="/" onclick="return false;">
+  <span id="lang-dropdown" class="dropdown">
    <span id="lang" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
-  </a>
-  <a id="site-dropdown" class="dropdown" href="/" onclick="return false;">
+  </span>
+  <span id="site-dropdown" class="dropdown">
    <span id="site" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
-  </a>
+  </span>
  </div>
 </div>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '1')">English</span>
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '2')">中文 (简体)</span>
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '3')">中文 (繁體)</span>
+ <span class="menuItem" id="langItem1">English</span>
+ <span class="menuItem" id="langItem2">中文 (简体)</span>
+ <span class="menuItem" id="langItem3">中文 (繁體)</span>
 </div></div>
 
 <div class="menuDiv instance1" id="menuDiv-site-dropdown" style="position: absolute; display: none; width: 115px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" onclick="javascript:onSiteClick(this, '1')">主站</span>
- <span class="menuItem" onclick="javascript:onSiteClick(this, '2')">備用站一</span>
- <span class="menuItem" onclick="javascript:onSiteClick(this, '3')">備用站二</span>
+ <span class="menuItem" id="siteItem1">主站</span>
+ <span class="menuItem" id="siteItem2">備用站一</span>
+ <span class="menuItem" id="siteItem3">備用站二</span>
 </div></div>
 
    <table style="width: 100%; border-spacing:0; border-collapse:collapse;">
@@ -112,7 +112,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
          <form id="inputForm" style="text-align: center;" autocomplete="off">
            <div>
             <input id="PaliInput" type="text" name="word" value="" />
-            <input type="submit" value="Search" /><sub><a id="displayText" href="javascript:toggle();">顯示巴利語鍵盤</a></sub>
+            <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">顯示巴利語鍵盤</span></sub>
             <div id="suggest" style="display:none;"></div>
            </div>
          </form>
