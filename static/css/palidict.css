@@ -145,3 +145,9 @@ span.menuItem:hover {
   border: 3px solid #00FFFF;
   padding: 5px;
 }
+
+.fakeLink {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}

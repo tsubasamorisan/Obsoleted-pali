@@ -1,29 +1,29 @@
 <div class="main-menu">
  <div class="left-main-menu">
   <span style="text-decoration: underline; cursor: pointer; color: blue;" onclick="window.location.reload()">{{_("Home")}}</span>
-  <a href="javascript:showAbout();">{{_("About")}}</a>
-  <a href="javascript:showLink();">{{_("Link")}}</a>
+  <span id="aboutLink" class="fakeLink">{{_("About")}}</span>
+  <span id="linkLink" class="fakeLink">{{_("Link")}}</span>
  </div>
  <div class="right-main-menu">
-  <a id="lang-dropdown" class="dropdown" href="/" onclick="return false;">
+  <span id="lang-dropdown" class="dropdown">
    <span id="lang" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
-  </a>
-  <a id="site-dropdown" class="dropdown" href="/" onclick="return false;">
+  </span>
+  <span id="site-dropdown" class="dropdown">
    <span id="site" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
-  </a>
+  </span>
  </div>
 </div>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '1')">English</span>
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '2')">中文 (简体)</span>
- <span class="menuItem" onclick="javascript:onLocaleClick(this, '3')">中文 (繁體)</span>
+ <span class="menuItem" id="langItem1">English</span>
+ <span class="menuItem" id="langItem2">中文 (简体)</span>
+ <span class="menuItem" id="langItem3">中文 (繁體)</span>
 </div></div>
 
 <div class="menuDiv instance1" id="menuDiv-site-dropdown" style="position: absolute; display: none; width: 115px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" onclick="javascript:onSiteClick(this, '1')">{{_("Main Site")}}</span>
- <span class="menuItem" onclick="javascript:onSiteClick(this, '2')">{{_("Backup Site #1")}}</span>
- <span class="menuItem" onclick="javascript:onSiteClick(this, '3')">{{_("Backup Site #2")}}</span>
+ <span class="menuItem" id="siteItem1">{{_("Main Site")}}</span>
+ <span class="menuItem" id="siteItem2">{{_("Backup Site #1")}}</span>
+ <span class="menuItem" id="siteItem3">{{_("Backup Site #2")}}</span>
 </div></div>

@@ -62,6 +62,9 @@ function initService() {
   else {document.getElementById('lang').innerHTML = 'English';}
   document.getElementById('lang').style.wordSpacing = "normal";
 
+  // make keypad toggle-able
+  document.getElementById('displayText').onclick = toggle;
+
   // make keypad draggable
   var drag = new pali.Draggable('keyboard');
 
@@ -69,11 +72,19 @@ function initService() {
   var keypad = document.getElementById('keyboard');
   var buttons = keypad.getElementsByTagName('input');
   for (var i=0; i<buttons.length; i++) {
-    buttons[i].onclick = function(e) {
-      document.getElementById("PaliInput").value += this.value;
-      document.getElementById("PaliInput").focus();
-    };
+    buttons[i].onclick = onKeypadButtonClick;
   }
+
+  document.getElementById('aboutLink').onclick = showAbout;
+  document.getElementById('linkLink').onclick = showLink;
+
+  document.getElementById('siteItem1').onclick = onSiteClick;
+  document.getElementById('siteItem2').onclick = onSiteClick;
+  document.getElementById('siteItem3').onclick = onSiteClick;
+
+  document.getElementById('langItem1').onclick = onLocaleClick;
+  document.getElementById('langItem2').onclick = onLocaleClick;
+  document.getElementById('langItem3').onclick = onLocaleClick;
 
   document.getElementById('PaliInput').focus();
 }
@@ -94,16 +105,27 @@ function toggle() {
   }
 }
 
+function onKeypadButtonClick() {
+  // @this {DOM Element}
+  document.getElementById("PaliInput").value += this.value;
+  document.getElementById("PaliInput").focus();
+}
+
 // http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
-function onSiteClick(element, flag) {
+function onSiteClick() {
+  // @this {DOM Element}
   var url = '';
-  if (flag == '1') { url = 'http://palidictionary.appspot.com/'; }
-  else if (flag == '2') { url = 'http://siongui.pythonanywhere.com/'; }
-  else if (flag == '3') { url = 'http://siongui.webfactional.com/'; }
+  if (this.id == 'siteItem1') { url = 'http://palidictionary.appspot.com/'; }
+  else if (this.id == 'siteItem2') { url = 'http://siongui.pythonanywhere.com/'; }
+  else if (this.id == 'siteItem3') { url = 'http://siongui.webfactional.com/'; }
   else { url = 'http://palidictionary.appspot.com/'; }
+
+  if (window.location.host == 'localhost:8080' || window.location.host == 'pali.googlecode.com') {
+    queryURL['track'] = 'no';
+  }
 
   var count = 0;
   for (var key in queryURL) {
@@ -112,22 +134,15 @@ function onSiteClick(element, flag) {
     count ++;
   }
 
-  if (window.location.host == 'localhost:8080') {
-    if (queryURL['track'] != 'no') {
-      if (count == 0) { url += '?track=no'; }
-      else { url += '&track=no'; }
-      count ++;
-    }
-  }
-
   window.location = url;
 }
 
-function onLocaleClick(element, flag) {
+function onLocaleClick() {
+  // @this {DOM Element}
   var locale = '';
-  if (flag == '1') { locale = 'en_US'; }
-  else if (flag == '2') { locale = 'zh_CN'; }
-  else if (flag == '3') { locale = 'zh_TW'; }
+  if (this.id == 'langItem1') { locale = 'en_US'; }
+  else if (this.id == 'langItem2') { locale = 'zh_CN'; }
+  else if (this.id == 'langItem3') { locale = 'zh_TW'; }
   else { locale = 'en_US'; }
 
   queryURL['locale'] = locale;
@@ -141,10 +156,3 @@ function onLocaleClick(element, flag) {
 
   window.location = url;
 }
-
-// Store the function in a global property referenced by a string:
-window['toggle'] = toggle;
-window['showAbout'] = showAbout;
-window['showLink'] = showLink;
-window['onSiteClick'] = onSiteClick;
-window['onLocaleClick'] = onLocaleClick;
