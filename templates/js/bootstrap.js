@@ -66,7 +66,7 @@ if (queryURL['ugcfh'] == "yes") {
   LoadFavicon("favicon.ico");
   LoadJS(     "static/jsvarindex.js");
   if (queryURL['compiledjs'] == 'yes') {
-    LoadJS(   "static/js/pali-adv.js");
+    LoadJS(   "static/js/pali-prd.js");
   }
   else {
     LoadJS(   "static/js/jsdeploader.js");
@@ -80,7 +80,7 @@ if (queryURL['ugcfh'] == "yes") {
   LoadCSS(    "static/css/palidict.css");
   LoadFavicon("favicon.ico");
   LoadJS(     "static/jsvarindex.js");
-  LoadJS(     "static/js/pali-adv.js");
+  LoadJS(     "static/js/pali-prd.js");
 } else {
   /*
   * NOT use google code to serve files
@@ -90,7 +90,7 @@ if (queryURL['ugcfh'] == "yes") {
   LoadCSS(    "statics/css/palidict.css");
   LoadFavicon("statics/favicon.ico");
   LoadJS(     "statics/jsvarindex.js");
-  LoadJS(     "statics/js/pali-adv.js");
+  LoadJS(     "statics/js/pali-prd.js");
 }
 
 if (queryURL['track'] != "no") {

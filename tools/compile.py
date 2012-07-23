@@ -10,6 +10,7 @@ input_bootstrap = '--js templates/js/bootstrap.js'
 output_bootstrap_wso = '--js_output_file templates/js/bootstrap-wso.js'
 output_bootstrap_spo = '--js_output_file templates/js/bootstrap-spo.js'
 output_bootstrap_adv = '--js_output_file templates/js/bootstrap-adv.js'
+output_bootstrap_prd = '--js_output_file templates/js/bootstrap-prd.js'
 
 input_base = '--js static/js/base.js'
 input_js1 =  '--js static/js/dropdown.js'
@@ -20,6 +21,7 @@ input_js5 =  '--js static/js/palidict.js'
 output_js_wso = '--js_output_file static/js/pali-wso.js'
 output_js_spo = '--js_output_file static/js/pali-spo.js'
 output_js_adv = '--js_output_file static/js/pali-adv.js'
+output_js_prd = '--js_output_file static/js/pali-prd.js'
 
 partial_cmd = '%s %s %s %s %s %s %s' % (compiler, input_base, input_js1, input_js2, input_js3, input_js4, input_js5)
 
@@ -72,10 +74,10 @@ if __name__ == '__main__':
     os.system('%s %s %s' % (partial_cmd, adv, output_js_adv))
     sys.exit(0)
   elif sys.argv[1] == "prd":
-    print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
-    os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_spo))
-    print(    '%s %s %s' % (partial_cmd, adv, output_js_adv))
-    os.system('%s %s %s' % (partial_cmd, adv, output_js_adv))
+    print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_prd))
+    os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_prd))
+    print(    '%s %s %s' % (partial_cmd, adv, output_js_prd))
+    os.system('%s %s %s' % (partial_cmd, adv, output_js_prd))
     sys.exit(0)
   else:
     usage()
