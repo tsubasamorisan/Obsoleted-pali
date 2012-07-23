@@ -105,8 +105,10 @@ function toggle() {
   }
 }
 
+/**
+ * @this {DOM Element}
+ */
 function onKeypadButtonClick() {
-  // @this {DOM Element}
   document.getElementById("PaliInput").value += this.value;
   document.getElementById("PaliInput").focus();
 }
@@ -115,8 +117,10 @@ function onKeypadButtonClick() {
 function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
 function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
+/**
+ * @this {DOM Element}
+ */
 function onSiteClick() {
-  // @this {DOM Element}
   var url = '';
   if (this.id == 'siteItem1') { url = 'http://palidictionary.appspot.com/'; }
   else if (this.id == 'siteItem2') { url = 'http://siongui.pythonanywhere.com/'; }
@@ -137,8 +141,10 @@ function onSiteClick() {
   window.location = url;
 }
 
+/**
+ * @this {DOM Element}
+ */
 function onLocaleClick() {
-  // @this {DOM Element}
   var locale = '';
   if (this.id == 'langItem1') { locale = 'en_US'; }
   else if (this.id == 'langItem2') { locale = 'zh_CN'; }
