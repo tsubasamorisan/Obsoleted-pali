@@ -4,27 +4,19 @@ pali.require('draggable');
 pali.require('inputsuggest');
 pali.require('lookup');
 
-/**
- * simple dom ready
- * @see http://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
- * @see http://www.javascriptkit.com/dhtmltutors/domready.shtml
- * @see https://github.com/jquery/jquery/blob/master/src/core.js
- * @see https://github.com/ded/domready/
- * @see http://code.google.com/p/domready/
- */
 
-var domIsReady = false;
+var checkReady = (function() {
+  if (window.opera) {
+    window.onload = domReady;
+    return;
+  }
+  if (document.getElementById('locale')) domReady();
+  else setTimeout(checkAgain, 50);
+})();
 
-
-if ( document.readyState === "complete" || ( document.readyState !== "loading" && document.addEventListener ) ) {
-  if (!domIsReady) {domIsReady = true;domReady();}
-} else if ( document.addEventListener ) {
-document.addEventListener( "DOMContentLoaded", function(){if (!domIsReady) {domIsReady = true;domReady();}}, false );
-window.addEventListener( "load", function(){if (!domIsReady) {domIsReady = true;domReady();}}, false );
-// If IE event model is used
-} else {
-document.attachEvent( "onreadystatechange", function(){if (!domIsReady) {domIsReady = true;domReady();}} );
-window.attachEvent( "onload", function(){if (!domIsReady) {domIsReady = true;domReady();}} );
+function checkAgain() {
+  if (document.getElementById('locale')) domReady();
+  else setTimeout(checkAgain, 50);
 }
 
 function domReady() {
