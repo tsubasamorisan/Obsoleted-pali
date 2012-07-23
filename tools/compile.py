@@ -76,8 +76,8 @@ if __name__ == '__main__':
   elif sys.argv[1] == "prd":
     print(    '%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_prd))
     os.system('%s %s %s %s' % (compiler, spo, input_bootstrap, output_bootstrap_prd))
-    print(    '%s %s %s' % (partial_cmd, adv, output_js_prd))
-    os.system('%s %s %s' % (partial_cmd, adv, output_js_prd))
+    print(    '%s %s %s' % (partial_cmd, spo, output_js_prd))
+    os.system('%s %s %s' % (partial_cmd, spo, output_js_prd))
     sys.exit(0)
   else:
     usage()
