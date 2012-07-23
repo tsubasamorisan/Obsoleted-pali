@@ -43,20 +43,17 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    * @see http://unixpapa.com/js/key.html
    */
 
-  // cannot use keyword 'this' directly because of context change
-  var this_ = this;
-
   // monitor arrow keys event of text input
   pali.addEventListener(this.input_, 'keydown',
-                           function(e){this_.handleKeyEvent(e);});
+                        this.handleKeyEvent.bind(this));
 
   // start to monitor user input periodically once text input get focused
   pali.addEventListener(this.input_, 'focus',
-                           function(){this_.checkInput();});
+                        this.checkInput.bind(this));
 
   // stop to monitor user input once text input loses focus
   pali.addEventListener(this.input_, 'blur',
-                           function(){this_.stopCheckInput();});
+                        this.stopCheckInput.bind(this));
 
 
   /**
@@ -106,14 +103,6 @@ pali.InputSuggest = function(inputId, suggestDivId) {
    * @private
    */
   this.oldInput_ = "";
-
-  /**
-   * TODO: use "this.self_" instead of "var _this = this"?
-   * @const
-   * @type {Object}
-   * @private
-   */
-  this.self_ = this;
 };
 
 
@@ -219,9 +208,8 @@ pali.InputSuggest.prototype.checkInput = function() {
   }
 
   // set this function to be executed once again
-  var _this = this;
   this.checkInputTimingEventVar_ = setTimeout(
-    function(){_this.checkInput();},
+    this.checkInput.bind(this),
     pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS
   );
 };
@@ -343,7 +331,6 @@ pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
 
   // create dropdown input suggestion menu
   this.suggestDiv_.innerHTML = "";
-  var _this = this;
   for (var i=0; i < this.prefixMatchedPaliWords_.length; i++) {
     /**
      * create DOM element of suggested word
@@ -357,11 +344,11 @@ pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
 
     // add mouse event listener for DOM element of suggested word
     pali.addEventListener(word, 'click',
-                          function(e){_this.onItemClick(e);});
+                          this.onItemClick.bind(this));
     pali.addEventListener(word, 'mouseover',
-                          function(e){_this.onItemMouseOver(e);});
+                          this.onItemMouseOver.bind(this));
     pali.addEventListener(word, 'mouseout',
-                          function(e){_this.onItemMouseOut(e);});
+                          this.onItemMouseOut.bind(this));
 
     // append the DOM element of the suggested word to suggestion menu
     this.suggestDiv_.appendChild(word);
@@ -381,7 +368,8 @@ pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
  * @param {Object} event The keyboard event
  * @private
  */
-pali.InputSuggest.prototype.handleKeyEvent = function(event) {
+pali.InputSuggest.prototype.handleKeyEvent = function(e) {
+  var evt = e || window.event;
   /**
    * If not check user input periodically, 
    * start to check user input periodically
@@ -391,9 +379,8 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
      * References:
      * search keyword: javascript object settimeout
      */
-    var _this = this;
     this.checkInputTimingEventVar_ = setTimeout(
-      function(){_this.checkInput();},
+      this.checkInput.bind(this),
       pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS
     );
   }
@@ -404,7 +391,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
    * @type {number}
    * @private
    */
-  var code = this.getKeyCode(event);
+  var code = this.getKeyCode(evt);
 
   // If there is no suggestion menu
   if (this.suggestDiv_.style.display == "none") {
@@ -530,9 +517,8 @@ pali.InputSuggest.prototype.handleKeyEvent = function(event) {
  * @return {number} The key code number.
  * @private
  */
-pali.InputSuggest.prototype.getKeyCode = function(e) {
-  if (!e) {e = window.event;} // for IE compatible
-  var keycode = e.keyCode || e.which; // also for browser compatibility
+pali.InputSuggest.prototype.getKeyCode = function(evt) {
+  var keycode = evt.keyCode || evt.which; // also for browser compatibility
   return keycode;
 };
 
@@ -603,7 +589,7 @@ pali.InputSuggest.prototype.getWordElementIndexNumber = function(element) {
  *                      to use window.event manually. Please see the code. 
  * @private
  */
-pali.InputSuggest.prototype.onItemClick = function(event) {
+pali.InputSuggest.prototype.onItemClick = function(e) {
   this.clearSuggestionMenu();
   this.oldInput_ = this.input_.value;
 };
@@ -616,8 +602,9 @@ pali.InputSuggest.prototype.onItemClick = function(event) {
  *                      to use window.event manually. Please see the code. 
  * @private
  */
-pali.InputSuggest.prototype.onItemMouseOver = function(event) {
-  var targetElement = event.target || event.srcElement;
+pali.InputSuggest.prototype.onItemMouseOver = function(e) {
+  var evt = e || window.event;
+  var targetElement = evt.target || evt.srcElement;
   currentWord = this.checkTargetElement(targetElement);
   var currentWordPosition = this.getWordElementIndexNumber(currentWord);
   // If user does not choose suggested word before the mouse over event
@@ -648,8 +635,9 @@ pali.InputSuggest.prototype.onItemMouseOver = function(event) {
  *                      to use window.event manually. Please see the code. 
  * @private
  */
-pali.InputSuggest.prototype.onItemMouseOut = function(event) {
-  var targetElement = event.target || event.srcElement;
+pali.InputSuggest.prototype.onItemMouseOut = function(e) {
+  var evt = e || window.event;
+  var targetElement = evt.target || evt.srcElement;
   currentWord = this.checkTargetElement(targetElement);
   this.removeItemStyle(currentWord);
 };
