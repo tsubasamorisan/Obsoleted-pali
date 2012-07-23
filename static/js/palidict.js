@@ -5,21 +5,23 @@ pali.require('inputsuggest');
 pali.require('lookup');
 
 
-var checkReady = (function() {
-  if (window.opera) {
-    window.onload = domReady;
-    return;
-  }
-  if (document.getElementById('locale')) domReady();
-  else setTimeout(checkAgain, 50);
-})();
-
-function checkAgain() {
-  if (document.getElementById('locale')) domReady();
-  else setTimeout(checkAgain, 50);
+if (window.opera) {
+  checkOpera();
+} else {
+  checkOtherBrowsers();
 }
 
-function domReady() {
+function checkOpera() {
+  if (document.readyState == "complete") initService();
+  else setTimeout(checkOpera, 50);
+}
+
+function checkOtherBrowsers() {
+  if (document.getElementById('locale')) initService();
+  else setTimeout(checkOtherBrowsers, 50);
+}
+
+function initService() {
   // start input suggest
   var suggest = new pali.InputSuggest("PaliInput", "suggest");
 
@@ -27,6 +29,7 @@ function domReady() {
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
+  // start lookup object and callback
   var lookUrl = "/lookup";
   var jsonp = true;
   if (queryURL['lookup'] == "gae") {
