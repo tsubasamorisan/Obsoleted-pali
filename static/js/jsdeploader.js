@@ -1,149 +1,272 @@
-// @see http://stackoverflow.com/questions/6946631/dynamically-creating-script-readystate-never-complete
+/**
+ * @fileoverview Simple JavaScript Loader (with dependency handling)
+ */
 
-var myloader = myloader || {};
 
-myloader.xhrLoadJS = function(url_p, name_p) {
+/**
+ * Class to load JavaScript files according to dependency.
+ *
+ * @param {Array} jsNames The file names of JavaScript files to be loaded.
+ * @param {object} jsDependencies The dependencies of JavaScript files to be
+ *                                loaded.
+ * @param {object} jsLocations The locations of JavaScript files to be loaded.
+ * @constructor
+ */
+MySimpleJSLoader = function(jsNames, jsDependencies, jsLocations) {
+  // check data sanity
+  if (Object.prototype.toString.apply(jsNames) != '[object Array]')
+    throw "In MySimpleJSLoader constructor: jsNames is not Array";
+
+  if (typeof jsDependencies != 'object')
+    throw "In MySimpleJSLoader constructor: jsDependencies is not object";
+
+  if (typeof jsDependencies != 'object')
+    throw "In MySimpleJSLoader constructor: jsLocations is not object";
+
+  for (var i=0; i < jsNames.length; i++) {
+    if (!jsDependencies.hasOwnProperty(jsNames[i])) {
+      throw "In MySimpleJSLoader constructor: no dependency info of " +
+            jsNames[i];
+    }
+    if (!jsLocations.hasOwnProperty(jsNames[i])) {
+      throw "In MySimpleJSLoader constructor: no location info of " +
+            jsNames[i];
+    }
+  }
+
+  /**
+   * The dependencies of JavaScript files to be loaded.
+   * @const
+   * @type {object}
+   * @private
+   */
+  this.jsDependencies_ = jsDependencies;
+
+  /**
+   * Indicate if the JavaScript file is loaded.
+   * @type {object}
+   * @private
+   */
+  this.isLoaded_ = {};
+  /**
+   * Contains the content of the JavaScript file
+   * @type {object}
+   * @private
+   */
+  this.jsContent_ = {};
+  /**
+   * Indicate if the content of JavaScript file is loaded.
+   * @type {object}
+   * @private
+   */
+  this.isJSContentDownloaded_ = {};
+
+  // initialize internal private variable
+  for (var i=0; i < jsNames.length; i++) {
+    this.isLoaded_[ jsNames[i] ] = false;
+    this.jsContent_[ jsNames[i] ] = null;
+    this.isJSContentDownloaded_[ jsNames[i] ] = false;
+  }
+
+  // Load all JavaScript files
+  for (var i=0; i < jsNames.length; i++) {
+    this.loadJSFile(jsNames[i], jsLocations[ jsNames[i] ]);
+  }
+};
+
+
+/**
+ * Load one JavaScript file by XMLHttpRequest.
+ * @param {string} jsName The name of the JavaScript file to be loaded.
+ * @param {string} jsLocation The location of the JavaScript file to be loaded.
+ * @private
+ */
+MySimpleJSLoader.prototype.loadJSFile = function(jsName, jsLocation) {
+  /**
+   * XMLHttpRequest variable.
+   * @type {object}
+   * @private
+   */
   var xmlhttp;
-  var url = url_p;
-  var name = name_p;
 
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  }
-  else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
+  if (window.XMLHttpRequest) { xmlhttp = new XMLHttpRequest(); }
+  else { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); }
 
-  xmlhttp.onreadystatechange = function() {
+  xmlhttp.onreadystatechange = function(jsName, jsLocation) {
     if (xmlhttp.readyState == 4) {
       if (xmlhttp.status == 200) {
-        myloader.handleDependency(name, xmlhttp.responseText);
+        // The content of the JavaScript file is downloaded.
+        this.jsContent_[jsName] = xmlhttp.responseText;
+        this.isJSContentDownloaded_[jsName] = true;
+
+        if ( this.isDependencySatisfied(jsName) ) {
+          this.insertJS(jsName);
+        }
       } else {
-        console.log('cannot load external file :' + url);
+        // fail to get the content of the JavaScript file
+        throw 'cannot load file ' + jsName + ' at ' + jsLocation;
       }
-
     }
-  };
+  }.bind(this, jsName, jsLocation);
 
-  xmlhttp.open("GET",url,true);
+  xmlhttp.open("GET", jsLocation, true);
   xmlhttp.send();
 };
 
-myloader.isDependencySatisfied = function(jsName) {
-  if (myloader.dep[jsName] == null) {
+
+/**
+ * Check if the dependency of the JavaScript file is satisfied.
+ * @param {string} jsName The name of the JavaScript file to be checked.
+ * @private
+ */
+MySimpleJSLoader.prototype.isDependencySatisfied = function(jsName) {
+  if (this.jsDependencies_[jsName] == null) {
     console.log(jsName + ' has no dependency.');
     console.log(jsName + ' dependency satisfied? true');
     console.log('---');
     return true;
   }
 
-  var depJSFileArray = myloader.dep[jsName].split(',');
+  /**
+   * The JavaScript files that the JavaScript file with jsName is dependent on.
+   * @type {Array}
+   * @private
+   */
+  var dependentJSFiles = this.jsDependencies_[jsName].split(',');
 
-  for (var i=0; i < depJSFileArray.length; i++) {
-    // Remove whitespace in the beginning and end of user input string
-    depJSFileArray[i] = depJSFileArray[i].replace(/(^\s+)|(\s+$)/g, "");
+  for (var i=0; i < dependentJSFiles.length; i++) {
+    // Remove whitespace in the beginning and end of the string
+    dependentJSFiles[i] = dependentJSFiles[i].replace(/(^\s+)|(\s+$)/g, "");
   }
 
   console.log(jsName + ' depends on :');
-  for (var i=0; i < depJSFileArray.length; i++) {
-    console.log(depJSFileArray[i]);
+  for (var i=0; i < dependentJSFiles.length; i++) {
+    console.log(dependentJSFiles[i]);
   }
 
-  var isAllDepSatisfied = true;
-  for (var i=0; i < depJSFileArray.length; i++) {
-    if (!myloader.isLoaded[depJSFileArray[i]]) {
-      isAllDepSatisfied = false;
+  /**
+   * Indicate whether all dependencies is satisfied.
+   * @type {boolean}
+   * @private
+   */
+  var isAllDependenciesSatisfied = true;
+  for (var i=0; i < dependentJSFiles.length; i++) {
+    if (!this.isLoaded_[dependentJSFiles[i]]) {
+      isAllDependenciesSatisfied = false;
     }
   }
 
-  if (isAllDepSatisfied) {
+  if (isAllDependenciesSatisfied) {
     console.log(jsName + ' dependency satisfied? true');
   } else {
     console.log(jsName + ' dependency satisfied? false');
   }
   console.log('---');
-  return isAllDepSatisfied;
+
+  return isAllDependenciesSatisfied;
 };
 
-myloader.loadOthers = function() {
-  var loadNew = false;
-  for (var jsName in myloader.isLoaded) {
-    if (!myloader.isLoaded[jsName] && myloader.isJSContentLoaded[jsName] && myloader.isDependencySatisfied(jsName)) {
-      myloader.insertJS(jsName, myloader.jsContent[jsName]);
-      myloader.isLoaded[jsName] = true;
-      loadNew = true;
-    }
-  }
-  if (loadNew) {
-    myloader.loadOthers();
-  }
-};
 
-myloader.handleDependency = function(jsName, jsContent) {
-  if (myloader.isDependencySatisfied(jsName)) {
-    myloader.insertJS(jsName, jsContent);
-    myloader.isLoaded[jsName] = true;
-    // load other script(s) dependent on this script if already completely downloaded
-    myloader.loadOthers();
-  } else {
-    myloader.jsContent[jsName] = jsContent;
-    myloader.isJSContentLoaded[jsName] = true;
-  }
-};
-
-myloader.insertJS = function(jsName, jsContent) {
-  console.log(jsName + ' loaded');
-  console.log('---');
+/**
+ * Insert the JavaScript file to document.
+ * @param {string} jsName The name of the JavaScript file to be inserted.
+ * @private
+ */
+MySimpleJSLoader.prototype.insertJS = function(jsName) {
+  /**
+   * DOM element of HTML script tag
+   * @type {DOM Element}
+   * @private
+   */
   var script = document.createElement('script');
-  script.setAttribute("type","text/javascript");
-  var textNode = document.createTextNode(jsContent);
+  script.setAttribute("type", "text/javascript");
+  /**
+   * The content of the JavaScript file
+   * @type {DOM Element}
+   * @private
+   */
+  var textNode = document.createTextNode( this.jsContent_[jsName] );
   script.appendChild(textNode);
   document.getElementsByTagName("head")[0].appendChild(script);
+
+  this.isLoaded_[jsName] = true;
+
+  // Load other JavaScript files dependent on this inserted JavaScript file.
+  this.checkAfterInsertion();
+
+  console.log(jsName + ' loaded');
+  console.log('---');
 };
 
-myloader.modules = ['base.js', 'dropdown.js', 'draggable.js', 'inputsuggest.js', 'lookup.js', 'palidict.js'];
-myloader.dep = {
-  'base.js' : null,
-  'dropdown.js': 'base.js',
-  'draggable.js': 'base.js',
-  'inputsuggest.js': 'base.js',
-  'lookup.js': null,
-  'palidict.js': 'dropdown.js, draggable.js, inputsuggest.js, lookup.js'
+
+/**
+ * When a JavaScript is inserted to the docuement, dependencies of other
+ * JavaScript files may be satisfied after the insertion. As a result, we need
+ * to check dependencies of all JavaScript files after insertion.
+ * @private
+ */
+MySimpleJSLoader.prototype.checkAfterInsertion = function() {
+  for (var jsName in this.isLoaded_) {
+    if (!this.isLoaded_[jsName]
+        && this.isJSContentDownloaded_[jsName]
+        && this.isDependencySatisfied(jsName)) {
+      this.insertJS(jsName);
+    }
+  }
 };
 
-myloader.isLoaded = function() {
-  var loadedObj = {};
-  for (var key in myloader.dep) {
-    loadedObj[key] = false;
-  }
-  return loadedObj;
-}();
 
-myloader.jsContent = function() {
-  var jsContentObj = {};
-  for (var key in myloader.dep) {
-    jsContentObj[key] = null;
-  }
-  return jsContentObj;
-}();
+var startLoader = (function() {
+  /**
+   * The file names of JavaScript files to be loaded
+   */
+  var jsNames = ['base.js',
+                 'dropdown.js',
+                 'draggable.js',
+                 'inputsuggest.js',
+                 'lookup.js',
+                 'palidict.js'];
 
-myloader.isJSContentLoaded = function() {
-  var jsContentLoadedObj = {};
-  for (var key in myloader.dep) {
-    jsContentLoadedObj[key] = false;
-  }
-  return jsContentLoadedObj;
-}();
+  /**
+   * A JavaScript file A is dependent on a JavaScript file B if B must be loaded
+   * before A is loaded. To describe the dependencies, use:
+   *
+   * 'file name of A' : 'file name of B'
+   *
+   * If a JavaScript file A is not dependent on other JavaScript, use:
+   *
+   * 'file name of A' : null
+   *
+   * If a JavaScript file is dependent on multiple JavaScript files, the
+   * multiple files is separated by comma.
+   */
+  var jsDependencies = {
+    'base.js' : null,
+    'dropdown.js': 'base.js',
+    'draggable.js': 'base.js',
+    'inputsuggest.js': 'base.js',
+    'lookup.js': null,
+    'palidict.js': 'dropdown.js, draggable.js, inputsuggest.js, lookup.js'
+  };
 
-myloader.main = function() {
-  var host = 'http://pali.googlecode.com/git/';
-  var path = 'static/js/';
-  var prefix = path;
-  if (window.location.host == 'pali.googlecode.com') {
-    prefix = host + path;
-  }
-  for (var i=0; i < myloader.modules.length; i++) {
-    myloader.xhrLoadJS( prefix + myloader.modules[i],
-                       myloader.modules[i] );
-  }
-}();
+  /**
+   * The locations of JavaScript files, usually are URLs
+   */
+  var jsLocations = (function() {
+    var host = 'http://pali.googlecode.com/git/';
+    var path = 'static/js/';
+    var prefix = path;
+    if (window.location.host == 'pali.googlecode.com') {
+      prefix = host + path;
+    }
+
+    var locationObj = {};
+    for (var i=0; i < jsNames.length; i++) {
+      locationObj[ jsNames[i] ] = prefix + jsNames[i];
+    }
+
+    return locationObj;
+  })();
+
+  var loader = new MySimpleJSLoader(jsNames, jsDependencies, jsLocations);
+})();
