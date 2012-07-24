@@ -1,0 +1,44 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>JSONP with anonymous function example (include both server and client code)</title>
+<script type="text/javascript" language="javascript">
+/* send data to server */
+function jsonp() {
+  var input1value = document.getElementById('input1').value;
+  var input2value = document.getElementById('input2').value;
+
+  // anonymous callback function to process JSON data returned from server.
+  var callback = function(JSONdata) {
+    /* In order to parse data, we have to know the structure of data from server in advance */
+    /* show data returned from server */
+    var infoElem = document.getElementById('info');
+    infoElem.innerHTML = '';
+    infoElem.innerHTML += 'input1: ' + JSONdata[0]['input1'] + '<br />';
+    infoElem.innerHTML += 'input2: ' + JSONdata[1]['input2'] + '<br />';
+    infoElem.innerHTML += JSONdata[2] + '<br />';
+    infoElem.innerHTML += JSONdata[3] + '<br />';
+  };
+
+  var url = '/jsonp?callback=' + encodeURIComponent(callback.toString()) +
+        '&input1=' + encodeURIComponent(input1value) +
+        '&input2=' + encodeURIComponent(input2value);
+
+  var ext = document.createElement('script');
+  ext.setAttribute('src', url);
+  document.getElementsByTagName("head")[0].appendChild(ext);
+}
+</script>
+</head> 
+<body>
+ <br style="line-height: 3em;" />
+ <form style="text-align: center;" action="javascript:jsonp();">
+  <input id="input1" type="text" value=""><br />
+  <input id="input2" type="text" value=""><br />
+  <input type="submit" value="Submit">
+ </form>
+ <br style="line-height: 3em;" />
+ <div id="info" style="text-align: center;">try to input something and then submit. 
+   a JSONP request will be sent to Google App Engine server and then response will be sent back.</div>
+</body>
+</html>
