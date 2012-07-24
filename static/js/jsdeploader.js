@@ -191,11 +191,11 @@ MySimpleJSLoader.prototype.insertJS = function(jsName) {
 
   this.isLoaded_[jsName] = true;
 
-  // Load other JavaScript files dependent on this inserted JavaScript file.
-  this.checkAfterInsertion();
-
   console.log(jsName + ' loaded');
   console.log('---');
+
+  // Load other JavaScript files dependent on this inserted JavaScript file.
+  this.checkAfterInsertion();
 };
 
 
