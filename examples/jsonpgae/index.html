@@ -5,9 +5,11 @@
 <script type="text/javascript" language="javascript">
 /* send data to server */
 function jsonp() {
-  input1value = document.getElementById('input1').value;
-  input2value = document.getElementById('input2').value;
-  url = "/jsonp?callback=mycallback&input1=" + encodeURIComponent(input1value) + '&input2=' + encodeURIComponent(input2value);
+  var input1value = document.getElementById('input1').value;
+  var input2value = document.getElementById('input2').value;
+  var url = '/jsonp?callback=mycallback' +
+           '&input1=' + encodeURIComponent(input1value) +
+           '&input2=' + encodeURIComponent(input2value);
   var ext = document.createElement('script');
   ext.setAttribute('src', url);
   document.getElementsByTagName("head")[0].appendChild(ext);
