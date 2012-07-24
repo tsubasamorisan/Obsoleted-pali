@@ -17,14 +17,13 @@ function jsonp() {
 
 /* receive JSON data from server */
 function mycallback(JSONdata) {
-  var variables = eval(JSONdata);
   /* In order to parse data, we have to know the structure of data from server in advance */
   /* show returned data */
   document.getElementById('info').innerHTML = '';
-  document.getElementById('info').innerHTML += 'input1: ' + variables[0]['input1'] + '<br />';
-  document.getElementById('info').innerHTML += 'input2: ' + variables[1]['input2'] + '<br />';
-  document.getElementById('info').innerHTML += variables[2] + '<br />';
-  document.getElementById('info').innerHTML += variables[3] + '<br />';
+  document.getElementById('info').innerHTML += 'input1: ' + JSONdata[0]['input1'] + '<br />';
+  document.getElementById('info').innerHTML += 'input2: ' + JSONdata[1]['input2'] + '<br />';
+  document.getElementById('info').innerHTML += JSONdata[2] + '<br />';
+  document.getElementById('info').innerHTML += JSONdata[3] + '<br />';
 }
 </script>
 </head> 
