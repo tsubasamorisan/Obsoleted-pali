@@ -166,13 +166,11 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
   }
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
-  //jsonData = eval(jsonData);
   for (var index in jsonData) {
-    var dictWordExp = eval(jsonData[index]);
 
     var tr = document.createElement("tr");
     var td = document.createElement("td");
-    td.appendChild(this.createDictionaryWordExplanationTable(dictWordExp));
+    td.appendChild(this.createDictionaryWordExplanationTable(jsonData[index]));
     td.appendChild(this.createBackToTop());
 
     tr.appendChild(td);
