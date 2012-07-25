@@ -463,8 +463,10 @@ pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
     var word = document.createElement('div');
     word.id = this.getWordElementIdString((i+1));
     word.title = this.prefixMatchedPaliWords_[i];
-    word.innerHTML = this.prefixMatchedPaliWords_[i].replace(
-                       userInputStr, "<b>" + userInputStr + "</b>");
+    word.innerHTML = "<b>" + 
+              this.prefixMatchedPaliWords_[i].slice(0, userInputStr.length) +
+              "</b>" +
+              this.prefixMatchedPaliWords_[i].slice(userInputStr.length);
 
     // add mouse event listener for DOM element of suggested word
     pali.addEventListener(word, 'click',
