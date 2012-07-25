@@ -165,6 +165,112 @@ pali.InputSuggest.PrefixMapping = {
 
 
 /**
+ * Fuzzy Map romanized pāli letters to English counterpart letters.
+ * @const
+ * @enum {string}
+ * @private
+ */
+pali.InputSuggest.FuzzyMapping = {
+  "a" : "a",
+  "A" : "a",
+
+  "ā" : "a",
+  "Ā" : "a",
+
+  "i" : "i",
+  "I" : "i",
+
+  "ī" : "i",
+  "Ī" : "i",
+
+  "u" : "u",
+  "U" : "u",
+
+  "ū" : "u",
+  "Ū" : "u",
+
+  "e" : "e",
+  "E" : "e",
+
+  "o" : "o",
+  "O" : "o",
+
+  "m" : "m",
+  "M" : "m",
+
+  "ṁ" : "m",
+  "Ṁ" : "m",
+  "ṃ" : "m",
+  "Ṃ" : "m",
+  "ŋ" : "m",
+  "Ŋ" : "m",
+
+  "n" : "n",
+  "N" : "n",
+
+  "ṇ" : "n",
+  "Ṇ" : "n",
+
+  "ṅ" : "n",
+  "Ṅ" : "n",
+
+  "ñ" : "n",
+  "Ñ" : "n",
+
+  "p" : "p",
+  "P" : "p",
+
+  "t" : "t",
+  "T" : "t",
+
+  "ṭ" : "t",
+  "Ṭ" : "t",
+
+  "c" : "c",
+  "C" : "c",
+
+  "k" : "k",
+  "K" : "k",
+
+  "b" : "b",
+  "B" : "b",
+
+  "d" : "d",
+  "D" : "d",
+
+  "ḍ" : "d",
+  "Ḍ" : "d",
+
+  "j" : "j",
+  "J" : "j",
+
+  "g" : "g",
+  "G" : "g",
+
+  "s" : "s",
+  "S" : "s",
+
+  "h" : "h",
+  "H" : "h",
+
+  "v" : "v",
+  "V" : "v",
+
+  "r" : "r",
+  "R" : "r",
+
+  "y" : "y",
+  "Y" : "y",
+
+  "l" : "l",
+  "L" : "l",
+
+  "ḷ" : "l",
+  "Ḷ" : "l"
+};
+
+
+/**
  * Keys code numbers.
  * @const
  * @enum {number}
@@ -291,8 +397,8 @@ pali.InputSuggest.prototype.prefixMatch = function() {
   this.prefixMatchedPaliWords_ = new Array();
 
   for (var i=0; i < array.length; i++ ) {
-    // If the pāli word starts with user input string
-    if (array[i].indexOf(userInputStr) == 0) {
+    // fuzzy match of user input string and word string
+    if (this.wordFuzzyMatch(userInputStr, array[i])) {
       this.prefixMatchedPaliWords_.push(array[i]);
       matchedCount += 1;
     }
@@ -315,6 +421,24 @@ pali.InputSuggest.prototype.prefixMatch = function() {
   this.prefixMatchedPaliWords_.sort();
 
   this.suggestionMenu(userInputStr);
+};
+
+
+/**
+ * Given two words, determine whether they are "similar" enough
+ * @param {string} word1 The first word string
+ * @param {string} word2 The second word string
+ * @return {boolean} true if the two words are similar enough, false otherwise.
+ * @private
+ */
+pali.InputSuggest.prototype.wordFuzzyMatch = function(word1, word2) {
+  for (var i=0; i < word1.length; i++) {
+    if (pali.InputSuggest.FuzzyMapping[ word1[i] ] !=
+        pali.InputSuggest.FuzzyMapping[ word2[i] ]) {
+      return false;
+    }
+  }
+  return true;
 };
 
 

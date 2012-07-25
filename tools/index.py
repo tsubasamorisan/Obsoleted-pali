@@ -67,7 +67,7 @@ if __name__ == '__main__':
       isSameAsContent = False
       for word in words:
         wordStr = word.childNodes[0].data
-        if (wordStr.lower() == fileName[0:-4]):
+        if (wordStr.lower() == fileName[:-4]):
           trueWordList.append(fileName)
           isSameAsContent = True
           trueWordCount += 1
