@@ -75,16 +75,25 @@ function initService() {
     buttons[i].onclick = onKeypadButtonClick;
   }
 
-  document.getElementById('aboutLink').onclick = showAbout;
+  document.getElementById('linkHome').href = "javascript:window.location.reload();";
+  document.getElementById('linkAbout').onclick = showAbout;
+  document.getElementById('linkAbout').href = "javascript:void(0);";
   document.getElementById('linkLink').onclick = showLink;
+  document.getElementById('linkLink').href = "javascript:void(0);";
 
   document.getElementById('siteItem1').onclick = onSiteClick;
+  document.getElementById('siteItem1').href = "javascript:void(0);";
   document.getElementById('siteItem2').onclick = onSiteClick;
+  document.getElementById('siteItem2').href = "javascript:void(0);";
   document.getElementById('siteItem3').onclick = onSiteClick;
+  document.getElementById('siteItem3').href = "javascript:void(0);";
 
   document.getElementById('langItem1').onclick = onLocaleClick;
+  document.getElementById('langItem1').href = "javascript:void(0);";
   document.getElementById('langItem2').onclick = onLocaleClick;
+  document.getElementById('langItem2').href = "javascript:void(0);";
   document.getElementById('langItem3').onclick = onLocaleClick;
+  document.getElementById('langItem3').href = "javascript:void(0);";
 
   document.getElementById('PaliInput').focus();
 }
