@@ -65,9 +65,10 @@ function getStringBackupSite2() { return '备用站二'; } </script>
    <div class="title"><span>巴利语字典</span></div>
    <div class="main-menu">
  <div class="left-main-menu">
-  <span style="text-decoration: underline; cursor: pointer; color: blue;" onclick="window.location.reload()">首页</span>
-  <span id="aboutLink" class="fakeLink">关于</span>
-  <span id="linkLink" class="fakeLink">连结</span>
+  <a id="linkHome" href="/">首页</a>
+  <a id="linkBrowse" href="/browse">Browse</a>
+  <a id="linkAbout" href="/about">关于</a>
+  <a id="linkLink" href="/link">连结</a>
  </div>
  <div class="right-main-menu">
   <span id="lang-dropdown" class="dropdown">
@@ -81,16 +82,16 @@ function getStringBackupSite2() { return '备用站二'; } </script>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" id="langItem1">English</span>
- <span class="menuItem" id="langItem2">中文 (简体)</span>
- <span class="menuItem" id="langItem3">中文 (繁體)</span>
+ <a class="menuItem" id="langItem1" href="/?locale=en_US">English</a>
+ <a class="menuItem" id="langItem2" href="/?locale=zh_CN">中文 (简体)</a>
+ <a class="menuItem" id="langItem3" href="/?locale=zh_TW">中文 (繁體)</a>
 </div></div>
 
 <div class="menuDiv instance1" id="menuDiv-site-dropdown" style="position: absolute; display: none; width: 115px; ">
 <div style="margin-top: 4px;">
- <span class="menuItem" id="siteItem1">主站</span>
- <span class="menuItem" id="siteItem2">备用站一</span>
- <span class="menuItem" id="siteItem3">备用站二</span>
+ <a class="menuItem" id="siteItem1" href="http://palidictionary.appspot.com">主站</a>
+ <a class="menuItem" id="siteItem2" href="http://siongui.pythonanywhere.com">备用站一</a>
+ <a class="menuItem" id="siteItem3" href="http://siongui.webfactional.com">备用站二</a>
 </div></div>
 
    <table style="width: 100%; border-spacing:0; border-collapse:collapse;">

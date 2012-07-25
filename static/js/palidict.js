@@ -47,7 +47,7 @@ function initService() {
   }
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result', lookUrl, jsonp);
 
-  // check users are now at which site, and fill site innerHTML
+  // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')
     {document.getElementById('site').innerHTML = getStringBackupSite1();}
   else if (window.location.host == 'siongui.webfactional.com')
@@ -62,8 +62,22 @@ function initService() {
   else {document.getElementById('lang').innerHTML = 'English';}
   document.getElementById('lang').style.wordSpacing = "normal";
 
-  // make keypad toggle-able
-  document.getElementById('displayText').onclick = toggle;
+  /**
+   * make keypad toggle-able (show if hidden, hide if shown)
+   * @this {DOM Element} Here refer to the element with id='displayText'
+   */
+  document.getElementById('displayText').onclick = function() {
+    var kb = document.getElementById("keyboard");
+    if(kb.style.display == "block") {
+      kb.style.display = "none";
+      this.innerHTML = getStringShowKeypad();
+    }
+    else {
+      kb.style.display = "block";
+      this.innerHTML = getStringHideKeypad();
+      kb.style.left = pali.getOffset(this).left + "px";
+    }
+  };
 
   // make keypad draggable
   var drag = new pali.Draggable('keyboard');
@@ -71,14 +85,31 @@ function initService() {
   // bind the click function of input element inside keypad
   var keypad = document.getElementById('keyboard');
   var buttons = keypad.getElementsByTagName('input');
-  for (var i=0; i<buttons.length; i++) {
-    buttons[i].onclick = onKeypadButtonClick;
+  for (var i=0; i < buttons.length; i++) {
+    /**
+     * @this {DOM Element} Here refer to the button element
+     */
+    buttons[i].onclick = function() {
+      document.getElementById("PaliInput").value += this.value;
+      document.getElementById("PaliInput").focus();
+    };
   }
 
-  document.getElementById('linkHome').href = "javascript:window.location.reload();";
-  document.getElementById('linkAbout').onclick = showAbout;
+  document.getElementById('linkHome').href =
+    "javascript:window.location.reload();";
+
+  document.getElementById('linkBrowse').href = "javascript:void(0);";
+
+  document.getElementById('linkAbout').onclick = function() {
+    document.getElementById("result").innerHTML =
+    document.getElementById("about").innerHTML;
+  };
   document.getElementById('linkAbout').href = "javascript:void(0);";
-  document.getElementById('linkLink').onclick = showLink;
+
+  document.getElementById('linkLink').onclick = function() {
+    document.getElementById("result").innerHTML =
+    document.getElementById("link").innerHTML;
+  };
   document.getElementById('linkLink').href = "javascript:void(0);";
 
   document.getElementById('siteItem1').onclick = onSiteClick;
@@ -98,33 +129,6 @@ function initService() {
   document.getElementById('PaliInput').focus();
 }
 
-
-//<!-- make keypad show if hidden, hide if shown -->
-function toggle() {
-  var kb = document.getElementById("keyboard");
-  var dt = document.getElementById("displayText");
-  if(kb.style.display == "block") {
-    kb.style.display = "none";
-    dt.innerHTML = getStringShowKeypad();
-  }
-  else {
-    kb.style.display = "block";
-    dt.innerHTML = getStringHideKeypad();
-    kb.style.left = pali.getOffset(dt).left + "px";
-  }
-}
-
-/**
- * @this {DOM Element}
- */
-function onKeypadButtonClick() {
-  document.getElementById("PaliInput").value += this.value;
-  document.getElementById("PaliInput").focus();
-}
-
-// http://www.web-code.org/coding-tools/javascript-escape-unescape-converter-tool.html
-function showAbout(){document.getElementById("result").innerHTML = document.getElementById("about").innerHTML;}
-function showLink(){document.getElementById("result").innerHTML = document.getElementById("link").innerHTML;}
 
 /**
  * @this {DOM Element}
