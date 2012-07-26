@@ -27,18 +27,25 @@ memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    locale = getUserLocale(self.request.GET.get('locale'), self.request.headers.get('accept_language'))
+    locale = getUserLocale(self.request.GET.get('locale'),
+                           self.request.headers.get('accept_language'))
     i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
+
+    if (self.request.path.startswith('/browse')):
+      pass
 
     useMemcache = self.request.GET.get('memcache', 'yes')
     if (useMemcache == 'yes'):
       # https://developers.google.com/appengine/docs/python/runtime#The_Environment
       if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
+        # if (memcache=yes) and (not Development Server)
         data = memcache.get(locale)
         if data is not None:
+          # memcache data does NOT expire
           self.response.out.write(data)
         else:
+          # memcache data expires, set memcache again
           memcache.set(locale, open('production/index-%s.html' % locale, 'r').read())
           data = memcache.get(locale)
           self.response.out.write(data)
@@ -85,5 +92,6 @@ class Lookup(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([('/', MainPage),
+                              ('/browse', MainPage),
                               ('/lookup', Lookup)],
                               debug=True)
