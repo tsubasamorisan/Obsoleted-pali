@@ -62,14 +62,14 @@ if (queryURL['ugcfh'] == "yes") {
   * NOT use google code to serve files
   * host is "localhost:8080"
   */
-  LoadCSS(    "static/css/palidict.css");
-  LoadFavicon("favicon.ico");
-  LoadJS(     "static/jsvarindex.js");
+  LoadCSS(    "/static/css/palidict.css");
+  LoadFavicon("/favicon.ico");
+  LoadJS(     "/static/jsvarindex.js");
   if (queryURL['compiledjs'] == 'yes') {
-    LoadJS(   "static/js/pali-prd.js");
+    LoadJS(   "/static/js/pali-prd.js");
   }
   else {
-    LoadJS(   "static/js/jsdeploader.js");
+    LoadJS(   "/static/js/jsdeploader.js");
   }
 } else if (window.location.host == 'palidictionary.appspot.com') {
   /*
@@ -77,20 +77,20 @@ if (queryURL['ugcfh'] == "yes") {
   * host is NOT "localhost:8080"
   * host is "palidictionary.appspot.com"
   */
-  LoadCSS(    "static/css/palidict.css");
-  LoadFavicon("favicon.ico");
-  LoadJS(     "static/jsvarindex.js");
-  LoadJS(     "static/js/pali-prd.js");
+  LoadCSS(    "/static/css/palidict.css");
+  LoadFavicon("/favicon.ico");
+  LoadJS(     "/static/jsvarindex.js");
+  LoadJS(     "/static/js/pali-prd.js");
 } else {
   /*
   * NOT use google code to serve files
   * host is NOT "localhost:8080"
   * host is NOT "palidictionary.appspot.com"
   */
-  LoadCSS(    "statics/css/palidict.css");
-  LoadFavicon("statics/favicon.ico");
-  LoadJS(     "statics/jsvarindex.js");
-  LoadJS(     "statics/js/pali-prd.js");
+  LoadCSS(    "/statics/css/palidict.css");
+  LoadFavicon("/statics/favicon.ico");
+  LoadJS(     "/statics/jsvarindex.js");
+  LoadJS(     "/statics/js/pali-prd.js");
 }
 
 if (queryURL['track'] != "no") {

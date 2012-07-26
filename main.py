@@ -26,7 +26,7 @@ memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
 
 class MainPage(webapp2.RequestHandler):
-  def get(self):
+  def get(self, prefix=None, word=None):
     locale = getUserLocale(self.request.GET.get('locale'),
                            self.request.headers.get('accept_language'))
     i18n.get_i18n().set_locale(locale)
@@ -93,5 +93,9 @@ class Lookup(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([('/', MainPage),
                               ('/browse', MainPage),
+                              ('/about', MainPage),
+                              ('/link', MainPage),
+                              (r'/browse/(.*)', MainPage),
+                              (r'/browse/(.*)/(.*)', MainPage),
                               ('/lookup', Lookup)],
                               debug=True)
