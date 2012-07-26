@@ -64,5 +64,23 @@ def getPrefixHTML(prefix, dicPrefixWordLists):
 
   return dom.documentElement.toxml()
 
+
+def getWordHTML(word, dicPrefixWordLists, lookupData, jj2tpl):
+  if (lookupData == None):
+    raise Exception("Impossible case: No lookup data of %s" % word)
+
+  divTableHTML = u'<div style="margin: .5em; text-align: left;">%s</div>'
+
+  tableHTML = u''
+  for item in lookupData:
+    tmpHTML = jj2tpl.render().encode('utf-8') + '<br />'
+    tmpHTML = tmpHTML.replace('$#@dic$#@', item[0].encode('utf-8'))
+    tmpHTML = tmpHTML.replace('$#@word$#@', item[1].encode('utf-8'))
+    tmpHTML = tmpHTML.replace('$#@exp$#@', item[2].encode('utf-8'))
+    tableHTML += tmpHTML.decode('utf-8')
+
+  return divTableHTML % tableHTML
+
+
 if __name__ == '__main__':
   pass

@@ -10,7 +10,7 @@ from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup, jsonpLookup
 from userLocale import getUserLocale
-from browse import isValidPrefixAndWord, getPrefixHTML
+from browse import isValidPrefixAndWord, getPrefixHTML, getWordHTML
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
@@ -26,6 +26,7 @@ memcache.set('zh_TW', open('production/index-zh_TW.html', 'r').read())
 memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
 dicPrefixWordLists = json.loads(open('jsonPrefixWords').read())
+dicWordExpTemplate = jinja_environment.get_template('dicWordExp.html')
 
 class MainPage(webapp2.RequestHandler):
   def get(self, prefix=None, word=None):
@@ -43,7 +44,8 @@ class MainPage(webapp2.RequestHandler):
             resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
         else:
           # build word HTML here
-          pass
+          resultDivInnerHTML = getWordHTML(word, dicPrefixWordLists,
+                          jsonpLookup(word), dicWordExpTemplate)
       else:
         self.error(404)
         self.response.out.write("Page Not Found!")
