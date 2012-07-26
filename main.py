@@ -25,6 +25,7 @@ memcache.set('en_US', open('production/index-en_US.html', 'r').read())
 memcache.set('zh_TW', open('production/index-zh_TW.html', 'r').read())
 memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
 
+dicPrefixWordLists = json.loads(open('jsonPrefixWords').read())
 
 class MainPage(webapp2.RequestHandler):
   def get(self, prefix=None, word=None):
@@ -33,7 +34,7 @@ class MainPage(webapp2.RequestHandler):
     i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
 
-    handleBrowseResult = handleBrowse(self.request.path, prefix, word)
+    handleBrowseResult = handleBrowse(self.request.path, prefix, word, dicPrefixWordLists)
     if (handleBrowseResult['invalidBrowse']):
       self.error(404)
       self.response.out.write("Page Not Found!")

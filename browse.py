@@ -1,38 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-wordPrefix = [
-  "a",
-  "ā",
-  "b",
-  "c",
-  "d",
-  "ḍ",
-  "e",
-  "g",
-  "h",
-  "i",
-  "ī",
-  "j",
-  "k",
-  "l",
-  "ḷ",
-  "m",
-  "n",
-  "ñ",
-  "o",
-  "p",
-  "r",
-  "s",
-  "t",
-  "ṭ",
-  "u",
-  "ū",
-  "v",
-  "y"
-]
-
-def isInvalidPrefixOrWord(prefix, word):
+def isInvalidPrefixOrWord(prefix, word, dicPrefixWordLists):
   isValidPrefix = False
   isValidWord = False
   if (prefix == None):
@@ -42,7 +11,7 @@ def isInvalidPrefixOrWord(prefix, word):
     # prefix = None AND word = None
     return False
   # prefix != None, check prefix sanity
-  if prefix in wordPrefix:
+  if prefix.decode('utf-8') in dicPrefixWordLists.keys():
     isValidPrefix = True
   else:
     isValidPrefix = False
@@ -54,7 +23,7 @@ def isInvalidPrefixOrWord(prefix, word):
   return isInvalidPrefixOrWord
 
 
-def handleBrowse(path, prefix, word):
+def handleBrowse(path, prefix, word, dicPrefixWordLists):
   response = {}
 
   response['invalidBrowse'] = False
@@ -62,7 +31,7 @@ def handleBrowse(path, prefix, word):
     # check url sanity
     if (prefix == None and word == None):
       return response
-    if (isInvalidPrefixOrWord(prefix, word)):
+    if (isInvalidPrefixOrWord(prefix, word, dicPrefixWordLists)):
       response['invalidBrowse'] = True
       return response
 
