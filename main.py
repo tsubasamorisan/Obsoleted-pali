@@ -10,6 +10,7 @@ from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup, jsonpLookup
 from userLocale import getUserLocale
+from browse import handleBrowse
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
@@ -32,8 +33,11 @@ class MainPage(webapp2.RequestHandler):
     i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
 
-    if (self.request.path.startswith('/browse')):
-      pass
+    handleBrowseResult = handleBrowse(self.request.path, prefix, word)
+    if (handleBrowseResult['invalidBrowse']):
+      self.error(404)
+      self.response.out.write("Page Not Found!")
+      return
 
     useMemcache = self.request.GET.get('memcache', 'yes')
     if (useMemcache == 'yes'):
@@ -95,7 +99,7 @@ app = webapp2.WSGIApplication([('/', MainPage),
                               ('/browse', MainPage),
                               ('/about', MainPage),
                               ('/link', MainPage),
-                              (r'/browse/(.*)', MainPage),
                               (r'/browse/(.*)/(.*)', MainPage),
+                              (r'/browse/(.*)', MainPage),
                               ('/lookup', Lookup)],
                               debug=True)
