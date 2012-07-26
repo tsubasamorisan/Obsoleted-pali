@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-05 01:41+0800\n"
+"POT-Creation-Date: 2012-07-27 03:42+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr ""
 msgid "contact me"
 msgstr ""
 
-#: templates/info.html:9 templates/index.html:6 templates/index.html:21
+#: templates/info.html:9 templates/index.html:6 templates/index.html:23
 msgid "Pāli Dictionary"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "project on Google Code"
 msgstr ""
 
-#: templates/info.html:26
+#: templates/info.html:26 templates/dicWordExp.html:3
 msgid "Dictionary"
 msgstr ""
 
@@ -98,8 +98,12 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: templates/index.html:33
+#: templates/index.html:35
 msgid "Show Pāli Keypad"
+msgstr ""
+
+#: templates/browse.html:2
+msgid "Browse Dictionary"
 msgstr ""
 
 #: templates/mainMenu.html:3
@@ -107,23 +111,35 @@ msgid "Home"
 msgstr ""
 
 #: templates/mainMenu.html:4
-msgid "About"
+msgid "Browse"
 msgstr ""
 
 #: templates/mainMenu.html:5
+msgid "About"
+msgstr ""
+
+#: templates/mainMenu.html:6
 msgid "Link"
 msgstr ""
 
-#: templates/mainMenu.html:29
+#: templates/mainMenu.html:27
 msgid "Main Site"
 msgstr ""
 
-#: templates/mainMenu.html:30
+#: templates/mainMenu.html:28
 msgid "Backup Site #1"
 msgstr ""
 
-#: templates/mainMenu.html:31
+#: templates/mainMenu.html:29
 msgid "Backup Site #2"
+msgstr ""
+
+#: templates/dicWordExp.html:7
+msgid "Pāli Word"
+msgstr ""
+
+#: templates/dicWordExp.html:11
+msgid "Explanation"
 msgstr ""
 
 #: templates/js/potI18N.js:1
@@ -169,7 +185,4 @@ msgstr ""
 #: templates/js/potI18N.js:11
 msgid "'Backup Site #2'"
 msgstr ""
-
-#~ msgid "Choose Site"
-#~ msgstr ""
 
