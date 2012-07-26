@@ -26,7 +26,7 @@ http_header_string = {
 
 class index:
   def GET(self):
-    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath.encode('utf-8'))
+    request = urllib2.Request('http://palidictionary.appspot.com/%s' % urllib2.quote(web.ctx.fullpath.encode('utf-8')))
     for headerItem in web.ctx.env:
       try:
         if http_header_string[headerItem] != None:
