@@ -95,10 +95,15 @@ function initService() {
     };
   }
 
-  document.getElementById('linkHome').href =
-    "javascript:window.location.reload();";
+  document.getElementById('linkHome').href = "javascript:void(0);";
+  document.getElementById('linkHome').onclick = function() {
+    window.location = "/" + window.location.search;
+  };
 
   document.getElementById('linkBrowse').href = "javascript:void(0);";
+  document.getElementById('linkBrowse').onclick = function() {
+    document.getElementById("result").innerHTML = "";
+  };
 
   document.getElementById('linkAbout').onclick = function() {
     document.getElementById("result").innerHTML =
