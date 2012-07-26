@@ -10,7 +10,7 @@ from google.appengine.api import memcache
 from webapp2_extras import i18n
 from dictionary import lookup, jsonpLookup
 from userLocale import getUserLocale
-from browse import isValidPrefixOrWord
+from browse import isValidPrefixAndWord, getPrefixHTML
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader([os.path.join(os.path.dirname(__file__), 'templates'),
@@ -34,9 +34,16 @@ class MainPage(webapp2.RequestHandler):
     i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
 
+    resultDivInnerHTML = None
     if self.request.path.startswith('/browse'):
-      if isValidPrefixOrWord(prefix, word, dicPrefixWordLists):
-        pass
+      if isValidPrefixAndWord(prefix, word, dicPrefixWordLists):
+        if (word == None):
+          if (prefix != None):
+            # build prefix HTML here
+            resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
+        else:
+          # build word HTML here
+          pass
       else:
         self.error(404)
         self.response.out.write("Page Not Found!")
@@ -70,6 +77,7 @@ class MainPage(webapp2.RequestHandler):
     template_values = {
       'locale' : locale,
       'compiledBootstrapJS' : compiledBootstrapJS,
+      'resultDivInnerHTML' : resultDivInnerHTML
     }
 
     template = jinja_environment.get_template('index.html')
