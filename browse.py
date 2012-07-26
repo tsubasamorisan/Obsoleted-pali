@@ -2,25 +2,28 @@
 # -*- coding:utf-8 -*-
 
 def isInvalidPrefixOrWord(prefix, word, dicPrefixWordLists):
-  isValidPrefix = False
-  isValidWord = False
   if (prefix == None):
     if (word != None):
       # prefix = None AND word != None
       raise Exception("Impossible case: prefix = None AND word != None")
     # prefix = None AND word = None
     return False
+
   # prefix != None, check prefix sanity
-  if prefix.decode('utf-8') in dicPrefixWordLists.keys():
-    isValidPrefix = True
-  else:
-    isValidPrefix = False
+  if prefix.decode('utf-8') not in dicPrefixWordLists.keys():
+    # prefix != None AND prefix is invalid
+    return True
 
   if (word == None):
-    isValidWord = True
+    # prefix != None AND prefix is valid AND word == None
+    return False
 
-  isInvalidPrefixOrWord = not (isValidPrefix and isValidWord)
-  return isInvalidPrefixOrWord
+  # prefix != None AND prefix is valid AND word != None
+  if word.decode('utf-8') in dicPrefixWordLists[prefix.decode('utf-8')]:
+    # word is valid
+    return False
+
+  return True
 
 
 def handleBrowse(path, prefix, word, dicPrefixWordLists):
