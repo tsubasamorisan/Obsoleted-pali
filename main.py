@@ -52,6 +52,8 @@ class MainPage(webapp2.RequestHandler):
         return
 
     useMemcache = self.request.GET.get('memcache', 'yes')
+    if resultDivInnerHTML != None:
+      useMemcache = 'no'
     if (useMemcache == 'yes'):
       # https://developers.google.com/appengine/docs/python/runtime#The_Environment
       if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
