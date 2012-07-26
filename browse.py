@@ -37,15 +37,30 @@ def getPrefixHTML(prefix, dicPrefixWordLists):
   dom.documentElement.setAttribute(u'style', "margin: .5em; line-height: 1.5em; text-align: left;")
   urlPrefix = '/browse/' + prefix + '/'
 
+  tableElem = dom.createElement('table')
+  tableElem.setAttribute(u'style', 'width: 100%;')
+  rowCount = 0
   for word in dicPrefixWordLists[prefix.decode('utf-8')]:
+    if (rowCount == 0):
+      trElem = dom.createElement('tr')
+
+    tdElem = dom.createElement('td')
+
     aElem = dom.createElement(u'a')
     aElem.setAttribute(u'href', urlPrefix.decode('utf-8') + word)
     aElem.setAttribute(u'style', 'margin: .5em; text-decoration: none;')
-
     nameTextNode = dom.createTextNode(word)
     aElem.appendChild(nameTextNode)
 
-    dom.documentElement.appendChild(aElem)
+    tdElem.appendChild(aElem)
+    trElem.appendChild(tdElem)
+
+    rowCount += 1
+    if rowCount == 3:
+      tableElem.appendChild(trElem)
+      rowCount = 0
+
+  dom.documentElement.appendChild(tableElem)
 
   return dom.documentElement.toxml()
 
