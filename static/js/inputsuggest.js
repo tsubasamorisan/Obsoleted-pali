@@ -121,50 +121,6 @@ pali.InputSuggest.CHECK_INPUT_EVENT_INTERVAL_IN_MS = 500;
 
 
 /**
- * Map romanized pāli letters to English name.
- * @const
- * @enum {string}
- * @private
- */
-pali.InputSuggest.PrefixMapping = {
-//  "°" : "uc",
-//  "-" : "dash",
-  "a" : "a",
-  "ā" : "aa",
-  "b" : "b",
-  "c" : "c",
-  "d" : "d",
-  "ḍ" : "dotd",
-  "e" : "e",
-  "g" : "g",
-  "h" : "h",
-  "i" : "i",
-  "ī" : "ii",
-  "j" : "j",
-  "k" : "k",
-  "l" : "l",
-  "ḷ" : "dotl",
-  "m" : "m",
-//  "ṃ" : "dotm",
-  "n" : "n",
-  "ñ" : "tilden",
-//  "ṇ" : "dotn",
-//  "ṅ" : "ndot",
-//  "ŋ" : "ngng",
-  "o" : "o",
-  "p" : "p",
-  "r" : "r",
-  "s" : "s",
-  "t" : "t",
-  "ṭ" : "dott",
-  "u" : "u",
-  "ū" : "uu",
-  "v" : "v",
-  "y" : "y"
-};
-
-
-/**
  * Fuzzy Map romanized pāli letters to English counterpart letters.
  * @const
  * @enum {string}
@@ -332,6 +288,26 @@ pali.InputSuggest.prototype.stopCheckInput = function() {
 
 
 /**
+ * Check if the first letter of user input string is valid
+ * @param {string} letter The first letter of user input string
+ * @return {boolean}
+ * @private
+ */
+pali.InputSuggest.prototype.isValidFirstLetter = function(letter) {
+  if (!dicPrefixWordLists) {
+    console.log('dicPrefixWordLists not available!');
+    return false;
+  }
+
+  for (var key in dicPrefixWordLists) {
+    if (dicPrefixWordLists.hasOwnProperty(key) && key == letter) return true;
+  }
+
+  return false;
+};
+
+
+/**
  * Prefix-match user input to pāli words.
  * @private
  */
@@ -359,30 +335,14 @@ pali.InputSuggest.prototype.prefixMatch = function() {
   }
 
   //if the first letter in user input string is invalid, return
-  if (!pali.InputSuggest.PrefixMapping[userInputStr[0]]) {
-    return;
-  }
+  if (!this.isValidFirstLetter(userInputStr[0])) return;
 
   /**
-   * Get the name of arrays which contains pāli words
-   * with the same first prefix letter as user input string
-   * @const
-   * @type {string}
+   * Array which contains words that start with 'userInputStr[0]'
+   * @type {Array}
    * @private
    */
-  var arrayName = "prefix_" + pali.InputSuggest.PrefixMapping[userInputStr[0]];
-  try {
-    /**
-     * search keyword: javascript evaluate string as variable
-     * in this case, eval(arrayName)
-     */
-    var array = eval(arrayName);
-  }
-  catch (e) {
-    console.log('Error at: eval(arrayName)');
-    console.log(e);
-    return;
-  }
+  var array = dicPrefixWordLists[userInputStr[0]];
 
   /**
    * number of prefix-matched words

@@ -55,7 +55,7 @@ if (queryURL['ugcfh'] == "yes") {
   prefix = 'http://pali.googlecode.com/git/';
   LoadCSS(    prefix + "static/css/palidict.css");
   LoadFavicon(prefix + "static/favicon.ico");
-  LoadJS(     prefix + "static/jsvarindex.js");
+  LoadJS(     prefix + "static/jsonPrefixWords.js");
   LoadJS(     prefix + "static/js/jsdeploader.js");
 } else if (window.location.host == 'localhost:8080') {
   /*
@@ -64,7 +64,7 @@ if (queryURL['ugcfh'] == "yes") {
   */
   LoadCSS(    "/static/css/palidict.css");
   LoadFavicon("/favicon.ico");
-  LoadJS(     "/static/jsvarindex.js");
+  LoadJS(     "/static/jsonPrefixWords.js");
   if (queryURL['compiledjs'] == 'yes') {
     LoadJS(   "/static/js/pali-prd.js");
   }
@@ -79,7 +79,7 @@ if (queryURL['ugcfh'] == "yes") {
   */
   LoadCSS(    "/static/css/palidict.css");
   LoadFavicon("/favicon.ico");
-  LoadJS(     "/static/jsvarindex.js");
+  LoadJS(     "/static/jsonPrefixWords.js");
   LoadJS(     "/static/js/pali-prd.js");
 } else {
   /*
@@ -89,7 +89,7 @@ if (queryURL['ugcfh'] == "yes") {
   */
   LoadCSS(    "/statics/css/palidict.css");
   LoadFavicon("/statics/favicon.ico");
-  LoadJS(     "/statics/jsvarindex.js");
+  LoadJS(     "/statics/jsonPrefixWords.js");
   LoadJS(     "/statics/js/pali-prd.js");
 }
 
