@@ -5,6 +5,7 @@
 
 import os
 import xml.dom.minidom
+import json
 
 prefix_code = {
 #  "°" : "uc",
@@ -51,10 +52,13 @@ if __name__ == '__main__':
   wordCount = 0
   trueWordCount = 0
 
+  dicPrefixWordLists = {}
+
   # get words start with prefix 'key'
   for key in prefix_code.keys():
     files = os.listdir(xmldir + key)
     trueWordList = []
+    dicPrefixWordLists[key] = []
 
     # iterate all words start with prefix 'key'
     for file in files:
@@ -69,10 +73,12 @@ if __name__ == '__main__':
         wordStr = word.childNodes[0].data
         if (wordStr.lower() == fileName[:-4]):
           trueWordList.append(fileName)
+          dicPrefixWordLists[key].append(fileName[:-4])
           isSameAsContent = True
           trueWordCount += 1
           break
 
+    # build JavaScript Pali words index
     jsArrayInt = u"var prefix_%s=[" % prefix_code[key]
 
     for x in trueWordList:
@@ -83,5 +89,12 @@ if __name__ == '__main__':
     fd.write(jsArrayInt.encode('utf8'))
 
   fd.close()
+
+  for key in dicPrefixWordLists.keys():
+    dicPrefixWordLists[key].sort()
+  fdpy = open("json","w")
+  fdpy.write(json.dumps(dicPrefixWordLists))
+  fdpy.close()
+
   print('word count: %s' % wordCount)
   print('true word count: %s' % trueWordCount)
