@@ -90,7 +90,7 @@ a.menuItem:hover {
   color: white;
 }
 
-#suggest {
+.suggest {
   border-top-color: #C9D7F1;
   border-right-color: #36C;
   border-bottom-color: #36C;

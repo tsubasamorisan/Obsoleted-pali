@@ -14,26 +14,42 @@ pali.require('base');
 /**
  * Class to auto-suggest prefix-matched pāli Words
  *
- * @param {string} inputId element id for text input
- * @param {string} suggestDivId element id for suggestion Div Menu
+ * @param {string} inputId The id of DOM element for text input
+ * @param {string} suggestDivId The id of DOM element for suggestion Div Menu
+ * @param {string} suggestedWordPreviewDivId The id of DOM element for suggested
+                                             word preview
  * @constructor
  */
-pali.InputSuggest = function(inputId, suggestDivId) {
+pali.InputSuggest = function(inputId, suggestDivId, suggestedWordPreviewDivId) {
   /**
-   * DOM element of pāli text input
+   * DOM element of user text input
    * @const
    * @type {DOM Element}
    * @private
    */
   this.input_ = document.getElementById(inputId);
+  if (!this.input_) throw "pali.InputSuggest.NoInput";
 
   /**
-   * DOM element of suggestion menu of pāli words
+   * DOM element of suggestion menu of words
    * @const
    * @type {DOM Element}
    * @private
    */
   this.suggestDiv_ = document.getElementById(suggestDivId);
+  if (!this.suggestDiv_) throw "pali.InputSuggest.NoSuggestDiv";
+
+
+  /**
+   * DOM element of preview of user-selected suggested word
+   * @const
+   * @type {DOM Element}
+   * @private
+   */
+  this.suggestedWordPreviewDiv_ =
+    document.getElementById(suggestedWordPreviewDivId);
+  if (!this.suggestedWordPreviewDiv_) 
+    throw "pali.InputSuggest.NoSuggestedWordPreviewDiv";
 
 
   /**
@@ -409,6 +425,7 @@ pali.InputSuggest.prototype.wordFuzzyMatch = function(word1, word2) {
  * @private
  */
 pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
+  this.clearWordPreview();
   this.suggestedWordPosition_ = null;
   this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
   this.originalUserPaliInput_ = userInputStr;
@@ -508,6 +525,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+      this.showWordPreview(currentWord.title);
     /**
      * Else if user chooses first suggested word in the suggestion menu before
      * pressing UP key, remove the highlight of the first word in the suggestion
@@ -519,6 +537,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
+      this.clearWordPreview();
     /**
      * Else user chooses some suggested word (not first word) in the suggestion
      * menu before pressing UP key, remove the highlight of the previous
@@ -534,6 +553,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+      this.showWordPreview(currentWord.title);
     }
   }
 
@@ -550,6 +570,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+      this.showWordPreview(currentWord.title);
     /**
      * Else if user chooses last suggested word in the suggestion menu before
      * pressing DOWN key, remove the highlight of the last word in the 
@@ -562,6 +583,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
+      this.clearWordPreview();
     /**
      * Else user chooses some suggested word (not last word) in the suggestion
      * menu before pressing DOWN key, remove the highlight of the previous
@@ -577,11 +599,13 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                 this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+      this.showWordPreview(currentWord.title);
     }
   }
 
   // If user presses ENTER key
   if (code == pali.InputSuggest.KeyCode.RETURN) {
+    this.clearWordPreview();
     this.clearSuggestionMenu();
     this.oldInput_ = this.input_.value;
   }
@@ -589,9 +613,37 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
   // If user presses ESC key
   if (code == pali.InputSuggest.KeyCode.ESC) {
     this.input_.value = this.originalUserPaliInput_;
+    this.clearWordPreview();
     this.clearSuggestionMenu();
     this.oldInput_ = this.input_.value;
   }
+};
+
+
+/**
+ * Show preview of the word.
+ * @param {string} word Show preview of this word
+ * @private
+ */
+pali.InputSuggest.prototype.showWordPreview = function(word) {
+  this.suggestedWordPreviewDiv_.style.left =
+    pali.getOffset(this.input_).left +
+    this.suggestDiv_.offsetWidth +
+    + 5 + "px";
+  this.suggestedWordPreviewDiv_.style.width = '20em';
+  if (this.suggestedWordPreviewDiv_.style.display == 'none')
+    this.suggestedWordPreviewDiv_.style.display = 'block';
+  this.suggestedWordPreviewDiv_.innerHTML = word;
+};
+
+
+/**
+ * Clear preview of the word.
+ * @private
+ */
+pali.InputSuggest.prototype.clearWordPreview = function(word) {
+  this.suggestedWordPreviewDiv_.innerHTML = '';
+  this.suggestedWordPreviewDiv_.style.display = 'none';
 };
 
 
@@ -676,6 +728,7 @@ pali.InputSuggest.prototype.getWordElementIndexNumber = function(element) {
  * @private
  */
 pali.InputSuggest.prototype.onItemClick = function(e) {
+  this.clearWordPreview();
   this.clearSuggestionMenu();
   this.oldInput_ = this.input_.value;
 };
@@ -698,6 +751,7 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
     this.suggestedWordPosition_ = currentWordPosition;
     this.setItemStyle(currentWord);
     this.input_.value = currentWord.title;
+    this.showWordPreview(currentWord.title);
   } else {
     /**
      * If the suggested word user chooses before mouse over event is not
@@ -709,6 +763,7 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
       this.suggestedWordPosition_ = currentWordPosition;
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
+      this.showWordPreview(currentWord.title);
     }
   }
 };
@@ -722,6 +777,7 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
  * @private
  */
 pali.InputSuggest.prototype.onItemMouseOut = function(e) {
+  this.clearWordPreview();
   var evt = e || window.event;
   var targetElement = evt.target || evt.srcElement;
   currentWord = this.checkTargetElement(targetElement);
@@ -757,6 +813,7 @@ pali.InputSuggest.prototype.checkTargetElement = function(element) {
  * @private
  */
 pali.InputSuggest.prototype.clearSuggestionMenu = function() {
+  this.clearWordPreview();
   this.suggestDiv_.innerHTML = "";
   this.suggestDiv_.style.display = "none";
   this.suggestedWordPosition_ = null;

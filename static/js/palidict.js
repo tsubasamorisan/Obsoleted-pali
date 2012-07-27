@@ -23,7 +23,7 @@ function checkOtherBrowsers() {
 
 function initService() {
   // start input suggest
-  var suggest = new pali.InputSuggest("PaliInput", "suggest");
+  var suggest = new pali.InputSuggest("PaliInput", "suggest", "suggestedWordPreview");
 
   // start dropdown menu
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');

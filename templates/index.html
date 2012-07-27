@@ -33,7 +33,7 @@
            <div>
             <input id="PaliInput" type="text" name="word" value="" />
             <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">{{_("Show Pāli Keypad")}}</span></sub>
-            <div id="suggest" style="display:none;"></div>
+            <div id="suggest" class="suggest" style="display: none;"></div><div id="suggestedWordPreview" class='suggest' style="display: none;"></div>
            </div>
          </form>
          {% include "keyboard.html" %}
