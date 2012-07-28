@@ -17,10 +17,12 @@ pali.require('base');
  * @param {string} inputId The id of DOM element for text input
  * @param {string} suggestDivId The id of DOM element for suggestion Div Menu
  * @param {string} suggestedWordPreviewDivId The id of DOM element for suggested
-                                             word preview
+ *                                           word preview
+ * @param {string} lookupUrl The URL to look up word
  * @constructor
  */
-pali.InputSuggest = function(inputId, suggestDivId, suggestedWordPreviewDivId) {
+pali.InputSuggest = function(inputId, suggestDivId,
+                             suggestedWordPreviewDivId, lookupUrl) {
   /**
    * DOM element of user text input
    * @const
@@ -39,7 +41,6 @@ pali.InputSuggest = function(inputId, suggestDivId, suggestedWordPreviewDivId) {
   this.suggestDiv_ = document.getElementById(suggestDivId);
   if (!this.suggestDiv_) throw "pali.InputSuggest.NoSuggestDiv";
 
-
   /**
    * DOM element of preview of user-selected suggested word
    * @const
@@ -51,6 +52,13 @@ pali.InputSuggest = function(inputId, suggestDivId, suggestedWordPreviewDivId) {
   if (!this.suggestedWordPreviewDiv_) 
     throw "pali.InputSuggest.NoSuggestedWordPreviewDiv";
 
+  /**
+   * The URL to look up word.
+   * @const
+   * @type {string}
+   * @private
+   */
+  this.lookupUrl_ = lookupUrl;
 
   /**
    * References:
@@ -119,6 +127,15 @@ pali.InputSuggest = function(inputId, suggestDivId, suggestedWordPreviewDivId) {
    * @private
    */
   this.oldInput_ = "";
+
+  /**
+   * The name of this object in global scope, i.e.,
+   * window[this.globalName_] = this;
+   * @const
+   * @type {string}
+   * @private
+   */
+  this.globalName_ = pali.setObjectGlobalName(this);
 };
 
 

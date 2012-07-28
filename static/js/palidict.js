@@ -22,30 +22,31 @@ function checkOtherBrowsers() {
 }
 
 function initService() {
-  // start input suggest
-  var suggest = new pali.InputSuggest("PaliInput", "suggest", "suggestedWordPreview");
-
   // start dropdown menu
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
   // start lookup object and callback
-  var lookUrl = "/lookup";
+  var lookupUrl = "/lookup";
   var jsonp = true;
   if (queryURL['lookup'] == "gae") {
-    lookUrl = "http://palidictionary.appspot.com" + lookUrl;
+    lookupUrl = "http://palidictionary.appspot.com" + lookupUrl;
   }
   if (queryURL['lookup'] == "paw") {
-    lookUrl = "http://siongui.pythonanywhere.com" + lookUrl;
+    lookupUrl = "http://siongui.pythonanywhere.com" + lookupUrl;
   }
   if (queryURL['lookup'] == "wfn") {
-    lookUrl = "http://siongui.webfactional.com" + lookUrl;
+    lookupUrl = "http://siongui.webfactional.com" + lookupUrl;
   }
   if (queryURL['jsonp'] == "no") {
-    lookUrl = "/lookup";
+    lookupUrl = "/lookup";
     jsonp = false;
   }
-  var myLookup = new Lookup('PaliInput', 'inputForm', 'result', lookUrl, jsonp);
+  var myLookup = new Lookup('PaliInput', 'inputForm', 'result', lookupUrl, jsonp);
+
+  // start input suggest
+  var suggest = new pali.InputSuggest("PaliInput", "suggest",
+                 "suggestedWordPreview", lookupUrl);
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')

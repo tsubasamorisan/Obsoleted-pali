@@ -63,6 +63,13 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
     this.form_.onsubmit = this.lookupByHTTPPost.bind(this);
   }
 
+  /**
+   * The name of this object in global scope, i.e.,
+   * window[this.globalName_] = this;
+   * @const
+   * @type {string}
+   * @private
+   */
   this.globalName_ = pali.setObjectGlobalName(this);
 
   if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
