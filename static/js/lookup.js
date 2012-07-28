@@ -48,7 +48,7 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
   if (!this.result_) throw "Lookup.NoResult";
 
   /**
-   * The DOM element which is the text input of word to be looked up.
+   * The URL to look up word.
    * @const
    * @type {string}
    * @private
@@ -63,39 +63,9 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
     this.form_.onsubmit = this.lookupByHTTPPost.bind(this);
   }
 
-  this.globalName_ = this.randomId();
-  // check if this name is already in global scope. if already exists, get
-  // another name.
-  while (window[this.globalName_]) {
-    this.globalName_ = this.randomId();
-  }
-  // put this object instance in global scope
-  window[this.globalName_] = this;
+  this.globalName_ = pali.setObjectGlobalName(this);
 
   if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
-};
-
-
-/**
- * Generate random id string
- * @return {string} String of 5 random characters
- * @private
- */
-Lookup.prototype.randomId = function() {
-  /**
-   * Referece:
-   * @see http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
-   */
-  var id = '';
-  /**
-   * javascript function name cannot start with number
-   * so do NOT use number in chars
-   */
-  //var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-  for( var i=0; i < 5; i++ )
-    id += chars.charAt(Math.floor(Math.random() * chars.length));
-  return id;
 };
 
 

@@ -131,4 +131,54 @@ if (!Function.prototype.bind) {
     return fBound;
   };
 }
+
+
+/**
+ * Generate random string
+ * @param {number} length The length of the random string
+ * @return {string} String of 5 random characters
+ * @private
+ */
+pali.randomString = function(length) {
+  /**
+   * Referece:
+   * @see http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
+   */
+  if (typeof length != 'number') throw "pali.randomString: length is not number";
+  var string = '';
+  /**
+   * javascript function name cannot start with number
+   * so do NOT use number in chars if the random string is used for JavaScript
+   * function name.
+   */
+  //var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  for( var i=0; i < length; i++ )
+    string += chars.charAt(Math.floor(Math.random() * chars.length));
+  return string;
+};
+
+
+/**
+ * Give a name to object in global scope, i.e., window[name] = object.
+ * @param {object} obj The object to be given a global name
+ * @return {string} The global name of the object
+ */
+pali.setObjectGlobalName = function(obj) {
+  if (typeof obj != 'object')
+    throw "pali.pali.setObjectGlobalName: input is not object";
+  // get a random name string with length of 5
+  var globalName = pali.randomString(5);
+  // check if this name is already in global scope. if already exists, get
+  // another name.
+  while (window[globalName]) {
+    globalName = pali.randomString(5);
+  }
+  // put this object instance in global scope
+  window[globalName] = obj;
+
+  return globalName;
+};
+
+
 /*                              width: 80                                     */
