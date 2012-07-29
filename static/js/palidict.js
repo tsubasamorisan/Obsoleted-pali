@@ -22,6 +22,9 @@ function checkOtherBrowsers() {
 }
 
 function initService() {
+  // start input suggest
+  var suggest = new pali.InputSuggest("PaliInput", "suggest");
+
   // start dropdown menu
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
@@ -43,10 +46,6 @@ function initService() {
     jsonp = false;
   }
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result', lookupUrl, jsonp);
-
-  // start input suggest
-  var suggest = new pali.InputSuggest("PaliInput", "suggest",
-                 "suggestedWordPreview", lookupUrl);
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')

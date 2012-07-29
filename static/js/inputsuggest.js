@@ -14,15 +14,11 @@ pali.require('base');
 /**
  * Class to auto-suggest prefix-matched pāli Words
  *
- * @param {string} inputId The id of DOM element for text input
- * @param {string} suggestDivId The id of DOM element for suggestion Div Menu
- * @param {string} suggestedWordPreviewDivId The id of DOM element for suggested
- *                                           word preview
- * @param {string} lookupUrl The URL to look up word
+ * @param {string} inputId element id for text input
+ * @param {string} suggestDivId element id for suggestion Div Menu
  * @constructor
  */
-pali.InputSuggest = function(inputId, suggestDivId,
-                             suggestedWordPreviewDivId, lookupUrl) {
+pali.InputSuggest = function(inputId, suggestDivId) {
   /**
    * DOM element of user text input
    * @const
@@ -40,25 +36,6 @@ pali.InputSuggest = function(inputId, suggestDivId,
    */
   this.suggestDiv_ = document.getElementById(suggestDivId);
   if (!this.suggestDiv_) throw "pali.InputSuggest.NoSuggestDiv";
-
-  /**
-   * DOM element of preview of user-selected suggested word
-   * @const
-   * @type {DOM Element}
-   * @private
-   */
-  this.suggestedWordPreviewDiv_ =
-    document.getElementById(suggestedWordPreviewDivId);
-  if (!this.suggestedWordPreviewDiv_) 
-    throw "pali.InputSuggest.NoSuggestedWordPreviewDiv";
-
-  /**
-   * The URL to look up word.
-   * @const
-   * @type {string}
-   * @private
-   */
-  this.lookupUrl_ = lookupUrl;
 
   /**
    * References:
@@ -127,27 +104,6 @@ pali.InputSuggest = function(inputId, suggestDivId,
    * @private
    */
   this.oldInput_ = "";
-
-  /**
-   * The name of this object in global scope, i.e.,
-   * window[this.globalName_] = this;
-   * @const
-   * @type {string}
-   * @private
-   */
-  this.globalName_ = pali.setObjectGlobalName(this);
-
-  if (!this.hasOwnProperty('showWordPreviewCallback'))
-    this['showWordPreviewCallback'] = this.showWordPreviewCallback;
-
-  /**
-   * Cache for the json-format data of word preview
-   * this.wordPreviewCache_[word] = jsonData;
-   * @const
-   * @type {object}
-   * @private
-   */
-  this.wordPreviewCache_ = {};
 };
 
 
@@ -454,7 +410,6 @@ pali.InputSuggest.prototype.wordFuzzyMatch = function(word1, word2) {
  * @private
  */
 pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
-  this.clearWordPreview();
   this.suggestedWordPosition_ = null;
   this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
   this.originalUserPaliInput_ = userInputStr;
@@ -554,7 +509,6 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-      this.showWordPreview(currentWord.title);
     /**
      * Else if user chooses first suggested word in the suggestion menu before
      * pressing UP key, remove the highlight of the first word in the suggestion
@@ -566,7 +520,6 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
-      this.clearWordPreview();
     /**
      * Else user chooses some suggested word (not first word) in the suggestion
      * menu before pressing UP key, remove the highlight of the previous
@@ -582,7 +535,6 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-      this.showWordPreview(currentWord.title);
     }
   }
 
@@ -599,7 +551,6 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-      this.showWordPreview(currentWord.title);
     /**
      * Else if user chooses last suggested word in the suggestion menu before
      * pressing DOWN key, remove the highlight of the last word in the 
@@ -612,7 +563,6 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
       this.suggestedWordPosition_ = null;
       this.removeItemStyle(currentWord);
       this.input_.value = this.originalUserPaliInput_;
-      this.clearWordPreview();
     /**
      * Else user chooses some suggested word (not last word) in the suggestion
      * menu before pressing DOWN key, remove the highlight of the previous
@@ -628,13 +578,11 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
                                 this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-      this.showWordPreview(currentWord.title);
     }
   }
 
   // If user presses ENTER key
   if (code == pali.InputSuggest.KeyCode.RETURN) {
-    this.clearWordPreview();
     this.clearSuggestionMenu();
     this.oldInput_ = this.input_.value;
   }
@@ -642,126 +590,9 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
   // If user presses ESC key
   if (code == pali.InputSuggest.KeyCode.ESC) {
     this.input_.value = this.originalUserPaliInput_;
-    this.clearWordPreview();
     this.clearSuggestionMenu();
     this.oldInput_ = this.input_.value;
   }
-};
-
-
-/**
- * Show preview of the word.
- * @param {string} word Show preview of this word
- * @private
- */
-pali.InputSuggest.prototype.showWordPreview = function(word) {
-  /**
-   * Check whether there is already json data of this word in the cache,
-   * if yes, use the cached data.
-   */
-  if (this.wordPreviewCache_.hasOwnProperty(word)) {
-    this.handleWordPreviewJSONData(this.wordPreviewCache_[word])
-    return;
-  }
-
-  // get word definition from server
-  var qry = '?word=' + encodeURIComponent(word) +
-            '&callback=' + encodeURIComponent(
-             this.globalName_ + '["showWordPreviewCallback"]');
-  var ext = document.createElement('script');
-  ext.setAttribute('src', this.lookupUrl_ + qry);
-  document.getElementsByTagName("head")[0].appendChild(ext);
-};
-
-
-/**
- * Callback function of JSONP word lookup
- * @param {string} result The JSON-format data which contains the result of word
- *                        lookup. "list of 3-tuple" in Python
- * @private
- */
-pali.InputSuggest.prototype.showWordPreviewCallback = function(jsonData) {
-  if (jsonData == null) {
-    this.suggestedWordPreviewDiv_.innerHTML = '';
-    this.suggestedWordPreviewDiv_.style.display = 'none';
-    return;
-  }
-  this.wordPreviewCache_[jsonData['word']] = jsonData;
-  this.handleWordPreviewJSONData(jsonData);
-};
-
-
-pali.InputSuggest.prototype.handleWordPreviewJSONData = function(jsonData) {
-  this.suggestedWordPreviewDiv_.style.left =
-    pali.getOffset(this.input_).left +
-    this.suggestDiv_.offsetWidth +
-    + 5 + "px";
-  this.suggestedWordPreviewDiv_.style.width = '20em';
-  this.suggestedWordPreviewDiv_.style.display = 'block';
-  this.suggestedWordPreviewDiv_.style.textAlign = 'left';
-  this.suggestedWordPreviewDiv_.innerHTML = '';
-
-  for (var index in jsonData['data']) {
-    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典》',
-                          '《パーリ语辞典》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
-                          '《巴汉词典》', '~')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 明法',
-                          '《巴汉词典》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '《巴利语字汇》',
-                          '《巴利语字汇》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴利文-汉文',
-                          '《巴利文-汉文佛学名相辞汇》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'Buddhist Dictionary',
-                          '《Buddhist Dictionary》', '<br>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'Concise Pali-English',
-                          '《Concise Pali-English Dictionary》', '<br>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'PTS Pali-English',
-                          '《PTS Pali-English Dictionary》', '<i>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '汉译パーリ',
-                          '《汉译パーリ语辞典》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典 增补',
-                          '《パーリ语辞典 增补改订》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴英术语汇编',
-                          '《巴英术语汇编》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴利新音译',
-                          '《巴利语汇解》与《巴利新音译》', '。')) continue;
-  }
-};
-
-
-pali.InputSuggest.prototype.dicCheckShow = function(dicWordExp,
-                                                    dicTestStr,
-                                                    dicNameStr,
-                                                    separator) {
-  if (dicWordExp[0].indexOf(dicTestStr) > 0) {
-    if (this.suggestedWordPreviewDiv_.innerHTML != '')
-      this.suggestedWordPreviewDiv_.innerHTML += '<br />'
-    this.suggestedWordPreviewDiv_.innerHTML += 
-      '<span style="color: red;">'+ dicNameStr +'</span>' + '<br />';
-    var breakPos = dicWordExp[2].indexOf(separator);
-    if (breakPos == -1) {
-      this.suggestedWordPreviewDiv_.innerHTML +=
-      dicWordExp[2] +
-      '<br />';
-    } else {
-      this.suggestedWordPreviewDiv_.innerHTML +=
-      dicWordExp[2].slice(0, breakPos) +
-      '<br />';
-    }
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Clear preview of the word.
- * @private
- */
-pali.InputSuggest.prototype.clearWordPreview = function(word) {
-  this.suggestedWordPreviewDiv_.innerHTML = '';
-  this.suggestedWordPreviewDiv_.style.display = 'none';
 };
 
 
@@ -846,7 +677,6 @@ pali.InputSuggest.prototype.getWordElementIndexNumber = function(element) {
  * @private
  */
 pali.InputSuggest.prototype.onItemClick = function(e) {
-  this.clearWordPreview();
   this.clearSuggestionMenu();
   this.oldInput_ = this.input_.value;
 };
@@ -869,7 +699,6 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
     this.suggestedWordPosition_ = currentWordPosition;
     this.setItemStyle(currentWord);
     this.input_.value = currentWord.title;
-    this.showWordPreview(currentWord.title);
   } else {
     /**
      * If the suggested word user chooses before mouse over event is not
@@ -881,7 +710,6 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
       this.suggestedWordPosition_ = currentWordPosition;
       this.setItemStyle(currentWord);
       this.input_.value = currentWord.title;
-      this.showWordPreview(currentWord.title);
     }
   }
 };
@@ -895,7 +723,6 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
  * @private
  */
 pali.InputSuggest.prototype.onItemMouseOut = function(e) {
-  this.clearWordPreview();
   var evt = e || window.event;
   var targetElement = evt.target || evt.srcElement;
   currentWord = this.checkTargetElement(targetElement);
@@ -931,7 +758,6 @@ pali.InputSuggest.prototype.checkTargetElement = function(element) {
  * @private
  */
 pali.InputSuggest.prototype.clearSuggestionMenu = function() {
-  this.clearWordPreview();
   this.suggestDiv_.innerHTML = "";
   this.suggestDiv_.style.display = "none";
   this.suggestedWordPosition_ = null;
