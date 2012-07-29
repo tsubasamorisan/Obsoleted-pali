@@ -738,7 +738,7 @@ pali.InputSuggest.prototype.dicCheckShow = function(dicWordExp,
       '<br />';
     } else {
       this.suggestedWordPreviewDiv_.innerHTML +=
-      dicWordExp[2].slice(0, breakPos)
+      dicWordExp[2].slice(0, breakPos) +
       '<br />';
     }
     return true;
