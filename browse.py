@@ -72,7 +72,7 @@ def getWordHTML(word, dicPrefixWordLists, lookupData, jj2tpl):
   divTableHTML = u'<div style="margin: .5em; text-align: left;">%s</div>'
 
   tableHTML = u''
-  for item in lookupData:
+  for item in lookupData['data']:
     tmpHTML = jj2tpl.render().encode('utf-8') + '<br />'
     tmpHTML = tmpHTML.replace('$#@dic$#@', item[0].encode('utf-8'))
     tmpHTML = tmpHTML.replace('$#@word$#@', item[1].encode('utf-8'))
