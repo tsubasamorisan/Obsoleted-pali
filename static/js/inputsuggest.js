@@ -1,5 +1,5 @@
 /**
- * @fileoverview Class to auto-suggest pāli words according to user input.
+ * @fileoverview Class to auto-suggest words according to user input.
  *
  * References:
  * @see http://www.enjoyxstudy.com/javascript/suggest/index.en.html
@@ -12,7 +12,7 @@ pali.require('base');
 
 
 /**
- * Class to auto-suggest prefix-matched pāli Words
+ * Class to auto-suggest prefix-matched words
  *
  * @param {string} inputId element id for text input
  * @param {string} suggestDivId element id for suggestion Div Menu
@@ -58,21 +58,11 @@ pali.InputSuggest = function(inputId, suggestDivId) {
 
 
   /**
-   * Array which contains prefix-match pāli words
+   * Array which contains prefix-match words
    * @type {Array}
    * @private
    */
   this.prefixMatchedPaliWords_ = new Array();
-
-  /**
-   * size of prefixMatchedPaliWords_, i.e.,
-   * number of prefix-match pāli words in suggestion menu.
-   * This value can not be larger than MAX_WORDS_IN_SUGGESTION_MENU.
-   * FIXME: remove this variable. use prefixMatchedPaliWords_.length
-   * @type {number|null}
-   * @private
-   */
-  this.numberOfPrefixMatchedPaliWords_ = null;
 
   /**
    * The position of user selection in suggestion menu
@@ -108,7 +98,7 @@ pali.InputSuggest = function(inputId, suggestDivId) {
 
 
 /**
- * max number of pāli words shown in suggestion menu
+ * max number of words shown in suggestion menu
  * @define {number}
  */
 pali.InputSuggest.MAX_WORDS_IN_SUGGESTION_MENU = 25;
@@ -309,7 +299,7 @@ pali.InputSuggest.prototype.isValidFirstLetter = function(letter) {
 
 
 /**
- * Prefix-match user input to pāli words.
+ * Prefix-match user input to words.
  * @private
  */
 pali.InputSuggest.prototype.prefixMatch = function() {
@@ -411,7 +401,6 @@ pali.InputSuggest.prototype.wordFuzzyMatch = function(word1, word2) {
  */
 pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
   this.suggestedWordPosition_ = null;
-  this.numberOfPrefixMatchedPaliWords_ = this.prefixMatchedPaliWords_.length;
   this.originalUserPaliInput_ = userInputStr;
 
   // create dropdown input suggestion menu
@@ -504,7 +493,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
      * selection position to the last word in the suggestion menu
      */
     if (this.suggestedWordPosition_ == null) {
-      this.suggestedWordPosition_ = this.numberOfPrefixMatchedPaliWords_;
+      this.suggestedWordPosition_ = this.prefixMatchedPaliWords_.length;
       var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.setItemStyle(currentWord);
@@ -557,7 +546,7 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
      * suggestion menu. Set user selction position to null.
      */
     } else if (this.suggestedWordPosition_ == 
-               this.numberOfPrefixMatchedPaliWords_) {
+               this.prefixMatchedPaliWords_.length) {
       var currentWord = this.getWordElementByIndexNumber(
                                this.suggestedWordPosition_);
       this.suggestedWordPosition_ = null;
@@ -761,7 +750,6 @@ pali.InputSuggest.prototype.clearSuggestionMenu = function() {
   this.suggestDiv_.innerHTML = "";
   this.suggestDiv_.style.display = "none";
   this.suggestedWordPosition_ = null;
-  this.numberOfPrefixMatchedPaliWords_ = null;
   this.originalUserPaliInput_ = "";
   this.oldInput_ = "";
   delete this.prefixMatchedPaliWords_;
