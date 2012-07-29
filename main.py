@@ -94,23 +94,13 @@ class Lookup(webapp2.RequestHandler):
     # http://stackoverflow.com/questions/10468553/google-app-engine-json-response-as-rest
     # https://developers.google.com/appengine/docs/python/tools/webapp/redirects
     paliword = cgi.escape(self.request.get('word'))
-    if paliword == "":
-      self.response.headers['Content-Type'] = 'application/javascript'
-      self.response.out.write("%s(%s)" % (self.request.get('callback'), json.dumps(None)))
-      return
-    result = jsonpLookup(paliword)
-    #self.response.headers['Content-Type'] = 'application/json'
     self.response.headers['Content-Type'] = 'application/javascript'
-    self.response.out.write("%s(%s)" % (self.request.get('callback'), json.dumps(result)))
-    return
-    self.redirect('/')
+    self.response.out.write("%s(%s)" % (self.request.get('callback'), json.dumps(jsonpLookup(paliword))))
 
   def post(self):
     paliword = cgi.escape(self.request.get('word'))
-    if paliword == "":
-      self.response.out.write(json.dumps(None))
-    else:
-      self.response.out.write(json.dumps(jsonpLookup(paliword)))
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.out.write(json.dumps(jsonpLookup(paliword)))
 
 
 app = webapp2.WSGIApplication([('/', MainPage),

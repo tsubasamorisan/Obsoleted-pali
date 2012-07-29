@@ -73,6 +73,15 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
   this.globalName_ = pali.setObjectGlobalName(this);
 
   if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
+
+  /**
+   * Cache for the json-format data
+   * this.wordCache_[word] = jsonData;
+   * @const
+   * @type {object}
+   * @private
+   */
+  this.wordCache_ = {};
 };
 
 
@@ -81,6 +90,17 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
  * @private
  */
 Lookup.prototype.lookupByHTTPPost = function() {
+  this.result_.innerHTML = getStringLookingUp();
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  var word = this.textInput_.value;
+  if (this.wordCache_.hasOwnProperty(word)) {
+    this.JSONPCallback(this.wordCache_[word])
+    return;
+  }
+
   var xmlhttp;
 
   if (window.XMLHttpRequest) {
@@ -103,10 +123,9 @@ Lookup.prototype.lookupByHTTPPost = function() {
     }
   }.bind(this);
 
-  this.result_.innerHTML = getStringLookingUp();
   xmlhttp.open("POST", this.url_, true);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send("word=" + encodeURIComponent(this.textInput_.value));
+  xmlhttp.send("word=" + encodeURIComponent(word));
 };
 
 
@@ -119,7 +138,17 @@ Lookup.prototype.lookupByHTTPPost = function() {
  */
 Lookup.prototype.lookupByJSONP = function() {
   this.result_.innerHTML = getStringLookingUp();
-  var qry = '?word=' + encodeURIComponent(this.textInput_.value) +
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  var word = this.textInput_.value;
+  if (this.wordCache_.hasOwnProperty(word)) {
+    this.JSONPCallback(this.wordCache_[word])
+    return;
+  }
+
+  var qry = '?word=' + encodeURIComponent(word) +
             '&callback=' + encodeURIComponent(this.globalName_ + '["JSONPCallback"]');
 //            '&callback=' + encodeURIComponent('(function(jsonData){console.log(jsonData);})');
   var ext = document.createElement('script');
@@ -137,8 +166,13 @@ Lookup.prototype.lookupByJSONP = function() {
  * @private
  */
 Lookup.prototype.JSONPCallback = function(jsonData) {
+  if (!this.wordCache_.hasOwnProperty(jsonData['word'])) {
+    // add to cache
+    this.wordCache_[jsonData['word']] = jsonData;
+  }
+
   this.result_.innerHTML = "";
-  if (jsonData == null) {
+  if (jsonData['data'] == null) {
     this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
