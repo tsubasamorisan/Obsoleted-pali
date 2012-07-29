@@ -702,7 +702,7 @@ pali.InputSuggest.prototype.handleWordPreviewJSONData = function(jsonData) {
   this.suggestedWordPreviewDiv_.innerHTML = '';
 
   for (var index in jsonData['data']) {
-    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典',
+    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典》',
                           '《パーリ语辞典》', ' -')) continue;
     if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
                           '《巴汉词典》', '~')) continue;
@@ -718,6 +718,14 @@ pali.InputSuggest.prototype.handleWordPreviewJSONData = function(jsonData) {
                           '《Concise Pali-English Dictionary》', '<br>')) continue;
     if (this.dicCheckShow(jsonData['data'][index], 'PTS Pali-English',
                           '《PTS Pali-English Dictionary》', '<i>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '汉译パーリ',
+                          '《汉译パーリ语辞典》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典 增补',
+                          '《パーリ语辞典 增补改订》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴英术语汇编',
+                          '《巴英术语汇编》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴利新音译',
+                          '《巴利语汇解》与《巴利新音译》', '。')) continue;
   }
 };
 
