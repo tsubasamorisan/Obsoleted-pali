@@ -84,6 +84,9 @@ def jsonpDecodeXML(xmlfilename, xmlfile):
 def jsonpLookup(word):
   paliword = PaliWord.get_by_id(word)
   if (paliword):
-    return jsonpDecodeXML(paliword.xmlfilename, paliword.xmlfiledata.encode('utf8'))
+    jsonData = {}
+    jsonData['word'] = word
+    jsonData['data'] = jsonpDecodeXML(paliword.xmlfilename, paliword.xmlfiledata.encode('utf8'))
+    return jsonData
   else:
     return None
