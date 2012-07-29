@@ -136,6 +136,18 @@ pali.InputSuggest = function(inputId, suggestDivId,
    * @private
    */
   this.globalName_ = pali.setObjectGlobalName(this);
+
+  if (!this.hasOwnProperty('showWordPreviewCallback'))
+    this['showWordPreviewCallback'] = this.showWordPreviewCallback;
+
+  /**
+   * Cache for the json-format data of word preview
+   * this.wordPreviewCache_[word] = jsonData;
+   * @const
+   * @type {object}
+   * @private
+   */
+  this.wordPreviewCache_ = {};
 };
 
 
@@ -643,14 +655,95 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
  * @private
  */
 pali.InputSuggest.prototype.showWordPreview = function(word) {
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  if (this.wordPreviewCache_.hasOwnProperty(word)) {
+    this.handleWordPreviewJSONData(this.wordPreviewCache_[word])
+    return;
+  }
+
+  // get word definition from server
+  var qry = '?word=' + encodeURIComponent(word) +
+            '&callback=' + encodeURIComponent(
+             this.globalName_ + '["showWordPreviewCallback"]');
+  var ext = document.createElement('script');
+  ext.setAttribute('src', this.lookupUrl_ + qry);
+  document.getElementsByTagName("head")[0].appendChild(ext);
+};
+
+
+/**
+ * Callback function of JSONP word lookup
+ * @param {string} result The JSON-format data which contains the result of word
+ *                        lookup. "list of 3-tuple" in Python
+ * @private
+ */
+pali.InputSuggest.prototype.showWordPreviewCallback = function(jsonData) {
+  if (jsonData == null) {
+    this.suggestedWordPreviewDiv_.innerHTML = '';
+    this.suggestedWordPreviewDiv_.style.display = 'none';
+    return;
+  }
+  this.wordPreviewCache_[jsonData['word']] = jsonData;
+  this.handleWordPreviewJSONData(jsonData);
+};
+
+
+pali.InputSuggest.prototype.handleWordPreviewJSONData = function(jsonData) {
   this.suggestedWordPreviewDiv_.style.left =
     pali.getOffset(this.input_).left +
     this.suggestDiv_.offsetWidth +
     + 5 + "px";
   this.suggestedWordPreviewDiv_.style.width = '20em';
-  if (this.suggestedWordPreviewDiv_.style.display == 'none')
-    this.suggestedWordPreviewDiv_.style.display = 'block';
-  this.suggestedWordPreviewDiv_.innerHTML = word;
+  this.suggestedWordPreviewDiv_.style.display = 'block';
+  this.suggestedWordPreviewDiv_.style.textAlign = 'left';
+  this.suggestedWordPreviewDiv_.innerHTML = '';
+
+  for (var index in jsonData['data']) {
+    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典',
+                          '《パーリ语辞典》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
+                          '《巴汉词典》', '~')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 明法',
+                          '《巴汉词典》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '《巴利语字汇》',
+                          '《巴利语字汇》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴利文-汉文',
+                          '《巴利文-汉文佛学名相辞汇》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'Buddhist Dictionary',
+                          '《Buddhist Dictionary》', '<br>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'Concise Pali-English',
+                          '《Concise Pali-English Dictionary》', '<br>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'PTS Pali-English',
+                          '《PTS Pali-English Dictionary》', '<i>')) continue;
+  }
+};
+
+
+pali.InputSuggest.prototype.dicCheckShow = function(dicWordExp,
+                                                    dicTestStr,
+                                                    dicNameStr,
+                                                    separator) {
+  if (dicWordExp[0].indexOf(dicTestStr) > 0) {
+    if (this.suggestedWordPreviewDiv_.innerHTML != '')
+      this.suggestedWordPreviewDiv_.innerHTML += '<br />'
+    this.suggestedWordPreviewDiv_.innerHTML += 
+      '<span style="color: red;">'+ dicNameStr +'</span>' + '<br />';
+    var breakPos = dicWordExp[2].indexOf(separator);
+    if (breakPos == -1) {
+      this.suggestedWordPreviewDiv_.innerHTML +=
+      dicWordExp[2] +
+      '<br />';
+    } else {
+      this.suggestedWordPreviewDiv_.innerHTML +=
+      dicWordExp[2].slice(0, breakPos)
+      '<br />';
+    }
+    return true;
+  }
+  return false;
 };
 
 
