@@ -94,7 +94,8 @@ Lookup.prototype.lookupByHTTPPost = function() {
       if (xmlhttp.status == 200) {
         //this.result_.innerHTML = xmlhttp.status;
         //this.result_.innerHTML = xmlhttp.statusText;
-        this.result_.innerHTML = xmlhttp.responseText;
+        //this.result_.innerHTML = xmlhttp.responseText;
+        this.JSONPCallback(eval('(' + xmlhttp.responseText + ')'));
       } else {
         this.result_.innerHTML = 'In lookupByHTTPPost: XMLHttpRequest error!';
         throw "In lookupByHTTPPost: XMLHttpRequest error!";
@@ -141,8 +142,17 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
     this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
+
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
+
+  var titleWord = document.createElement('span');
+  titleWord.innerHTML = jsonData['word'];
+  titleWord.style.fontSize = '2em';
+  titleWord.style.fontWeight = 'bold';
+  titleWord.style.color = 'GoldenRod';
+  resultOuterTable.appendChild(titleWord);
+
   for (var index in jsonData['data']) {
 
     var tr = document.createElement("tr");

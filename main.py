@@ -106,8 +106,11 @@ class Lookup(webapp2.RequestHandler):
     self.redirect('/')
 
   def post(self):
-    word = cgi.escape(self.request.get('word'))
-    self.response.out.write(lookup(word))
+    paliword = cgi.escape(self.request.get('word'))
+    if paliword == "":
+      self.response.out.write(json.dumps(None))
+    else:
+      self.response.out.write(json.dumps(jsonpLookup(paliword)))
 
 
 app = webapp2.WSGIApplication([('/', MainPage),
