@@ -151,13 +151,13 @@ function initBrowseLinks() {
  * @this {DOM Element}
  */
 function onSiteClick() {
-  var url = '';
-  if (this.id == 'siteItem1') { url = 'http://palidictionary.appspot.com/'; }
-  else if (this.id == 'siteItem2') { url = 'http://siongui.pythonanywhere.com/'; }
-  else if (this.id == 'siteItem3') { url = 'http://siongui.webfactional.com/'; }
-  else { url = 'http://palidictionary.appspot.com/'; }
+  var url = window.location.pathname;
+  if (this.id == 'siteItem2') { url = 'http://siongui.pythonanywhere.com' + url; }
+  else if (this.id == 'siteItem3') { url = 'http://siongui.webfactional.com' + url; }
+  else { url = 'http://palidictionary.appspot.com' + url; }
 
-  if (window.location.host == 'localhost:8080' || window.location.host == 'pali.googlecode.com') {
+  if (window.location.host == 'localhost:8080' ||
+      window.location.host == 'pali.googlecode.com') {
     queryURL['track'] = 'no';
   }
 
@@ -183,7 +183,7 @@ function onLocaleClick() {
 
   queryURL['locale'] = locale;
   var count = 0;
-  var url = '/';
+  var url = window.location.pathname;
   for (var key in queryURL) {
     if (count == 0) { url += '?' + key + '=' + queryURL[key]; }
     else { url += '&' + key + '=' + queryURL[key]; }
