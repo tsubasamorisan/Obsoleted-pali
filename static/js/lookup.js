@@ -240,8 +240,12 @@ Lookup.prototype.showPreview = function(jsonData) {
   this.wordPvDiv_.style.textAlign = 'left';
   this.wordPvDiv_.innerHTML = '';
 
+  this.wordPvDiv_.innerHTML += '<span style="color:GoldenRod; ' +
+       'font-weight:bold; font-size: 1.5em; margin: .5em;">' +
+       jsonData['word'] + '</span>';
+
   for (var index in jsonData['data']) {
-    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典》',
+    if (this.dicCheckShow(jsonData['data'][index], '《パーリ语辞典》',
           '《パーリ语辞典》', ' -')) continue;
     if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
           '《巴汉词典》', '~')) continue;
@@ -282,8 +286,7 @@ Lookup.prototype.showPreview = function(jsonData) {
 Lookup.prototype.dicCheckShow = function(dicWordExp, dicTestStr,
                                          dicNameStr, separator) {
   if (dicWordExp[0].indexOf(dicTestStr) > 0) {
-    if (this.wordPvDiv_.innerHTML != '')
-      this.wordPvDiv_.innerHTML += '<br />';
+    this.wordPvDiv_.innerHTML += '<br />';
     // show dictionary name in the preview
     this.wordPvDiv_.innerHTML += '<span style="color: red;">'+ dicNameStr +
                                  '</span>' + '<br />';
