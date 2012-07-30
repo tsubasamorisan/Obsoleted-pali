@@ -66,7 +66,7 @@ def getPrefixHTML(prefix, dicPrefixWordLists):
 
 
 def getWordHTML(word, dicPrefixWordLists, lookupData, jj2tpl):
-  if (lookupData == None):
+  if (lookupData['data'] == None):
     raise Exception("Impossible case: No lookup data of %s" % word)
 
   divTableHTML = u'<div style="margin: .5em; text-align: left;">%s</div>'
