@@ -133,9 +133,19 @@ function initService() {
   document.getElementById('langItem3').onclick = onLocaleClick;
   document.getElementById('langItem3').href = "javascript:void(0);";
 
+  initBrowseLinks();
+
   document.getElementById('PaliInput').focus();
 }
 
+/**
+ * Browse Dictionary in AJAX way
+ */
+function initBrowseLinks() {
+  if (queryURL['ajaxbrowse'] == 'no') {
+    return;
+  }
+}
 
 /**
  * @this {DOM Element}
