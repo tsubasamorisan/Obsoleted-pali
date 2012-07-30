@@ -98,7 +98,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
   if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
 
   /**
-   * Cache for the json-format data
+   * Cache for the json-format data of words
    * this.wordCache_[word] = jsonData;
    * @const
    * @type {object}
@@ -124,24 +124,35 @@ Lookup.prototype.previewCheck = function() {
     return;
   }
 
-  // check if dicPrefixWordLists exists
-  if (!dicPrefixWordLists) {
-    this.wordPvDiv_.style.display = 'none';
-    console.log('No dicPrefixWordLists');
-    // check again in 1000 ms
-    setTimeout(this.previewCheck.bind(this), 1000);
-    return;
-  }
-
   /**
    * Remove whitespace in the beginning and end of user input string
    * @const
    * @type {string}
    * @private
    */
-  var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, "");
+  var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '');
   if (userInputStr.length == 0) {
     this.wordPvDiv_.style.display = 'none';
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  if (this.wordCache_.hasOwnProperty(userInputStr)) {
+    this.showPreview(this.wordCache_[userInputStr]);
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  // check if dicPrefixWordLists exists
+  if (!dicPrefixWordLists) {
+    this.wordPvDiv_.style.display = 'none';
+    console.log('No dicPrefixWordLists');
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
@@ -186,6 +197,79 @@ Lookup.prototype.previewCheck = function() {
 
   // check again in 1000 ms
   setTimeout(this.previewCheck.bind(this), 1000);
+};
+
+
+/**
+ * Show preview of a word
+ * @param {object} jsonData The json format lookup data of word
+ * @private
+ */
+Lookup.prototype.showPreview = function(jsonData) {
+  this.wordPvDiv_.style.left = pali.getOffset(this.textInput_).left +
+    this.suggestDiv_.offsetWidth + 5 + "px";
+  this.wordPvDiv_.style.width = '20em';
+  this.wordPvDiv_.style.display = 'block';
+  this.wordPvDiv_.style.textAlign = 'left';
+  this.wordPvDiv_.innerHTML = '';
+
+  for (var index in jsonData['data']) {
+    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典》',
+          '《パーリ语辞典》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
+          '《巴汉词典》', '~')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 明法',
+          '《巴汉词典》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '《巴利语字汇》',
+          '《巴利语字汇》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴利文-汉文',
+          '《巴利文-汉文佛学名相辞汇》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'Buddhist Dictionary',
+          '《Buddhist Dictionary》', '<br>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'Concise Pali-English',
+          '《Concise Pali-English Dictionary》', '<br>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'PTS Pali-English',
+          '《PTS Pali-English Dictionary》', '<i>')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '汉译パーリ',
+          '《汉译パーリ语辞典》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典 增补',
+          '《パーリ语辞典 增补改订》', ' -')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴英术语汇编',
+          '《巴英术语汇编》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴利新音译',
+          '《巴利语汇解》与《巴利新音译》', '。')) continue;
+    if (this.dicCheckShow(jsonData['data'][index], '巴利语入门',
+          '《巴利语入门》', '。')) continue;
+  }
+};
+
+
+/**
+ * Test dictionary name and show shorter explanation of the word if test passes.
+ * @param {object} dicWordExp The dictionary-word-explanation tuple of word
+ * @param {string} dicTestStr The string used to test dictionary name
+ * @param {string} dicNameStr The dictionary name to be shown in the preview
+ * @param {string} separator Use to break longer explanation to shorter one
+ * @private
+ */
+Lookup.prototype.dicCheckShow = function(dicWordExp, dicTestStr,
+                                         dicNameStr, separator) {
+  if (dicWordExp[0].indexOf(dicTestStr) > 0) {
+    if (this.wordPvDiv_.innerHTML != '')
+      this.wordPvDiv_.innerHTML += '<br />';
+    // show dictionary name in the preview
+    this.wordPvDiv_.innerHTML += '<span style="color: red;">'+ dicNameStr +
+                                 '</span>' + '<br />';
+    // show shorter explanation in the preview
+    var breakPos = dicWordExp[2].indexOf(separator);
+    if (breakPos == -1) {
+      this.wordPvDiv_.innerHTML += dicWordExp[2] + '<br />';
+    } else {
+      this.wordPvDiv_.innerHTML += dicWordExp[2].slice(0, breakPos) + '<br />';
+    }
+    return true;
+  }
+  return false;
 };
 
 
