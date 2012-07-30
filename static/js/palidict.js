@@ -145,6 +145,20 @@ function initBrowseLinks() {
   if (queryURL['ajaxbrowse'] == 'no') {
     return;
   }
+
+  var brdic = document.getElementById('brdic');
+  var prefixes = brdic.getElementsByTagName('a');
+  for (var i=0; i < prefixes.length; i++) {
+    prefixes[i].href = 'javascript:void(0);';
+    prefixes[i].onclick = onBrowsePrefixClick.bind(prefixes[i]);
+  }
+}
+
+/**
+ * @this {DOM Element}
+ */
+function onBrowsePrefixClick() {
+  document.getElementById('result').innerHTML = this.innerHTML;
 }
 
 /**
@@ -176,8 +190,7 @@ function onSiteClick() {
  */
 function onLocaleClick() {
   var locale = '';
-  if (this.id == 'langItem1') { locale = 'en_US'; }
-  else if (this.id == 'langItem2') { locale = 'zh_CN'; }
+  if (this.id == 'langItem2') { locale = 'zh_CN'; }
   else if (this.id == 'langItem3') { locale = 'zh_TW'; }
   else { locale = 'en_US'; }
 
