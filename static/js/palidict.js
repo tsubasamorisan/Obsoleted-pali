@@ -150,7 +150,7 @@ function initBrowseLinks() {
   var prefixes = brdic.getElementsByTagName('a');
   for (var i=0; i < prefixes.length; i++) {
     prefixes[i].href = 'javascript:void(0);';
-    prefixes[i].onclick = onBrowsePrefixClick.bind(prefixes[i]);
+    prefixes[i].onclick = onBrowsePrefixClick;
   }
 }
 
@@ -158,7 +158,42 @@ function initBrowseLinks() {
  * @this {DOM Element}
  */
 function onBrowsePrefixClick() {
-  document.getElementById('result').innerHTML = this.innerHTML;
+  if (!dicPrefixWordLists) return;
+  if (!dicPrefixWordLists.hasOwnProperty(this.innerHTML))
+    throw "Impossible Case in onBrowsePrefixClick";
+
+  var rootDiv = document.createElement('div');
+  rootDiv.style.margin = '.5em';
+  rootDiv.style.lineHeight = '1.5em';
+  rootDiv.style.textAlign = 'left';
+
+  var tableElem = document.createElement('table');
+  tableElem.style.width = '100%';
+  var rowCount = 0;
+  for (var index in dicPrefixWordLists[this.innerHTML]) {
+    var word = dicPrefixWordLists[this.innerHTML][index];
+    if (rowCount == 0)
+      var trElem = document.createElement('tr');
+    var tdElem = document.createElement('td');
+
+    var aElem = document.createElement('a');
+    aElem.href = '/browse/' + this.innerHTML + '/' + word;
+    aElem.style.margin = '.5em';
+    aElem.style.textDecoration = 'none';
+    aElem.appendChild(document.createTextNode(word));
+
+    tdElem.appendChild(aElem);
+    trElem.appendChild(tdElem);
+
+    rowCount += 1;
+    if (rowCount == 3) {
+      tableElem.appendChild(trElem);
+      rowCount = 0;
+    }
+  }
+
+  rootDiv.appendChild(tableElem);
+  document.getElementById('result').appendChild(rootDiv);
 }
 
 /**
