@@ -96,6 +96,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
   this.globalName_ = pali.setObjectGlobalName(this);
 
   if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
+  if (!this['previewCallback']) this['previewCallback'] = this.previewCallback;
 
   /**
    * Cache for the json-format data of words
@@ -106,7 +107,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    */
   this.wordCache_ = {};
 
-  // start to check whether preview should be shown periodically
+  // start to periodically check whether preview should be shown
   this.previewCheck();
 };
 
@@ -143,7 +144,13 @@ Lookup.prototype.previewCheck = function() {
    * if yes, use the cached data.
    */
   if (this.wordCache_.hasOwnProperty(userInputStr)) {
-    this.showPreview(this.wordCache_[userInputStr]);
+    var jsonData = this.wordCache_[userInputStr];
+    if (jsonData['data'] == null) {
+      this.wordPvDiv_.style.display = 'none';
+    }
+    else {
+      this.showPreview(jsonData);
+    }
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
@@ -188,15 +195,35 @@ Lookup.prototype.previewCheck = function() {
     return;
   }
 
-  this.wordPvDiv_.style.left = pali.getOffset(this.textInput_).left +
-    this.suggestDiv_.offsetWidth + 5 + "px";
-  this.wordPvDiv_.style.width = '20em';
-  this.wordPvDiv_.style.textAlign = 'left';
-  this.wordPvDiv_.innerHTML = matchedWord;
-  this.wordPvDiv_.style.display = 'block';
+  // get lookup data of a word from the server by JSONP
+  var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
+            encodeURIComponent(this.globalName_ + '["previewCallback"]');
+  var ext = document.createElement('script');
+  ext.setAttribute('src', this.url_ + qry);
+  document.getElementsByTagName("head")[0].appendChild(ext);
 
   // check again in 1000 ms
   setTimeout(this.previewCheck.bind(this), 1000);
+};
+
+
+Lookup.prototype.previewCallback = function(jsonData) {
+  if (!this.wordCache_.hasOwnProperty(jsonData['word'])) {
+    // add lookup json data to cache
+    this.wordCache_[jsonData['word']] = jsonData;
+  }
+
+  if (jsonData['data'] == null) {
+    this.wordPvDiv_.style.display = 'none';
+    return;
+  }
+
+  if (jsonData['word'] != 
+      this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '')) {
+    this.wordPvDiv_.style.display = 'none';
+    return;
+  }
+  this.showPreview(jsonData);
 };
 
 
@@ -355,7 +382,7 @@ Lookup.prototype.lookupByJSONP = function() {
  */
 Lookup.prototype.JSONPCallback = function(jsonData) {
   if (!this.wordCache_.hasOwnProperty(jsonData['word'])) {
-    // add to cache
+    // add lookup json data to cache
     this.wordCache_[jsonData['word']] = jsonData;
   }
 
