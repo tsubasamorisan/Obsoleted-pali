@@ -139,6 +139,14 @@ function initBrowseLinks() {
     prefixes[i].href = 'javascript:void(0);';
     prefixes[i].onclick = onBrowsePrefixClick;
   }
+
+  var prefixWordsList = document.getElementById('prefixWordsList');
+  if (!prefixWordsList) return;
+  var prefixWords = prefixWordsList.getElementsByTagName('a');
+  for (var i=0; i < prefixWords.length; i++) {
+    prefixWords[i].href = 'javascript:void(0);';
+    prefixWords[i].onclick = onBrowseWordClick;
+  }
 }
 
 /**

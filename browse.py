@@ -34,6 +34,7 @@ def isValidPrefixAndWord(prefix, word, dicPrefixWordLists):
 def getPrefixHTML(prefix, dicPrefixWordLists):
   impl = xml.dom.minidom.getDOMImplementation()
   dom = impl.createDocument(None, u'div', None)
+  dom.documentElement.setAttribute(u'id', "prefixWordsList")
   dom.documentElement.setAttribute(u'style', "margin: .5em; line-height: 1.5em; text-align: left;")
   urlPrefix = '/browse/' + prefix + '/'
 
