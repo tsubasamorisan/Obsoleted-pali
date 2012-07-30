@@ -95,7 +95,7 @@ class Lookup(webapp2.RequestHandler):
     # https://developers.google.com/appengine/docs/python/tools/webapp/redirects
     paliword = cgi.escape(self.request.get('word'))
     self.response.headers['Content-Type'] = 'application/javascript'
-    self.response.out.write("%s(%s)" % (self.request.get('callback'), json.dumps(jsonpLookup(paliword))))
+    self.response.out.write("%s(%s);" % (self.request.get('callback'), json.dumps(jsonpLookup(paliword))))
 
   def post(self):
     paliword = cgi.escape(self.request.get('word'))

@@ -30,24 +30,11 @@ function initService() {
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
   // start lookup object and callback
-  var lookupUrl = "/lookup";
   var jsonp = true;
-  if (queryURL['lookup'] == "gae") {
-    lookupUrl = "http://palidictionary.appspot.com" + lookupUrl;
-  }
-  if (queryURL['lookup'] == "paw") {
-    lookupUrl = "http://siongui.pythonanywhere.com" + lookupUrl;
-  }
-  if (queryURL['lookup'] == "wfn") {
-    lookupUrl = "http://siongui.webfactional.com" + lookupUrl;
-  }
-  if (queryURL['jsonp'] == "no") {
-    lookupUrl = "/lookup";
-    jsonp = false;
-  }
+  if (queryURL['jsonp'] == "no") jsonp = false;
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result',
                             'suggestedWordPreview', 'suggest',
-                            lookupUrl, jsonp);
+                            getLookupUrl(), jsonp);
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')
@@ -177,7 +164,8 @@ function onBrowsePrefixClick() {
     var tdElem = document.createElement('td');
 
     var aElem = document.createElement('a');
-    aElem.href = '/browse/' + this.innerHTML + '/' + word;
+    aElem.href = 'javascript:void(0);';
+    aElem.onclick = onBrowseWordClick;
     aElem.style.margin = '.5em';
     aElem.style.textDecoration = 'none';
     aElem.appendChild(document.createTextNode(word));
@@ -193,8 +181,35 @@ function onBrowsePrefixClick() {
   }
 
   rootDiv.appendChild(tableElem);
+  document.getElementById('result').innerHTML = '';
   document.getElementById('result').appendChild(rootDiv);
 }
+
+/**
+ * @this {DOM Element}
+ */
+function onBrowseWordClick() {
+  document.getElementById('result').innerHTML = getStringLookingUp();
+  // get lookup data of a word from the server by JSONP
+  var qry = '?word=' + encodeURIComponent(this.innerHTML) +
+            '&callback=(' + encodeURIComponent(
+              onBrowseWordClickCallback.toString()) + ')';
+  var ext = document.createElement('script');
+  ext.setAttribute('src', getLookupUrl() + qry);
+  document.getElementsByTagName("head")[0].appendChild(ext);
+}
+
+var onBrowseWordClickCallback = function(jsonData) {
+  //
+  if (jsonData['data'] == null) {
+    console.log('In onBrowseWordClickCallback: impossible case');
+    document.getElementById('result').innerHTML = getStringNoSuchWord();
+    return;
+  }
+  document.getElementById('result').innerHTML = '';
+  document.getElementById('result').appendChild(
+    Data2dom.createLookupTable(jsonData));
+};
 
 /**
  * @this {DOM Element}
@@ -239,4 +254,19 @@ function onLocaleClick() {
   }
 
   window.location = url;
+}
+
+function getLookupUrl() {
+  var lookupUrl = "/lookup";
+  if (queryURL['jsonp'] == "no") return lookupUrl;
+  if (queryURL['lookup'] == "gae") {
+    lookupUrl = "http://palidictionary.appspot.com" + lookupUrl;
+  }
+  if (queryURL['lookup'] == "paw") {
+    lookupUrl = "http://siongui.pythonanywhere.com" + lookupUrl;
+  }
+  if (queryURL['lookup'] == "wfn") {
+    lookupUrl = "http://siongui.webfactional.com" + lookupUrl;
+  }
+  return lookupUrl;
 }
