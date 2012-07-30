@@ -4,6 +4,7 @@
  * FIXME: This file is not modulized because of i18n string function
  */
 
+pali.require('base');
 
 /**
  * Class to look up word in AJAX way.
@@ -14,11 +15,15 @@
  *                        of word to be looked up.
  * @param {string} resultId The id of DOM element to show the result of the word
  *                          lookup. (should be empty DIV or SPAN)
+ * @param {string} previewDivId The id of DOM element to show the preview of
+ *                              user input or selected word
+ * @param {string} suggestDivId element id for suggestion Div Menu
  * @param {string} lookupURL The URL to look up word
  * @param {boolean} useJSONP Use JSONP if true. use HTTP Post if false.
  * @constructor
  */
-Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
+Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
+                  lookupURL, useJSONP) {
   /**
    * The DOM element which is the text input of word to be looked up.
    * @const
@@ -46,6 +51,24 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
    */
   this.result_ = document.getElementById(resultId);
   if (!this.result_) throw "Lookup.NoResult";
+
+  /**
+   * The DOM element to show preview of the word.
+   * @const
+   * @type {DOM Element}
+   * @private
+   */
+  this.wordPvDiv_ = document.getElementById(previewDivId);
+  if (!this.wordPvDiv_) throw "Lookup.NoWordPreviewDiv";
+
+  /**
+   * DOM element of suggestion menu of words
+   * @const
+   * @type {DOM Element}
+   * @private
+   */
+  this.suggestDiv_ = document.getElementById(suggestDivId);
+  if (!this.suggestDiv_) throw "Lookup.NoSuggestDiv";
 
   /**
    * The URL to look up word.
@@ -82,6 +105,87 @@ Lookup = function(textInputId, formId, resultId, lookupURL, useJSONP) {
    * @private
    */
   this.wordCache_ = {};
+
+  // start to check whether preview should be shown periodically
+  this.previewCheck();
+};
+
+
+/**
+ * Check whether preview should be shown periodically
+ * @private
+ */
+Lookup.prototype.previewCheck = function() {
+  // check if suggestion menu exists
+  if (this.suggestDiv_.style.display == 'none') {
+    this.wordPvDiv_.style.display = 'none';
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  // check if dicPrefixWordLists exists
+  if (!dicPrefixWordLists) {
+    this.wordPvDiv_.style.display = 'none';
+    console.log('No dicPrefixWordLists');
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  /**
+   * Remove whitespace in the beginning and end of user input string
+   * @const
+   * @type {string}
+   * @private
+   */
+  var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, "");
+  if (userInputStr.length == 0) {
+    this.wordPvDiv_.style.display = 'none';
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  // suggestion menu exists & dicPrefixWordLists exists &
+  // stripped user input string != ''. check if user input is a valid word
+  var prefix = '';
+  for (var key in dicPrefixWordLists) {
+    if (userInputStr[0] == key) {
+      prefix = key;
+      break;
+    }
+  }
+  if (prefix == '') {
+    this.wordPvDiv_.style.display = 'none';
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  var matchedWord = '';
+  for (var index in dicPrefixWordLists[prefix]) {
+    if (dicPrefixWordLists[prefix][index] == userInputStr) {
+      matchedWord = dicPrefixWordLists[prefix][index];
+      break;
+    }
+  }
+  if (matchedWord == '') {
+    this.wordPvDiv_.style.display = 'none';
+    // check again in 1000 ms
+    setTimeout(this.previewCheck.bind(this), 1000);
+    return;
+  }
+
+  this.wordPvDiv_.style.left = pali.getOffset(this.textInput_).left +
+    this.suggestDiv_.offsetWidth + 5 + "px";
+  this.wordPvDiv_.style.width = '20em';
+  this.wordPvDiv_.style.textAlign = 'left';
+  this.wordPvDiv_.innerHTML = matchedWord;
+  this.wordPvDiv_.style.display = 'block';
+
+  // check again in 1000 ms
+  setTimeout(this.previewCheck.bind(this), 1000);
 };
 
 
@@ -177,6 +281,7 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
     return;
   }
 
+  // Show lookup data
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
 
@@ -188,7 +293,6 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
   resultOuterTable.appendChild(titleWord);
 
   for (var index in jsonData['data']) {
-
     var tr = document.createElement("tr");
     var td = document.createElement("td");
     td.appendChild(this.createDictionaryWordExplanationTable(

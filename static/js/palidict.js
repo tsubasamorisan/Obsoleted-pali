@@ -45,7 +45,9 @@ function initService() {
     lookupUrl = "/lookup";
     jsonp = false;
   }
-  var myLookup = new Lookup('PaliInput', 'inputForm', 'result', lookupUrl, jsonp);
+  var myLookup = new Lookup('PaliInput', 'inputForm', 'result',
+                            'suggestedWordPreview', 'suggest',
+                            lookupUrl, jsonp);
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')

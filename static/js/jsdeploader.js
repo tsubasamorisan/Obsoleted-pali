@@ -245,7 +245,7 @@ var startLoader = (function() {
     'dropdown.js': 'base.js',
     'draggable.js': 'base.js',
     'inputsuggest.js': 'base.js',
-    'lookup.js': null,
+    'lookup.js': 'base.js',
     'palidict.js': 'dropdown.js, draggable.js, inputsuggest.js, lookup.js'
   };
 
