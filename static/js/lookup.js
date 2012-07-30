@@ -5,6 +5,7 @@
  */
 
 pali.require('base');
+pali.require('data2dom');
 
 /**
  * Class to look up word in AJAX way.
@@ -396,79 +397,5 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
   }
 
   // Show lookup data
-  var resultOuterTable = document.createElement("table");
-  resultOuterTable.className = "resultCurvedEdges";
-
-  var titleWord = document.createElement('span');
-  titleWord.innerHTML = jsonData['word'];
-  titleWord.style.fontSize = '2em';
-  titleWord.style.fontWeight = 'bold';
-  titleWord.style.color = 'GoldenRod';
-  resultOuterTable.appendChild(titleWord);
-
-  for (var index in jsonData['data']) {
-    var tr = document.createElement("tr");
-    var td = document.createElement("td");
-    td.appendChild(this.createDictionaryWordExplanationTable(
-                     jsonData['data'][index]));
-    td.appendChild(this.createBackToTop());
-
-    tr.appendChild(td);
-    resultOuterTable.appendChild(tr);
-  }
-  this.result_.appendChild(resultOuterTable);
-};
-
-
-/**
- * Create a DOM element which contains a table for dictionary-word-explanation.
- * @param {Array} dictWordExp Array which contains data to be processed.
- * @return {DOM Element} HTML table of dictionary-word-explanation.
- * @private
- */
-Lookup.prototype.createDictionaryWordExplanationTable = function(dictWordExp) {
-  // check data sanity
-  if (Object.prototype.toString.apply(dictWordExp) != '[object Array]')
-    throw "In createDictionaryWordExplanationTable: parameter is not Array!";
-  if (dictWordExp.length != 3)
-    throw "In createDictionaryWordExplanationTable: parameter length != 3";
-
-  var resultInnerTable = document.createElement("table");
-  var count = 0;
-  resultInnerTable.className = "dicTable";
-  for (var i=0; i < dictWordExp.length; i++) {
-    var tr = document.createElement("tr");
-    var td = document.createElement("td");
-    var th = document.createElement("th");
-    if (count == 0) {th.innerHTML = getStringDictionary();}
-    if (count == 1) {th.innerHTML = getStringPaliWord();}
-    if (count == 2) {th.innerHTML = getStringExplain();}
-    td.innerHTML = dictWordExp[i];
-    tr.appendChild(th);
-    tr.appendChild(td);
-    resultInnerTable.appendChild(tr);
-    count += 1;
-  }
-  return resultInnerTable;
-};
-
-
-/**
- * Create a back-to-top DOM element
- * @return {DOM Element} Back-to-top DOM Element
- * @private
- */
-Lookup.prototype.createBackToTop = function() {
-  var backToTop = document.createElement("a");
-  backToTop.href = '/';
-  backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
-//  backToTop.href = "javascript:window.scrollTo(0,0);";
-  backToTop.style.textDecoration = "none";
-  backToTop.style.color = "#00C";
-  backToTop.style.fontSize = "small";
-  backToTop.style.cursor = "pointer";
-  backToTop.innerHTML = '<span style="text-decoration:underline">' +
-                        getStringBackToTop() +
-                        '</span><span style="font-size:.75em;">&#9650;</span>';
-  return backToTop;
+  this.result_.appendChild(Data2dom.createLookupTable(jsonData));
 };

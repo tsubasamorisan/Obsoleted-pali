@@ -221,6 +221,7 @@ var startLoader = (function() {
    * The file names of JavaScript files to be loaded
    */
   var jsNames = ['base.js',
+                 'data2dom.js',
                  'dropdown.js',
                  'draggable.js',
                  'inputsuggest.js',
@@ -242,10 +243,11 @@ var startLoader = (function() {
    */
   var jsDependencies = {
     'base.js' : null,
+    'data2dom.js': null,
     'dropdown.js': 'base.js',
     'draggable.js': 'base.js',
     'inputsuggest.js': 'base.js',
-    'lookup.js': 'base.js',
+    'lookup.js': 'base.js, data2dom.js',
     'palidict.js': 'dropdown.js, draggable.js, inputsuggest.js, lookup.js'
   };
 
