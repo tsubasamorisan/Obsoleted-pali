@@ -200,3 +200,44 @@ Data2dom.createDicWordExp = function(dicWordExp) {
 
   return shortDicExp;
 };
+
+
+/**
+ * Create words list by HTML table
+ * @param {Array} wordsArray The array of words
+ * @return {DOM Element} elements for listing words
+ */
+Data2dom.createWordsList = function(wordsArray) {
+  var container = document.createElement('div');
+  container.style.margin = '.5em';
+  container.style.lineHeight = '1.5em';
+  container.style.textAlign = 'left';
+
+  var tableElem = document.createElement('table');
+  tableElem.style.width = '100%';
+  var rowCount = 0;
+  for (var index in wordsArray) {
+    var word = wordsArray[index];
+    if (rowCount == 0)
+      var trElem = document.createElement('tr');
+    var tdElem = document.createElement('td');
+
+    var aElem = document.createElement('a');
+    aElem.href = 'javascript:void(0);';
+    aElem.style.margin = '.5em';
+    aElem.style.textDecoration = 'none';
+    aElem.appendChild(document.createTextNode(word));
+
+    tdElem.appendChild(aElem);
+    trElem.appendChild(tdElem);
+
+    rowCount += 1;
+    if (rowCount == 3) {
+      tableElem.appendChild(trElem);
+      rowCount = 0;
+    }
+  }
+
+  container.appendChild(tableElem);
+  return container;
+};

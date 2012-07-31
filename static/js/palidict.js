@@ -158,40 +158,14 @@ function onBrowsePrefixClick() {
   if (!dicPrefixWordLists.hasOwnProperty(this.innerHTML))
     throw "Impossible Case in onBrowsePrefixClick";
 
-  var rootDiv = document.createElement('div');
-  rootDiv.style.margin = '.5em';
-  rootDiv.style.lineHeight = '1.5em';
-  rootDiv.style.textAlign = 'left';
-
-  var tableElem = document.createElement('table');
-  tableElem.style.width = '100%';
-  var rowCount = 0;
-  for (var index in dicPrefixWordLists[this.innerHTML]) {
-    var word = dicPrefixWordLists[this.innerHTML][index];
-    if (rowCount == 0)
-      var trElem = document.createElement('tr');
-    var tdElem = document.createElement('td');
-
-    var aElem = document.createElement('a');
-    aElem.href = 'javascript:void(0);';
-    aElem.onclick = onBrowseWordClick;
-    aElem.style.margin = '.5em';
-    aElem.style.textDecoration = 'none';
-    aElem.appendChild(document.createTextNode(word));
-
-    tdElem.appendChild(aElem);
-    trElem.appendChild(tdElem);
-
-    rowCount += 1;
-    if (rowCount == 3) {
-      tableElem.appendChild(trElem);
-      rowCount = 0;
-    }
+  var container = Data2dom.createWordsList(dicPrefixWordLists[this.innerHTML]);
+  var aElems = container.getElementsByTagName('a');
+  for (var i=0; i < aElems.length; i++) {
+    aElems[i].onclick = onBrowseWordClick;
   }
 
-  rootDiv.appendChild(tableElem);
   document.getElementById('result').innerHTML = '';
-  document.getElementById('result').appendChild(rootDiv);
+  document.getElementById('result').appendChild(container);
 }
 
 /**
