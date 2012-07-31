@@ -19,12 +19,12 @@ pali.require('data2dom');
  * @param {string} previewDivId The id of DOM element to show the preview of
  *                              user input or selected word
  * @param {string} suggestDivId element id for suggestion Div Menu
- * @param {string} lookupURL The URL to look up word
+ * @param {string} lookupUrl The URL to look up word
  * @param {boolean} useJSONP Use JSONP if true. use HTTP Post if false.
  * @constructor
  */
 Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
-                  lookupURL, useJSONP) {
+                  lookupUrl, useJSONP) {
   /**
    * The DOM element which is the text input of word to be looked up.
    * @const
@@ -77,7 +77,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @type {string}
    * @private
    */
-  this.url_ = lookupURL;
+  this.lookupUrl_ = lookupUrl;
 
   if (useJSONP) {
     this.form_.action = "javascript:void(0);";
@@ -200,7 +200,7 @@ Lookup.prototype.previewCheck = function() {
   var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
             encodeURIComponent(this.globalName_ + '["previewCallback"]');
   var ext = document.createElement('script');
-  ext.setAttribute('src', this.url_ + qry);
+  ext.setAttribute('src', this.lookupUrl_ + qry);
   document.getElementsByTagName("head")[0].appendChild(ext);
 
   // check again in 1000 ms
@@ -236,7 +236,7 @@ Lookup.prototype.previewCallback = function(jsonData) {
 Lookup.prototype.showPreview = function(jsonData) {
   this.wordPvDiv_.style.left = pali.getOffset(this.textInput_).left +
     this.suggestDiv_.offsetWidth + 5 + "px";
-  this.wordPvDiv_.style.width = '20em';
+  this.wordPvDiv_.style.width = '30em';
   this.wordPvDiv_.style.display = 'block';
   this.wordPvDiv_.style.textAlign = 'left';
   this.wordPvDiv_.innerHTML = '';
@@ -282,7 +282,7 @@ Lookup.prototype.lookupByHTTPPost = function() {
     }
   }.bind(this);
 
-  xmlhttp.open("POST", this.url_, true);
+  xmlhttp.open("POST", this.lookupUrl_, true);
   xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xmlhttp.send("word=" + encodeURIComponent(word));
 };
@@ -307,14 +307,11 @@ Lookup.prototype.lookupByJSONP = function() {
     return;
   }
 
-  var qry = '?word=' + encodeURIComponent(word) +
-            '&callback=' + encodeURIComponent(this.globalName_ + '["JSONPCallback"]');
-//            '&callback=' + encodeURIComponent('(function(jsonData){console.log(jsonData);})');
+  var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
+            encodeURIComponent(this.globalName_ + '["JSONPCallback"]');
   var ext = document.createElement('script');
-  ext.setAttribute('src', this.url_ + qry);
-  if (typeof ext != "undefined") {
-    document.getElementsByTagName("head")[0].appendChild(ext);
-  }
+  ext.setAttribute('src', this.lookupUrl_ + qry);
+  document.getElementsByTagName("head")[0].appendChild(ext);
 };
 
 

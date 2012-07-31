@@ -130,8 +130,10 @@ Data2dom.createPreview = function(jsonData) {
 
 
 /**
- * Test dictionary name and show shorter explanation of the word if test passes.
+ * Build short dictionary name and explanation.
  * @param {object} dicWordExp The dictionary-word-explanation tuple of word
+ * @return {DOM Element} HTML DOM elements of short dictionary name and
+ *                       explanation.
  * @private
  */
 Data2dom.createDicWordExp = function(dicWordExp) {
@@ -179,22 +181,22 @@ Data2dom.createDicWordExp = function(dicWordExp) {
     var separator = '。';
   }
 
-  var shortExp = document.createElement('div');
+  var shortDicExp = document.createElement('div');
 
   // show short name of the dictionary in the preview
   var dicName = document.createElement('span');
   dicName.style.color = 'red';
   dicName.appendChild(document.createTextNode(dicShortName));
 
-  shortExp.appendChild(dicName);
+  shortDicExp.appendChild(dicName);
 
   // show shorter explanation in the preview
   var breakPos = dicWordExp[2].indexOf(separator);
   if (breakPos == -1) {
-    shortExp.innerHTML += dicWordExp[2];
+    shortDicExp.innerHTML += dicWordExp[2];
   } else {
-    shortExp.innerHTML += dicWordExp[2].slice(0, breakPos);
+    shortDicExp.innerHTML += dicWordExp[2].slice(0, breakPos);
   }
 
-  return shortExp;
+  return shortDicExp;
 };
