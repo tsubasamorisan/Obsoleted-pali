@@ -83,5 +83,27 @@ def getWordHTML(word, lookupData, jj2tpl):
   return divTableHTML % tableHTML
 
 
+def getWordHTML2(word, lookupData, i18n):
+  if (lookupData['data'] == None):
+    raise Exception("Impossible case: No lookup data of %s" % word)
+
+  divTableHTML = u'<div style="margin: .5em; text-align: left;">%s</div>'
+
+  tableHTML = u''
+  for item in lookupData['data']:
+    tmpHTML = '<table class="dicTable"><tr><th>%s</th><td>%s</td></tr>' + \
+             '<tr><th>%s</th><td>%s</td></tr>' + \
+             '<tr><th>%s</th><td>%s</td></tr></table><br />'
+    tmpHTML = tmpHTML % (i18n.gettext(u'Dictionary').encode('utf-8'),
+                       item[0].encode('utf-8'),
+                       i18n.gettext(u'Pāli Word').encode('utf-8'),
+                       item[1].encode('utf-8'),
+                       i18n.gettext(u'Explanation').encode('utf-8'),
+                       item[2].encode('utf-8'))
+    tableHTML += tmpHTML.decode('utf-8')
+
+  return divTableHTML % tableHTML
+
+
 if __name__ == '__main__':
   pass
