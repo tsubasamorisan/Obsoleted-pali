@@ -10,6 +10,13 @@ var Data2dom = Data2dom || {};
  * @return {DOM Element} HTML table of word explanations.
  */
 Data2dom.createLookupTable = function(jsonData) {
+  // check if the word exist
+  if (jsonData['data'] == null) {
+    // the word does NOT exist
+    return document.createTextNode(getStringNoSuchWord());
+  }
+
+  // The word exist. Build DOM elements.
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
 

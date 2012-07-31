@@ -391,11 +391,6 @@ Lookup.prototype.JSONPCallback = function(jsonData) {
   }
 
   this.result_.innerHTML = "";
-  if (jsonData['data'] == null) {
-    this.result_.innerHTML = getStringNoSuchWord();
-    return;
-  }
-
   // Show lookup data
   this.result_.appendChild(Data2dom.createLookupTable(jsonData));
 };

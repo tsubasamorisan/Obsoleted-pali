@@ -248,7 +248,7 @@ var startLoader = (function() {
     'draggable.js': 'base.js',
     'inputsuggest.js': 'base.js',
     'lookup.js': 'base.js, data2dom.js',
-    'palidict.js': 'data2dom.js, dropdown.js, draggable.js, inputsuggest.js, lookup.js'
+    'palidict.js': 'base.js, data2dom.js, dropdown.js, draggable.js, inputsuggest.js, lookup.js'
   };
 
   /**

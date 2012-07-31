@@ -1,4 +1,5 @@
 pali.require('base');
+pali.require('data2dom');
 pali.require('dropdown');
 pali.require('draggable');
 pali.require('inputsuggest');
@@ -208,12 +209,6 @@ function onBrowseWordClick() {
 }
 
 var onBrowseWordClickCallback = function(jsonData) {
-  //
-  if (jsonData['data'] == null) {
-    console.log('In onBrowseWordClickCallback: impossible case');
-    document.getElementById('result').innerHTML = getStringNoSuchWord();
-    return;
-  }
   document.getElementById('result').innerHTML = '';
   document.getElementById('result').appendChild(
     Data2dom.createLookupTable(jsonData));
