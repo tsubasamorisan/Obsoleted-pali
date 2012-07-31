@@ -93,3 +93,108 @@ Data2dom.createBackToTop = function() {
                         '</span><span style="font-size:.75em;">&#9650;</span>';
   return backToTop;
 };
+
+
+/**
+ * Convert JSON format of lookup data to HTML DOM elements
+ * This function returns shorter explanations (preview) of a word
+ * @param {object} jsonData The json format lookup data of word
+ * @return {DOM Element} HTML DOM elements of word preview.
+ */
+Data2dom.createPreview = function(jsonData) {
+  // check if the word exist
+  if (jsonData['data'] == null) {
+    // the word does NOT exist
+    return document.createTextNode(getStringNoSuchWord());
+  }
+
+  // The word exist. Build DOM elements.
+  var container = document.createElement('div');
+
+  var wordName = document.createElement('span');
+  wordName.style.color = 'GoldenRod';
+  wordName.style.fontWeight = 'bold';
+  wordName.style.fontSize = '1.5em';
+  wordName.style.margin = '.5em';
+  wordName.appendChild(document.createTextNode(jsonData['word']));
+
+  container.appendChild(wordName);
+
+  for (var index in jsonData['data']) {
+    container.appendChild(Data2dom.createDicWordExp(
+      jsonData['data'][index]));
+  }
+
+  return container;
+};
+
+
+/**
+ * Test dictionary name and show shorter explanation of the word if test passes.
+ * @param {object} dicWordExp The dictionary-word-explanation tuple of word
+ * @private
+ */
+Data2dom.createDicWordExp = function(dicWordExp) {
+  if (dicWordExp[0].indexOf('《パーリ语辞典》') > 0) {
+    var dicShortName = '《パーリ语辞典》';
+    var separator = ' -';
+  } else if (dicWordExp[0].indexOf('巴汉词典》 Mahāñāṇo') > 0) {
+    var dicShortName = '《巴汉词典》';
+    var separator = '~';
+  } else if (dicWordExp[0].indexOf('巴汉词典》 明法') > 0) {
+    var dicShortName = '《巴汉词典》';
+    var separator = '。';
+  } else if (dicWordExp[0].indexOf('《巴利语字汇》') > 0) {
+    var dicShortName = '《巴利语字汇》';
+    var separator = '。';
+  } else if (dicWordExp[0].indexOf('巴利文-汉文') > 0) {
+    var dicShortName = '《巴利文-汉文佛学名相辞汇》'
+    var separator = '。';
+  } else if (dicWordExp[0].indexOf('Buddhist Dictionary') > 0) {
+    var dicShortName = '《Buddhist Dictionary》';
+    var separator = '<br>';
+  } else if (dicWordExp[0].indexOf('Concise Pali-English') > 0) {
+    var dicShortName = '《Concise Pali-English Dictionary》';
+    var separator = '<br>';
+  } else if (dicWordExp[0].indexOf('PTS Pali-English') > 0) {
+    var dicShortName = '《PTS Pali-English Dictionary》';
+    var separator = '<i>';
+  } else if (dicWordExp[0].indexOf('汉译パーリ') > 0) {
+    var dicShortName = '《汉译パーリ语辞典》';
+    var separator = ' -';
+  } else if (dicWordExp[0].indexOf('パーリ语辞典 增补') > 0) {
+    var dicShortName = '《パーリ语辞典 增补改订》';
+    var separator = ' -';
+  } else if (dicWordExp[0].indexOf('巴英术语汇编') > 0) {
+    var dicShortName = '《巴英术语汇编》'
+    var separator = '。';
+  } else if (dicWordExp[0].indexOf('巴利新音译') > 0) {
+    var dicShortName = '《巴利语汇解》与《巴利新音译》';
+    var separator = '。';
+  } else if (dicWordExp[0].indexOf('巴利语入门') > 0) {
+    var dicShortName = '《巴利语入门》';
+    var separator = '。';
+  } else {
+    var dicShortName = dicWordExp[0];
+    var separator = '。';
+  }
+
+  var shortExp = document.createElement('div');
+
+  // show short name of the dictionary in the preview
+  var dicName = document.createElement('span');
+  dicName.style.color = 'red';
+  dicName.appendChild(document.createTextNode(dicShortName));
+
+  shortExp.appendChild(dicName);
+
+  // show shorter explanation in the preview
+  var breakPos = dicWordExp[2].indexOf(separator);
+  if (breakPos == -1) {
+    shortExp.innerHTML += dicWordExp[2];
+  } else {
+    shortExp.innerHTML += dicWordExp[2].slice(0, breakPos);
+  }
+
+  return shortExp;
+};

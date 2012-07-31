@@ -240,67 +240,7 @@ Lookup.prototype.showPreview = function(jsonData) {
   this.wordPvDiv_.style.display = 'block';
   this.wordPvDiv_.style.textAlign = 'left';
   this.wordPvDiv_.innerHTML = '';
-
-  this.wordPvDiv_.innerHTML += '<span style="color:GoldenRod; ' +
-       'font-weight:bold; font-size: 1.5em; margin: .5em;">' +
-       jsonData['word'] + '</span>';
-
-  for (var index in jsonData['data']) {
-    if (this.dicCheckShow(jsonData['data'][index], '《パーリ语辞典》',
-          '《パーリ语辞典》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 Mahāñāṇo',
-          '《巴汉词典》', '~')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴汉词典》 明法',
-          '《巴汉词典》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '《巴利语字汇》',
-          '《巴利语字汇》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴利文-汉文',
-          '《巴利文-汉文佛学名相辞汇》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'Buddhist Dictionary',
-          '《Buddhist Dictionary》', '<br>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'Concise Pali-English',
-          '《Concise Pali-English Dictionary》', '<br>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'PTS Pali-English',
-          '《PTS Pali-English Dictionary》', '<i>')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '汉译パーリ',
-          '《汉译パーリ语辞典》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], 'パーリ语辞典 增补',
-          '《パーリ语辞典 增补改订》', ' -')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴英术语汇编',
-          '《巴英术语汇编》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴利新音译',
-          '《巴利语汇解》与《巴利新音译》', '。')) continue;
-    if (this.dicCheckShow(jsonData['data'][index], '巴利语入门',
-          '《巴利语入门》', '。')) continue;
-  }
-};
-
-
-/**
- * Test dictionary name and show shorter explanation of the word if test passes.
- * @param {object} dicWordExp The dictionary-word-explanation tuple of word
- * @param {string} dicTestStr The string used to test dictionary name
- * @param {string} dicNameStr The dictionary name to be shown in the preview
- * @param {string} separator Use to break longer explanation to shorter one
- * @private
- */
-Lookup.prototype.dicCheckShow = function(dicWordExp, dicTestStr,
-                                         dicNameStr, separator) {
-  if (dicWordExp[0].indexOf(dicTestStr) > 0) {
-    this.wordPvDiv_.innerHTML += '<br />';
-    // show dictionary name in the preview
-    this.wordPvDiv_.innerHTML += '<span style="color: red;">'+ dicNameStr +
-                                 '</span>' + '<br />';
-    // show shorter explanation in the preview
-    var breakPos = dicWordExp[2].indexOf(separator);
-    if (breakPos == -1) {
-      this.wordPvDiv_.innerHTML += dicWordExp[2] + '<br />';
-    } else {
-      this.wordPvDiv_.innerHTML += dicWordExp[2].slice(0, breakPos) + '<br />';
-    }
-    return true;
-  }
-  return false;
+  this.wordPvDiv_.appendChild(Data2dom.createPreview(jsonData));
 };
 
 
