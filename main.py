@@ -44,8 +44,8 @@ class MainPage(webapp2.RequestHandler):
             resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
         else:
           # build word HTML here
-          resultDivInnerHTML = getWordHTML(word, dicPrefixWordLists,
-                          jsonpLookup(word), dicWordExpTemplate)
+          resultDivInnerHTML = getWordHTML(word, jsonpLookup(word),
+                                 dicWordExpTemplate)
       else:
         self.error(404)
         self.response.out.write("Page Not Found!")

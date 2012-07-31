@@ -66,7 +66,7 @@ def getPrefixHTML(prefix, dicPrefixWordLists):
   return dom.documentElement.toxml()
 
 
-def getWordHTML(word, dicPrefixWordLists, lookupData, jj2tpl):
+def getWordHTML(word, lookupData, jj2tpl):
   if (lookupData['data'] == None):
     raise Exception("Impossible case: No lookup data of %s" % word)
 
