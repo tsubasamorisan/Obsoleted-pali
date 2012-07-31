@@ -95,31 +95,31 @@ function initService() {
     document.getElementById("result").innerHTML = "";
   };
 
+  document.getElementById('linkAbout').href = "javascript:void(0);";
   document.getElementById('linkAbout').onclick = function() {
     document.getElementById("result").innerHTML =
     document.getElementById("about").innerHTML;
   };
-  document.getElementById('linkAbout').href = "javascript:void(0);";
 
+  document.getElementById('linkLink').href = "javascript:void(0);";
   document.getElementById('linkLink').onclick = function() {
     document.getElementById("result").innerHTML =
     document.getElementById("link").innerHTML;
   };
-  document.getElementById('linkLink').href = "javascript:void(0);";
 
-  document.getElementById('siteItem1').onclick = onSiteClick;
   document.getElementById('siteItem1').href = "javascript:void(0);";
-  document.getElementById('siteItem2').onclick = onSiteClick;
+  document.getElementById('siteItem1').onclick = onSiteClick;
   document.getElementById('siteItem2').href = "javascript:void(0);";
-  document.getElementById('siteItem3').onclick = onSiteClick;
+  document.getElementById('siteItem2').onclick = onSiteClick;
   document.getElementById('siteItem3').href = "javascript:void(0);";
+  document.getElementById('siteItem3').onclick = onSiteClick;
 
-  document.getElementById('langItem1').onclick = onLocaleClick;
   document.getElementById('langItem1').href = "javascript:void(0);";
-  document.getElementById('langItem2').onclick = onLocaleClick;
+  document.getElementById('langItem1').onclick = onLocaleClick;
   document.getElementById('langItem2').href = "javascript:void(0);";
-  document.getElementById('langItem3').onclick = onLocaleClick;
+  document.getElementById('langItem2').onclick = onLocaleClick;
   document.getElementById('langItem3').href = "javascript:void(0);";
+  document.getElementById('langItem3').onclick = onLocaleClick;
 
   initBrowseLinks();
 

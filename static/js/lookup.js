@@ -234,8 +234,8 @@ Lookup.prototype.previewCallback = function(jsonData) {
  * @private
  */
 Lookup.prototype.showPreview = function(jsonData) {
-  this.wordPvDiv_.style.left = pali.getOffset(this.textInput_).left +
-    this.suggestDiv_.offsetWidth + 5 + "px";
+  this.wordPvDiv_.style.left = (pali.getOffset(this.textInput_).left +
+    this.suggestDiv_.offsetWidth + 3) + "px";
   this.wordPvDiv_.style.width = '30em';
   this.wordPvDiv_.style.display = 'block';
   this.wordPvDiv_.style.textAlign = 'left';
