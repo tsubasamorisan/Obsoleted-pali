@@ -181,4 +181,26 @@ pali.setObjectGlobalName = function(obj) {
 };
 
 
+/**
+ * check if element is targer or the parent of target
+ * @param {DOM Element} target
+ * @param {DOM Element} element
+ * @return {boolean} Return true if element is target or the parent of target
+ *                   else return false.
+ * @private
+ */
+pali.checkParent = function(target, element) {
+  // Chrome and Firefox use parentNode, while Opera use offsetParent
+  while(target.parentNode) {
+    if( target == element ) return true;
+    target = target.parentNode;
+  }
+  while(target.offsetParent) {
+    if( target == element ) return true;
+    target = target.offsetParent;
+  }
+  return false;
+};
+
+
 /*                              width: 80                                     */

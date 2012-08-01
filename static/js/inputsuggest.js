@@ -681,13 +681,28 @@ pali.InputSuggest.prototype.onItemClick = function(e) {
 pali.InputSuggest.prototype.onItemMouseOver = function(e) {
   var evt = e || window.event;
   var targetElement = evt.target || evt.srcElement;
-  currentWord = this.checkTargetElement(targetElement);
-  var currentWordPosition = this.getWordElementIndexNumber(currentWord);
+  currentWord = this.getWordElement(targetElement);
+
+  // check if mouse moves inside the word element, if yes, return.
+  var relTarg = evt.relatedTarget || evt.fromElement;
+  if (pali.checkParent(relTarg, currentWord)) return;
+
+  this.onItemMouseEnter(currentWord);
+};
+
+
+/**
+ * Event called when mouse enters the word element.
+ * @param {DOM event} word The word element which mouse enters.
+ * @private
+ */
+pali.InputSuggest.prototype.onItemMouseEnter = function(word) {
+  var currentWordPosition = this.getWordElementIndexNumber(word);
   // If user does not choose suggested word before the mouse over event
   if (this.suggestedWordPosition_ == null) {
     this.suggestedWordPosition_ = currentWordPosition;
-    this.setItemStyle(currentWord);
-    this.input_.value = currentWord.title;
+    this.setItemStyle(word);
+    this.input_.value = word.title;
   } else {
     /**
      * If the suggested word user chooses before mouse over event is not
@@ -697,8 +712,10 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
       var previousWord = this.getWordElementByIndexNumber(this.suggestedWordPosition_);
       this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ = currentWordPosition;
-      this.setItemStyle(currentWord);
+      this.setItemStyle(word);
       this.input_.value = currentWord.title;
+    } else {
+      this.setItemStyle(word);
     }
   }
 };
@@ -714,8 +731,23 @@ pali.InputSuggest.prototype.onItemMouseOver = function(e) {
 pali.InputSuggest.prototype.onItemMouseOut = function(e) {
   var evt = e || window.event;
   var targetElement = evt.target || evt.srcElement;
-  currentWord = this.checkTargetElement(targetElement);
-  this.removeItemStyle(currentWord);
+  currentWord = this.getWordElement(targetElement);
+
+  // check if mouse moves inside the word element, if yes, return.
+  var relTarg = evt.relatedTarget || evt.toElement;
+  if (pali.checkParent(relTarg, currentWord)) return;
+
+  this.onItemMouseLeave(currentWord);
+};
+
+
+/**
+ * Event called when mouse leaves the word element.
+ * @param {DOM event} word The word element which mouse leaves.
+ * @private
+ */
+pali.InputSuggest.prototype.onItemMouseLeave = function(word) {
+  this.removeItemStyle(word);
 };
 
 
@@ -727,7 +759,7 @@ pali.InputSuggest.prototype.onItemMouseOut = function(e) {
  * @return {DOM Element|null} The DOM element to which we add mouse event
  * @private
  */
-pali.InputSuggest.prototype.checkTargetElement = function(element) {
+pali.InputSuggest.prototype.getWordElement = function(element) {
   // Chrome and Firefox use parentNode, while Opera uses offsetParent
   while(element.parentNode) {
     if( element.id.indexOf('suggest') == 0 ) {return element;}
@@ -737,7 +769,7 @@ pali.InputSuggest.prototype.checkTargetElement = function(element) {
     if( element.id.indexOf('suggest') == 0 ) {return element;}
     element = element.offsetParent;
   }
-  console.log('in checkTargetElement: cannot find element with proper id!'); 
+  console.log('in getWordElement: cannot find element with proper id!'); 
   return null;
 };
 
@@ -764,6 +796,7 @@ pali.InputSuggest.prototype.clearSuggestionMenu = function() {
 pali.InputSuggest.prototype.setItemStyle = function(element) {
   element.style.background = "#00C";
   element.style.color = "white";
+  element.style.cursor = "pointer";
 };
 
 
@@ -775,6 +808,7 @@ pali.InputSuggest.prototype.setItemStyle = function(element) {
 pali.InputSuggest.prototype.removeItemStyle = function(element) {
   element.style.background = "";
   element.style.color = "";
+  element.style.cursor = "";
 };
 
 
