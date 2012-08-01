@@ -89,6 +89,45 @@ prefixGroup4 = {
 }
 
 
+prefixMapping = {
+  "°" : "z1",
+  "-" : "z2",
+  "a" : "a",
+  "ā" : "za",
+  "b" : "b",
+  "c" : "c",
+  "d" : "d",
+  "ḍ" : "zd",
+  "e" : "e",
+  "g" : "g",
+  "h" : "h",
+  "i" : "i",
+  "ī" : "zi",
+  "j" : "j",
+  "k" : "k",
+  "l" : "l",
+  "ḷ" : "zl",
+  "m" : "m",
+  "ṁ" : "zm",
+  "ṃ" : "xm",
+  "ŋ" : "qm",
+  "n" : "n",
+  "ñ" : "zn",
+  "ṇ" : "xn",
+  "ṅ" : "qn",
+  "o" : "o",
+  "p" : "p",
+  "r" : "r",
+  "s" : "s",
+  "t" : "t",
+  "ṭ" : "zt",
+  "u" : "u",
+  "ū" : "zu",
+  "v" : "v",
+  "y" : "y",
+}
+
+
 def usage():
   print("Usage:")
   print("$ python index.py index")
