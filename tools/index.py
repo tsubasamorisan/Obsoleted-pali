@@ -3,7 +3,7 @@
 
 # build index of pali words into JavaScript Array variables
 
-import os
+import os, sys
 import xml.dom.minidom
 import json
 
@@ -44,7 +44,14 @@ prefix_code = {
   "y" : "y",
 }
 
-def buildJSONIndex():
+
+def usage():
+  print("Usage:")
+  print("$ python index.py index")
+  print("$ python index.py stats")
+
+
+def buildJSONIndex(savedName):
   xmldir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
 
   wordCount = {}
@@ -93,7 +100,7 @@ def buildJSONIndex():
     dicPrefixWordLists[key].sort()
 
   # save the indexes in JSON-format to file
-  fd = open("json","w")
+  fd = open(savedName, "w")
   fd.write(json.dumps(dicPrefixWordLists))
   fd.close()
 
@@ -106,5 +113,22 @@ def buildJSONIndex():
   print('true word count all: %d' % trueWordCount['all'])
 
 
+def stats(indexName):
+  dicPrefixWordLists = json.loads(open(indexName).read())
+
+  for key in dicPrefixWordLists.keys():
+    print('# of %s words: %d' %(key, len(dicPrefixWordLists[key])) )
+
+
 if __name__ == '__main__':
-  buildJSONIndex()
+  if len(sys.argv) != 2:
+    usage()
+    sys.exit(1)
+
+  if sys.argv[1] == "index":
+    buildJSONIndex('json')
+    sys.exit(0)
+
+  if sys.argv[1] == "stats":
+    stats('json')
+    sys.exit(0)
