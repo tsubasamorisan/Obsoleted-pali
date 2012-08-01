@@ -44,57 +44,67 @@ prefix_code = {
   "y" : "y",
 }
 
-
-if __name__ == '__main__':
+def buildJSONIndex():
   xmldir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
-  fd = open("jsvarindex.js","w")
 
-  wordCount = 0
-  trueWordCount = 0
+  wordCount = {}
+  wordCount['all'] = 0
+
+  trueWordCount = {}
+  trueWordCount['all'] = 0
 
   dicPrefixWordLists = {}
 
   # get words start with prefix 'key'
   for key in prefix_code.keys():
-    files = os.listdir(xmldir + key)
-    trueWordList = []
+    # get all the files under folder name 'key'
+    fileNames = os.listdir(xmldir + key)
+
+    wordCount[key] = 0
+    trueWordCount[key] = 0
     dicPrefixWordLists[key] = []
 
     # iterate all words start with prefix 'key'
-    for file in files:
-      wordCount += 1
-      fileName = unicode(file.decode('utf8'))
+    for fileName in fileNames:
+      wordCount['all'] += 1
+      wordCount[key] += 1
+
+      fileName = unicode(fileName.decode('utf8'))
       filaPath = xmldir + key + '/' + fileName.encode('utf-8')
       fileData = open(filaPath.decode('utf-8'), 'r').read()
+
+      # parse the xml data in the file
       dom = xml.dom.minidom.parseString(fileData)
+
+      # iterate all the 'word' tag inside a xml file
       words = dom.getElementsByTagName('word')
-      isSameAsContent = False
       for word in words:
         wordStr = word.childNodes[0].data
+        # FIXME: is lower() safe here?
         if (wordStr.lower() == fileName[:-4]):
-          trueWordList.append(fileName)
+          # This is a "true" word
           dicPrefixWordLists[key].append(fileName[:-4])
-          isSameAsContent = True
-          trueWordCount += 1
+          trueWordCount['all'] += 1
+          trueWordCount[key] += 1
           break
 
-    # build JavaScript Pali words index
-    jsArrayInt = u"var prefix_%s=[" % prefix_code[key]
-
-    for x in trueWordList:
-      jsArrayInt += u'"%s",' % x[:-4]
-
-    jsArrayInt = jsArrayInt[:-1]
-    jsArrayInt += u"];\n"
-    fd.write(jsArrayInt.encode('utf8'))
-
-  fd.close()
-
+  # sort the words
   for key in dicPrefixWordLists.keys():
     dicPrefixWordLists[key].sort()
-  fdpy = open("json","w")
-  fdpy.write(json.dumps(dicPrefixWordLists))
-  fdpy.close()
 
-  print('word count: %s' % wordCount)
-  print('true word count: %s' % trueWordCount)
+  # save the indexes in JSON-format to file
+  fd = open("json","w")
+  fd.write(json.dumps(dicPrefixWordLists))
+  fd.close()
+
+  # print statistics
+  for key in prefix_code.keys():
+    print('word count %s: %d' % (key, wordCount[key]))
+    print('true word count %s: %d' % (key, trueWordCount[key]))
+
+  print('word count all: %d' % wordCount['all'])
+  print('true word count all: %d' % trueWordCount['all'])
+
+
+if __name__ == '__main__':
+  buildJSONIndex()
