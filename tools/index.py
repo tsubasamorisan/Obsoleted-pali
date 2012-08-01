@@ -51,9 +51,7 @@ def usage():
   print("$ python index.py stats")
 
 
-def buildJSONIndex(savedName):
-  xmldir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
-
+def buildJSONIndex(xmlDir, savedName):
   wordCount = {}
   wordCount['all'] = 0
 
@@ -65,7 +63,7 @@ def buildJSONIndex(savedName):
   # get words start with prefix 'key'
   for key in prefix_code.keys():
     # get all the files under folder name 'key'
-    fileNames = os.listdir(xmldir + key)
+    fileNames = os.listdir(xmlDir + key)
 
     wordCount[key] = 0
     trueWordCount[key] = 0
@@ -77,7 +75,7 @@ def buildJSONIndex(savedName):
       wordCount[key] += 1
 
       fileName = unicode(fileName.decode('utf8'))
-      filaPath = xmldir + key + '/' + fileName.encode('utf-8')
+      filaPath = xmlDir + key + '/' + fileName.encode('utf-8')
       fileData = open(filaPath.decode('utf-8'), 'r').read()
 
       # parse the xml data in the file
@@ -113,22 +111,25 @@ def buildJSONIndex(savedName):
   print('true word count all: %d' % trueWordCount['all'])
 
 
-def stats(indexName):
-  dicPrefixWordLists = json.loads(open(indexName).read())
+def stats(savedName):
+  dicPrefixWordLists = json.loads(open(savedName).read())
 
   for key in dicPrefixWordLists.keys():
     print('# of %s words: %d' %(key, len(dicPrefixWordLists[key])) )
 
 
 if __name__ == '__main__':
+  xmlDir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
+  savedName = 'json'
+
   if len(sys.argv) != 2:
     usage()
     sys.exit(1)
 
   if sys.argv[1] == "index":
-    buildJSONIndex('json')
+    buildJSONIndex(xmlDir, savedName)
     sys.exit(0)
 
   if sys.argv[1] == "stats":
-    stats('json')
+    stats(savedName)
     sys.exit(0)
