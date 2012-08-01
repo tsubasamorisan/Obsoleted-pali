@@ -45,6 +45,50 @@ prefix_code = {
 }
 
 
+prefixGroup1 = {
+#  "°" : "uc",
+#  "-" : "dash",
+  "a" : "a",
+  "ā" : "aa",
+  "b" : "b",
+  "c" : "c",
+  "d" : "d",
+  "ḍ" : "dotd",
+  "e" : "e",
+}
+prefixGroup2 = {
+  "g" : "g",
+  "h" : "h",
+  "i" : "i",
+  "ī" : "ii",
+  "j" : "j",
+  "k" : "k",
+  "l" : "l",
+  "ḷ" : "dotl",
+  "m" : "m",
+#  "ṃ" : "dotm",
+  "n" : "n",
+  "ñ" : "tilden",
+#  "ṇ" : "dotn",
+#  "ṅ" : "ndot",
+#  "ŋ" : "ngng",
+  "o" : "o",
+}
+prefixGroup3 = {
+  "p" : "p",
+  "r" : "r",
+  "s" : "s",
+}
+prefixGroup4 = {
+  "t" : "t",
+  "ṭ" : "dott",
+  "u" : "u",
+  "ū" : "uu",
+  "v" : "v",
+  "y" : "y",
+}
+
+
 def usage():
   print("Usage:")
   print("$ python index.py index")
@@ -114,8 +158,35 @@ def buildJSONIndex(xmlDir, savedName):
 def stats(savedName):
   dicPrefixWordLists = json.loads(open(savedName).read())
 
+  allCount = 0
   for key in dicPrefixWordLists.keys():
     print('# of %s words: %d' %(key, len(dicPrefixWordLists[key])) )
+    allCount += len(dicPrefixWordLists[key])
+
+  print('all words count: %d' % allCount)
+
+  group1Count = 0
+  for key in prefixGroup1.keys():
+    group1Count += len(dicPrefixWordLists[key.decode('utf-8')])
+  print('group1 count: %d' % group1Count)
+
+  group2Count = 0
+  for key in prefixGroup2.keys():
+    group2Count += len(dicPrefixWordLists[key.decode('utf-8')])
+  print('group2 count: %d' % group2Count)
+
+  group3Count = 0
+  for key in prefixGroup3.keys():
+    group3Count += len(dicPrefixWordLists[key.decode('utf-8')])
+  print('group3 count: %d' % group3Count)
+
+  group4Count = 0
+  for key in prefixGroup4.keys():
+    group4Count += len(dicPrefixWordLists[key.decode('utf-8')])
+  print('group4 count: %d' % group4Count)
+
+  allGroupCount = group1Count + group2Count + group3Count + group4Count
+  print('all group count: %d' % allGroupCount)
 
 
 if __name__ == '__main__':
