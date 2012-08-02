@@ -177,7 +177,7 @@ def stats(savedName):
   print('all words count: %d' % allCount)
 
 
-def buildWordsGroup(savedName, debug=True):
+def buildWordsGroup(savedName, groupedSavedName, debug=False):
   # dicPrefixWordLists = {
   #   "a" : [ ... ]
   #   "ā" : [ ... ],
@@ -189,6 +189,7 @@ def buildWordsGroup(savedName, debug=True):
 
   groupInfo = {}
 
+  # step 1:
   # GAE allows at most 10,000 files for each version
   versionLimitCount = 9900
   groupInfo['version'] = {}
@@ -216,6 +217,7 @@ def buildWordsGroup(savedName, debug=True):
     raw_input('press Enter...')
     os.system('clear')
 
+  # step 2:
   # GAE allows at most 1,000 files for each directory
   dirCountLimit = 995
 
@@ -237,6 +239,14 @@ def buildWordsGroup(savedName, debug=True):
 
     # show re-grouped dicPrefixWordLists
     showRecursiveVariable(dicPrefixWordLists)
+
+  groupInfo['dir'] = dicPrefixWordLists
+
+  # step 3:
+  # save the grouped variable
+  fd = open(groupedSavedName, "w")
+  fd.write(json.dumps(groupInfo))
+  fd.close()
 
 
 def showRecursiveVariable(var):
@@ -315,6 +325,7 @@ if __name__ == '__main__':
   xmlDir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
   dpDirName = '/home/siongui/Desktop/xmlAppEg/'
   savedName = 'json'
+  groupedSavedName = 'jsonGrouped'
 
   if len(sys.argv) != 2:
     usage()
@@ -325,7 +336,7 @@ if __name__ == '__main__':
     sys.exit(0)
 
   if sys.argv[1] == "group":
-    buildWordsGroup(savedName)
+    buildWordsGroup(savedName, groupedSavedName)
     sys.exit(0)
 
   if sys.argv[1] == "stats":
