@@ -237,6 +237,8 @@ Data2dom.createWordsList = function(wordsArray) {
       rowCount = 0;
     }
   }
+  if (trElem)
+    tableElem.appendChild(trElem);
 
   container.appendChild(tableElem);
   return container;

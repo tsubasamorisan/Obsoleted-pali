@@ -60,6 +60,8 @@ def getPrefixHTML(prefix, dicPrefixWordLists):
     if rowCount == 3:
       tableElem.appendChild(trElem)
       rowCount = 0
+  if (trElem):
+    tableElem.appendChild(trElem)
 
   dom.documentElement.appendChild(tableElem)
 
