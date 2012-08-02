@@ -213,7 +213,7 @@ def buildWordsGroup(savedName, debug=True):
     for key in groupInfo['version'].keys():
       print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
 
-    raw_input('press any key...')
+    raw_input('press Enter...')
     os.system('clear')
 
   # GAE allows at most 1,000 files for each directory
@@ -224,12 +224,35 @@ def buildWordsGroup(savedName, debug=True):
     if (prefixWordCount > dirCountLimit):
       if debug:
         print('%s # %d (too large)' %(prefix, prefixWordCount))
-      tmpObj = groupByPrefixUnderCountLimit(dicPrefixWordLists[prefix], dirCountLimit, 2, debug)
+      tmpObj = groupByPrefixUnderCountLimit(dicPrefixWordLists[prefix], dirCountLimit, 2)
       del dicPrefixWordLists[prefix]
       dicPrefixWordLists[prefix] = tmpObj
     else:
       if debug:
         print('%s # %d' %(prefix, prefixWordCount))
+
+  if debug:
+    raw_input('press Enter...')
+    os.system('clear')
+
+    # show re-grouped dicPrefixWordLists
+    showRecursiveVariable(dicPrefixWordLists)
+
+
+def showRecursiveVariable(var):
+  if type(var) is type([]):
+    print(': %d' % len(var))
+  elif type(var) is type({}):
+    for key in var.keys():
+      if type(var[key]) is type([]):
+        sys.stdout.write('%s ' % key)
+      else:
+        print('< %s >' % key)
+      showRecursiveVariable(var[key])
+    raw_input('press Enter...')
+    os.system('clear')
+  else:
+    raise Exception('only [] or {} is allowed!')
 
 
 def groupByPrefixUnderCountLimit(wordsArray, countLimit, digit, debug=False):
@@ -259,7 +282,7 @@ def groupByPrefixUnderCountLimit(wordsArray, countLimit, digit, debug=False):
         print('%s # %d' %(prefix, prefixWordCount))
 
   if debug:
-    raw_input('press any key...')
+    raw_input('press Enter...')
     os.system('clear')
 
   return group
