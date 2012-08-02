@@ -177,7 +177,7 @@ def stats(savedName):
   print('all words count: %d' % allCount)
 
 
-def buildWordsGroup(savedName):
+def buildWordsGroup(savedName, debug=True):
   # dicPrefixWordLists = {
   #   "a" : [ ... ]
   #   "ā" : [ ... ],
@@ -209,10 +209,60 @@ def buildWordsGroup(savedName):
       groupIndex += 1
       groupInfo['version'][prefix] = groupIndex
 
-  for key in groupInfo['version'].keys():
-    print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
+  if debug:
+    for key in groupInfo['version'].keys():
+      print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
+
+    raw_input('press any key...')
+    os.system('clear')
 
   # GAE allows at most 1,000 files for each directory
+  dirCountLimit = 995
+
+  for prefix in dicPrefixWordLists.keys():
+    prefixWordCount = len(dicPrefixWordLists[prefix])
+    if (prefixWordCount > dirCountLimit):
+      if debug:
+        print('%s # %d (too large)' %(prefix, prefixWordCount))
+      tmpObj = groupByPrefixUnderCountLimit(dicPrefixWordLists[prefix], dirCountLimit, 2, debug)
+      del dicPrefixWordLists[prefix]
+      dicPrefixWordLists[prefix] = tmpObj
+    else:
+      if debug:
+        print('%s # %d' %(prefix, prefixWordCount))
+
+
+def groupByPrefixUnderCountLimit(wordsArray, countLimit, digit, debug=False):
+  group = {}
+
+  # group by first 'digit'-letter
+  for word in wordsArray:
+    prefix = word[:digit]
+    if prefix in group:
+      group[prefix].append(word)
+    else:
+      group[prefix] = []
+      group[prefix].append(word)
+
+  # check if the length of array > countLimit
+  for prefix in group:
+    prefixWordCount = len(group[prefix])
+    if (prefixWordCount > countLimit):
+      # still > countLimit, recursively call self
+      if debug:
+        print('%s # %d (too large)' %(prefix, prefixWordCount))
+      tmpObj = groupByPrefixUnderCountLimit(group[prefix], countLimit, digit + 1, debug)
+      del group[prefix]
+      group[prefix] = tmpObj
+    else:
+      if debug:
+        print('%s # %d' %(prefix, prefixWordCount))
+
+  if debug:
+    raw_input('press any key...')
+    os.system('clear')
+
+  return group
 
 
 def buildXMLDeployDir(xmlDir, dpDirName, savedName):
