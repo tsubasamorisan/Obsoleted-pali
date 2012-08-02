@@ -4,8 +4,10 @@
 # build index of pali words into JavaScript Array variables
 
 import os, sys
+import shutil
 import xml.dom.minidom
 import json
+import urllib
 
 prefix_code = {
 #  "°" : "uc",
@@ -228,8 +230,32 @@ def stats(savedName):
   print('all group count: %d' % allGroupCount)
 
 
+def buildXMLDeployDir(xmlDir, dpDirName, savedName):
+  if os.path.exists(dpDirName):
+    # remove all dirs and sub-dirs
+    shutil.rmtree(dpDirName)
+  else:
+    # create dirs
+    os.makedirs(dpDirName)
+
+  # load pre-built indexes
+  dicPrefixWordLists = json.loads(open(savedName).read())
+
+  group4Dir = dpDirName + 'xml4/'
+  os.makedirs(group4Dir)
+  for key in prefixGroup4.keys():
+    prefixDir = group4Dir + urllib.quote(key) + '/'
+    os.makedirs(prefixDir)
+    for wordName in dicPrefixWordLists[key.decode('utf-8')]:
+      src = xmlDir + key.decode('utf-8') + '/' + wordName + '.xml'
+      dst = prefixDir + urllib.quote(wordName.encode('utf-8')) + '.xml'
+      shutil.copy(src, dst)
+  # TODO: generate app.xml here?
+
+
 if __name__ == '__main__':
   xmlDir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
+  dpDirName = '/home/siongui/Desktop/xmlAppEg/'
   savedName = 'json'
 
   if len(sys.argv) != 2:
@@ -242,4 +268,8 @@ if __name__ == '__main__':
 
   if sys.argv[1] == "stats":
     stats(savedName)
+    sys.exit(0)
+
+  if sys.argv[1] == "cpdir":
+    buildXMLDeployDir(xmlDir, dpDirName, savedName)
     sys.exit(0)
