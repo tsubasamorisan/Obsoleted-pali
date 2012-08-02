@@ -57,7 +57,10 @@ class MainPage(webapp2.RequestHandler):
       useMemcache = 'no'
     if (useMemcache == 'yes'):
       # https://developers.google.com/appengine/docs/python/runtime#The_Environment
-      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is False):
+      if os.environ['SERVER_SOFTWARE'].startswith("Development"):
+        self.response.headers.add_header("Access-Control-Allow-Origin", "http://palidictionary.appspot.com")
+        #self.response.headers.add_header("Access-Control-Allow-Origin", "*")
+      else:
         # if (memcache=yes) and (not Development Server)
         data = memcache.get(locale)
         if data is not None:
