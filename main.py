@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import sys, os, cgi
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'babel.zip'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'pytz.zip'))
 import webapp2
 import jinja2
-import os, cgi
 import urllib
 import json
 from google.appengine.api import memcache
