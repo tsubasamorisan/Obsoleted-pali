@@ -159,7 +159,7 @@ def buildJSONIndex(xmlDir, savedName):
   print('true word count all: %d' % trueWordCount['all'])
 
 
-def stats(savedName):
+def stats(savedName, groupedSavedName):
   # dicPrefixWordLists = {
   #   "a" : [ ... ]
   #   "ā" : [ ... ],
@@ -169,12 +169,20 @@ def stats(savedName):
   # }
   dicPrefixWordLists = json.loads(open(savedName).read())
 
+  # print counts of words under each prefix
   allCount = 0
   for key in dicPrefixWordLists.keys():
     print('# of %s words: %d' %(key, len(dicPrefixWordLists[key])) )
     allCount += len(dicPrefixWordLists[key])
-
   print('all words count: %d' % allCount)
+
+  raw_input('press Enter...')
+  os.system('clear')
+
+  # print words under each 'prefix' belongs to which version
+  groupInfo = json.loads(open(groupedSavedName).read())
+  for key in groupInfo['version'].keys():
+    print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
 
 
 def buildWordsGroup(savedName, groupedSavedName, debug=False):
@@ -210,13 +218,6 @@ def buildWordsGroup(savedName, groupedSavedName, debug=False):
       groupIndex += 1
       groupInfo['version'][prefix] = groupIndex
 
-  if debug:
-    for key in groupInfo['version'].keys():
-      print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
-
-    raw_input('press Enter...')
-    os.system('clear')
-
   # step 2:
   # GAE allows at most 1,000 files for each directory
   dirCountLimit = 995
@@ -244,6 +245,20 @@ def buildWordsGroup(savedName, groupedSavedName, debug=False):
 
   # step 3:
   # save the grouped variable
+  # example:
+  # groupInfo = {
+  #   'version' : {
+  #       'a' : 0,
+  #       'b' : 0,
+  #       ...
+  #     },
+  #
+  #   'dir': {
+  #       'a' : {},
+  #       'b' : [],
+  #       ...
+  #     }
+  # }
   fd = open(groupedSavedName, "w")
   fd.write(json.dumps(groupInfo))
   fd.close()
@@ -298,7 +313,7 @@ def groupByPrefixUnderCountLimit(wordsArray, countLimit, digit, debug=False):
   return group
 
 
-def buildXMLDeployDir(xmlDir, dpDirName, savedName):
+def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
   if os.path.exists(dpDirName):
     # remove all dirs and sub-dirs
     shutil.rmtree(dpDirName)
@@ -307,8 +322,56 @@ def buildXMLDeployDir(xmlDir, dpDirName, savedName):
     os.makedirs(dpDirName)
 
   # load pre-built indexes
-  dicPrefixWordLists = json.loads(open(savedName).read())
+  groupInfo = json.loads(open(groupedSavedName).read())
 
+  versionInfo = groupInfo['version']
+
+  # example:
+  # versionInfo = {
+  #   'a' : 0,
+  #   'b' : 0,
+  #   'c' : 1,
+  #   'd' : 2
+  # }
+  # ==>
+  # versions = {
+  #   0 : ['a', 'b'],
+  #   1 : ['c'],
+  #   2 : ['d']
+  # }
+  versions = {}
+  for prefix in versionInfo.keys():
+    if versionInfo[prefix] in versions:
+      versions[versionInfo[prefix]].append(prefix)
+    else:
+      versions[versionInfo[prefix]] = []
+      versions[versionInfo[prefix]].append(prefix)
+
+  for version in versions.keys():
+    print('version %d:' % version)
+    print(versions[version])
+
+  dirInfo = groupInfo['dir']
+
+  # iterate each version in all versions
+  for version in versions:
+    # destination directory of each version
+    versionDir = dpDirName + 'version%d/' % version
+    print(versionDir)
+
+    # iterate all prefixes in each version
+    for prefix in versions[version]:
+      # source directory of words start with 'prefix'
+      srcDir = xmlDir + prefix + '/'
+      if not os.path.exists(srcDir):
+        raise Exception('%s does not exist!' % srcDir)
+      print(srcDir)
+
+      print(type(dirInfo[prefix]))
+
+    break
+
+  """
   group4Dir = dpDirName + 'xml4/'
   os.makedirs(group4Dir)
   for key in prefixGroup4.keys():
@@ -319,6 +382,9 @@ def buildXMLDeployDir(xmlDir, dpDirName, savedName):
       dst = prefixDir + urllib.quote(wordName.encode('utf-8')) + '.xml'
       shutil.copy(src, dst)
   # TODO: generate app.xml here?
+  """
+def iterateAllWordsInRecursiveVariable():
+  pass
 
 
 if __name__ == '__main__':
@@ -340,9 +406,9 @@ if __name__ == '__main__':
     sys.exit(0)
 
   if sys.argv[1] == "stats":
-    stats(savedName)
+    stats(savedName, groupedSavedName)
     sys.exit(0)
 
   if sys.argv[1] == "cpdir":
-    buildXMLDeployDir(xmlDir, dpDirName, savedName)
+    buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName)
     sys.exit(0)
