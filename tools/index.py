@@ -368,11 +368,63 @@ def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
   return wordCount
 
 
+def buildJS(savedName, groupedSavedName, jsName):
+  # dicPrefixWordLists = {
+  #   "a" : [ ... ]
+  #   "ā" : [ ... ],
+  #   "b" : [ ... ],
+  #   "c" : [ ... ],
+  #   ...
+  # }
+  dicPrefixWordLists = json.loads(open(savedName).read())
+  # example:
+  # groupInfo = {
+  #   'version' : {
+  #       'a' : 0,
+  #       'b' : 0,
+  #       ...
+  #     },
+  #
+  #   'dir': {
+  #       'a' : {},
+  #       'b' : [],
+  #       ...
+  #     }
+  # }
+  groupInfo = json.loads(open(groupedSavedName).read())
+
+  groupInfo['dir'] = stripWordsInRecursiveVariable(groupInfo['dir'])
+
+  fd = open(jsName, "w")
+  fd.write('var dicPrefixWordLists = ')
+  fd.write(json.dumps(dicPrefixWordLists))
+  fd.write(';\n')
+  fd.write('var groupInfo = ')
+  fd.write(json.dumps(groupInfo))
+  fd.write(';\n')
+  fd.close()
+
+
+def stripWordsInRecursiveVariable(var):
+  strippedVar = None
+  if type(var) is type([]):
+    strippedVar = []
+  elif type(var) is type({}):
+    strippedVar = {}
+    for key in var.keys():
+      strippedVar[key] = stripWordsInRecursiveVariable(var[key])
+  else:
+    raise Exception('only [] or {} is allowed!')
+
+  return strippedVar
+
+
 if __name__ == '__main__':
   xmlDir = '/home/siongui/Desktop/pali-dict-software-web1version/xml/'
   dpDirName = '/home/siongui/Desktop/xmlAppEg/'
   savedName = 'json'
   groupedSavedName = 'jsonGrouped'
+  jsName = 'jsonPrefixWords.js'
 
   if len(sys.argv) != 2:
     usage()
@@ -392,4 +444,8 @@ if __name__ == '__main__':
 
   if sys.argv[1] == "cpdir":
     buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName)
+    sys.exit(0)
+
+  if sys.argv[1] == "js":
+    buildJS(savedName, groupedSavedName, jsName)
     sys.exit(0)
