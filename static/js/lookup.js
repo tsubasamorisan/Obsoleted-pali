@@ -223,7 +223,35 @@ Lookup.prototype.previewCheck = function() {
     var ext = document.createElement('script');
     ext.setAttribute('src', this.lookupUrl_ + qry);
     document.getElementsByTagName("head")[0].appendChild(ext);
+
   } else if (this.lookupMethod_ == 'postDynamic') {
+    // get lookup data of a word from the server by HTTP Post
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+      xmlhttp=new XMLHttpRequest();
+    } else {
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          //this.result_.innerHTML = xmlhttp.status;
+          //this.result_.innerHTML = xmlhttp.statusText;
+          //this.result_.innerHTML = xmlhttp.responseText;
+          this.previewCallback(eval('(' + xmlhttp.responseText + ')'));
+        } else {
+          this.result_.innerHTML = 'In previewCheck: XMLHttpRequest error!';
+          throw "In previewCheck: XMLHttpRequest error!";
+        }
+      }
+    }.bind(this);
+
+    xmlhttp.open("POST", this.lookupUrl_, true);
+    xmlhttp.setRequestHeader("Content-type",
+                             "application/x-www-form-urlencoded");
+    xmlhttp.send("word=" + encodeURIComponent(word));
 
   } else {
 
