@@ -50,7 +50,10 @@ prefix_code = {
 def usage():
   print("Usage:")
   print("$ python index.py index")
+  print("$ python index.py group")
   print("$ python index.py stats")
+  print("$ python index.py cpdir")
+  print("$ python index.py js")
 
 
 def buildJSONIndex(xmlDir, savedName):
@@ -334,14 +337,14 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
     # generate app.yaml for each version
     fd = open(versionDir + 'app.yaml', "w")
     fd.write('application: palidictionary\n')
-    fd.write('version: version%d\n' % version)
+    fd.write('version: xml%d\n' % version)
     fd.write('runtime: python27\n')
     fd.write('api_version: 1\n')
     fd.write('threadsafe: true\n')
     fd.write('\n')
     fd.write('handlers:\n')
-    fd.write('- url: /static/(.*)\n')
-    fd.write('  static_dir: \\1\n')
+    fd.write('- url: /xml\n')
+    fd.write('  static_dir: /xml\n')
     fd.close()
 
 
@@ -353,7 +356,7 @@ def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
       if not os.path.exists(srcFile):
         raise Exception('%s does not exist!' % srcFile)
 
-      dstFile = versionDir + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8') + '.xml').replace('%', 'Z')
+      dstFile = versionDir + 'xml/' + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8') + '.xml').replace('%', 'Z')
       if not os.path.exists(os.path.dirname(dstFile)):
         os.makedirs(os.path.dirname(dstFile))
       shutil.copy(srcFile, dstFile)
