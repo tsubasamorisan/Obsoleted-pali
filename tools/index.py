@@ -47,45 +47,6 @@ prefix_code = {
 }
 
 
-prefixMapping = {
-  "°" : "z1",
-  "-" : "z2",
-  "a" : "a",
-  "ā" : "za",
-  "b" : "b",
-  "c" : "c",
-  "d" : "d",
-  "ḍ" : "zd",
-  "e" : "e",
-  "g" : "g",
-  "h" : "h",
-  "i" : "i",
-  "ī" : "zi",
-  "j" : "j",
-  "k" : "k",
-  "l" : "l",
-  "ḷ" : "zl",
-  "m" : "m",
-  "ṁ" : "zm",
-  "ṃ" : "xm",
-  "ŋ" : "qm",
-  "n" : "n",
-  "ñ" : "zn",
-  "ṇ" : "xn",
-  "ṅ" : "qn",
-  "o" : "o",
-  "p" : "p",
-  "r" : "r",
-  "s" : "s",
-  "t" : "t",
-  "ṭ" : "zt",
-  "u" : "u",
-  "ū" : "zu",
-  "v" : "v",
-  "y" : "y",
-}
-
-
 def usage():
   print("Usage:")
   print("$ python index.py index")
@@ -370,8 +331,18 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
       count = iterateAllWordsInRecursiveVariable(dirInfo[prefix], prefix, versionDir, srcDir)
       print('%d' % count)
 
-    # TODO: generate app.xml for each version here?
-    break
+    # generate app.yaml for each version
+    fd = open(versionDir + 'app.yaml', "w")
+    fd.write('application: palidictionary\n')
+    fd.write('version: version%d\n' % version)
+    fd.write('runtime: python27\n')
+    fd.write('api_version: 1\n')
+    fd.write('threadsafe: true\n')
+    fd.write('\n')
+    fd.write('handlers:\n')
+    fd.write('- url: /static/(.*)\n')
+    fd.write('  static_dir: \\1\n')
+    fd.close()
 
 
 def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
