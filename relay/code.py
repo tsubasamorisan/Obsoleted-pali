@@ -4,11 +4,13 @@
 import web
 import urllib
 import urllib2
+from urlparse import parse_qs
 
 urls = (
   '/', 'index',
   '/browse.*', 'index',
   '/statics/(.*)', 'static',
+  '/xml/.*', 'xml',
   '/lookup', 'lookup'
 )
 
@@ -86,6 +88,27 @@ class lookup:
 class static:
   def GET(self, path):
     request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath.replace("/statics", "/static", 1))
+    for headerItem in web.ctx.env:
+      try:
+        if http_header_string[headerItem] != None:
+          if http_header_string[headerItem] == 'User-Agent':
+            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
+          else:
+            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
+      except KeyError:
+        pass
+    response = urllib2.urlopen(request)
+    #web.debug(response.info()["Content-Type"])
+    for headerItem in response.info().items():
+      web.header(headerItem[0], headerItem[1])
+    return response.read()
+
+
+class xml:
+  def GET(self):
+    v = parse_qs(web.ctx.query[1:])['v'][0]
+    request = urllib2.Request('http://%s.palidictionary.appspot.com/%s' \
+      % (v, urllib2.quote(web.ctx.path.encode('utf-8'))))
     for headerItem in web.ctx.env:
       try:
         if http_header_string[headerItem] != None:
