@@ -117,6 +117,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
     this.lookupMethod_ = 'getStatic';
 
     this.form_.action = "javascript:void(0);";
+    this.form_.onsubmit = this.lookupByHTTPGet.bind(this);
   }
 
   /**
@@ -295,6 +296,129 @@ Lookup.prototype.showPreview = function(jsonData) {
   this.wordPvDiv_.style.textAlign = 'left';
   this.wordPvDiv_.innerHTML = '';
   this.wordPvDiv_.appendChild(Data2dom.createPreview(jsonData));
+};
+
+
+/**
+ * Look up word by HTTP Get method
+ * @private
+ */
+Lookup.prototype.lookupByHTTPGet = function() {
+  this.result_.innerHTML = getStringLookingUp();
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  var word = this.textInput_.value;
+  if (this.wordCache_.hasOwnProperty(word)) {
+    this.JSONPCallback(this.wordCache_[word])
+    return;
+  }
+
+  var url = this.getStaticUrl(word);
+  if (url == null) {
+    // TODO: show more decriptive message here
+    this.result_.innerHTML = '';
+    return;
+  }
+  if (url == 'NoWord') {
+    this.result_.innerHTML = getStringNoSuchWord();
+    return;
+  }
+  console.log(url);
+
+  var xmlhttp;
+
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
+  } else {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200 || xmlhttp.status == 304) {
+        //this.result_.innerHTML = xmlhttp.status;
+        //this.result_.innerHTML = xmlhttp.statusText;
+        this.result_.innerHTML = xmlhttp.responseText;
+        //this.JSONPCallback(eval('(' + xmlhttp.responseText + ')'));
+      } else {
+        this.result_.innerHTML = 'In lookupByHTTPGet: XMLHttpRequest error!';
+        throw "In lookupByHTTPGet: XMLHttpRequest error!";
+      }
+    }
+  }.bind(this);
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+};
+
+
+Lookup.prototype.getStaticUrl = function(word) {
+  if (!groupInfo) return null;
+
+  // Remove whitespace in the beginning and end of user input string
+  word = word.replace(/(^\s+)|(\s+$)/g, "");
+
+  if (word.length == 0) return 'NoWord';
+
+  /**
+   * example:
+   * groupInfo['version'] = {
+   *   'a' : 0,
+   *   'b' : 0,
+   *   'c' : 1,
+   *   ...
+   * }
+   */
+  var version = -1;
+  for (var prefix in groupInfo['version']) {
+    if (prefix == word[0]) {
+      version = groupInfo['version'][prefix];
+      break;
+    }
+  }
+  if (version == -1) return 'NoWord'; 
+
+  var urlhost = 'http://version' + version + '.palidictionary.appspot.com/';
+
+  /**
+   * example:
+   * groupInfo['dir'] = {
+   *   'a' : { ... },
+   *   'b' : [],
+   *   'c' : [],
+   *   ...
+   * }
+   */
+  var path = this.getStaticPath(word, groupInfo['dir'], 'static/', 1);
+  if (path == null) return 'NoWord';
+  var encodedPath = path + encodeURIComponent(word) + '.xml';
+  encodedPath = encodedPath.replace(/%/g, 'Z');
+  return urlhost + encodedPath;
+};
+
+
+Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
+  if (dirInfo.length == 0) {
+    return prefix;
+  } else if (typeof dirInfo == 'object') {
+    for (var key in dirInfo) {
+      if (word.indexOf(key) == 0 && key.length == digit) {
+        if (word.length == digit) {
+          return (prefix + encodeURIComponent(key) + '/' +
+                           encodeURIComponent(key) + '/');
+        }
+        // if word startswith key
+        return this.getStaticPath(word, dirInfo[key],
+                                  prefix + encodeURIComponent(key) + '/',
+                                  digit + 1);
+      }
+    }
+    return null;
+  } else {
+    throw 'only object or empty array is allowed!';
+  }
 };
 
 
