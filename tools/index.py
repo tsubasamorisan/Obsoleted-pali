@@ -344,7 +344,7 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
     fd.write('\n')
     fd.write('handlers:\n')
     fd.write('- url: /xml\n')
-    fd.write('  static_dir: /xml\n')
+    fd.write('  static_dir: xml\n')
     fd.close()
 
 
