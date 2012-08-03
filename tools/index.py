@@ -320,9 +320,6 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
   if os.path.exists(dpDirName):
     # remove all dirs and sub-dirs
     shutil.rmtree(dpDirName)
-  else:
-    # create dirs
-    os.makedirs(dpDirName)
 
   # load pre-built indexes
   groupInfo = json.loads(open(groupedSavedName).read())
@@ -373,36 +370,26 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
       count = iterateAllWordsInRecursiveVariable(dirInfo[prefix], prefix, versionDir, srcDir)
       print('%d' % count)
 
+    # TODO: generate app.xml for each version here?
     break
 
 
 def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
-  """
-  group4Dir = dpDirName + 'xml4/'
-  os.makedirs(group4Dir)
-  for key in prefixGroup4.keys():
-    prefixDir = group4Dir + urllib.quote(key) + '/'
-    os.makedirs(prefixDir)
-    for wordName in dicPrefixWordLists[key.decode('utf-8')]:
-      src = xmlDir + key.decode('utf-8') + '/' + wordName + '.xml'
-      dst = prefixDir + urllib.quote(wordName.encode('utf-8')) + '.xml'
-      shutil.copy(src, dst)
-  # TODO: generate app.xml here?
-  """
   wordCount = 0
-  #print(type(var))
   if type(var) is type([]):
-    #print(': %d' % len(var))
     for word in var:
-      srcFile = srcDir + word + 'xml'
-      #print(srcFile)
+      srcFile = srcDir + word + '.xml'
+      if not os.path.exists(srcFile):
+        raise Exception('%s does not exist!' % srcFile)
+
+      dstFile = versionDir + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8') + '.xml').replace('%', 'Z')
+      if not os.path.exists(os.path.dirname(dstFile)):
+        os.makedirs(os.path.dirname(dstFile))
+      shutil.copy(srcFile, dstFile)
+
       wordCount += 1
   elif type(var) is type({}):
     for key in var.keys():
-      #if type(var[key]) is type([]):
-      #  sys.stdout.write('  '*space + '%s ' % key)
-      #else:
-      #  print('  '*space + '%s + (over limit, break)' % key)
       wordCount += iterateAllWordsInRecursiveVariable(var[key], prefix + '/' + key, versionDir, srcDir)
   else:
     raise Exception('only [] or {} is allowed!')
