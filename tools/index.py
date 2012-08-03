@@ -277,7 +277,7 @@ def showRecursiveVariable(var, space=1):
       if type(var[key]) is type([]):
         sys.stdout.write('  '*space + '%s ' % key)
       else:
-        print('  '*space + '%s + (over limit)' % key)
+        print('  '*space + '%s + (over limit, break)' % key)
       showRecursiveVariable(var[key], space + 1)
   else:
     raise Exception('only [] or {} is allowed!')
@@ -370,10 +370,13 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
         raise Exception('%s does not exist!' % srcDir)
       print(srcDir)
 
-      print(type(dirInfo[prefix]))
+      count = iterateAllWordsInRecursiveVariable(dirInfo[prefix], prefix, versionDir, srcDir)
+      print('%d' % count)
 
     break
 
+
+def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
   """
   group4Dir = dpDirName + 'xml4/'
   os.makedirs(group4Dir)
@@ -386,8 +389,25 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
       shutil.copy(src, dst)
   # TODO: generate app.xml here?
   """
-def iterateAllWordsInRecursiveVariable():
-  pass
+  wordCount = 0
+  #print(type(var))
+  if type(var) is type([]):
+    #print(': %d' % len(var))
+    for word in var:
+      srcFile = srcDir + word + 'xml'
+      #print(srcFile)
+      wordCount += 1
+  elif type(var) is type({}):
+    for key in var.keys():
+      #if type(var[key]) is type([]):
+      #  sys.stdout.write('  '*space + '%s ' % key)
+      #else:
+      #  print('  '*space + '%s + (over limit, break)' % key)
+      wordCount += iterateAllWordsInRecursiveVariable(var[key], prefix + '/' + key, versionDir, srcDir)
+  else:
+    raise Exception('only [] or {} is allowed!')
+
+  return wordCount
 
 
 if __name__ == '__main__':
