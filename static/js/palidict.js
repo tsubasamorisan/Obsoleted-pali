@@ -31,11 +31,9 @@ function initService() {
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
   // start lookup object and callback
-  var jsonp = true;
-  if (queryURL['jsonp'] == "no") jsonp = false;
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result',
                             'suggestedWordPreview', 'suggest',
-                            getLookupUrl(), jsonp);
+                            getLookupUrl(), 'getStatic');
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')

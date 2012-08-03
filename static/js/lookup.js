@@ -24,7 +24,7 @@ pali.require('data2dom');
  * @constructor
  */
 Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
-                  lookupUrl, useJSONP) {
+                  lookupUrl, lookupMethod) {
   /**
    * The DOM element which is the text input of word to be looked up.
    * @const
@@ -79,25 +79,45 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    */
   this.lookupUrl_ = lookupUrl;
 
-  if (useJSONP) {
+  if (lookupMethod == 'jsonp') {
+    /**
+     * The method to look up word.
+     * possible value: jsonp, postDynamic, getStatic
+     * @const
+     * @type {string}
+     * @private
+     */
+    this.lookupMethod_ = 'jsonp';
+
     this.form_.action = "javascript:void(0);";
     this.form_.onsubmit = this.lookupByJSONP.bind(this);
-  } else {
+
+    /**
+     * The name of this object in global scope, i.e.,
+     * window[this.globalName_] = this;
+     * @const
+     * @type {string}
+     * @private
+     */
+    this.globalName_ = pali.setObjectGlobalName(this);
+
+    // for closure compiler advance optimization
+    if (!this['JSONPCallback'])
+      this['JSONPCallback'] = this.JSONPCallback;
+    if (!this['previewCallback'])
+      this['previewCallback'] = this.previewCallback;
+
+  } else if (lookupMethod == 'postDynamic') {
+    this.lookupMethod_ = 'postDynamic';
+
     this.form_.action = "javascript:void(0);";
     this.form_.onsubmit = this.lookupByHTTPPost.bind(this);
+
+  } else {
+    this.lookupMethod_ = 'getStatic';
+
+    this.form_.action = "javascript:void(0);";
   }
-
-  /**
-   * The name of this object in global scope, i.e.,
-   * window[this.globalName_] = this;
-   * @const
-   * @type {string}
-   * @private
-   */
-  this.globalName_ = pali.setObjectGlobalName(this);
-
-  if (!this['JSONPCallback']) this['JSONPCallback'] = this.JSONPCallback;
-  if (!this['previewCallback']) this['previewCallback'] = this.previewCallback;
 
   /**
    * Cache for the json-format data of words
@@ -196,12 +216,18 @@ Lookup.prototype.previewCheck = function() {
     return;
   }
 
-  // get lookup data of a word from the server by JSONP
-  var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
-            encodeURIComponent(this.globalName_ + '["previewCallback"]');
-  var ext = document.createElement('script');
-  ext.setAttribute('src', this.lookupUrl_ + qry);
-  document.getElementsByTagName("head")[0].appendChild(ext);
+  if (this.lookupMethod_ == 'jsonp') {
+    // get lookup data of a word from the server by JSONP
+    var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
+              encodeURIComponent(this.globalName_ + '["previewCallback"]');
+    var ext = document.createElement('script');
+    ext.setAttribute('src', this.lookupUrl_ + qry);
+    document.getElementsByTagName("head")[0].appendChild(ext);
+  } else if (this.lookupMethod_ == 'postDynamic') {
+
+  } else {
+
+  }
 
   // check again in 1000 ms
   setTimeout(this.previewCheck.bind(this), 1000);
