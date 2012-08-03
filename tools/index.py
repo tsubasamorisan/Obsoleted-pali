@@ -280,7 +280,7 @@ def groupByPrefixUnderCountLimit(wordsArray, countLimit, digit, debug=False):
   return group
 
 
-def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
+def buildJSONDeployDir(xmlDir, dpDirName, groupedSavedName):
   if os.path.exists(dpDirName):
     # remove all dirs and sub-dirs
     shutil.rmtree(dpDirName)
@@ -337,14 +337,14 @@ def buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName):
     # generate app.yaml for each version
     fd = open(versionDir + 'app.yaml', "w")
     fd.write('application: palidictionary\n')
-    fd.write('version: xml%d\n' % version)
+    fd.write('version: json%d\n' % version)
     fd.write('runtime: python27\n')
     fd.write('api_version: 1\n')
     fd.write('threadsafe: true\n')
     fd.write('\n')
     fd.write('handlers:\n')
-    fd.write('- url: /xml\n')
-    fd.write('  static_dir: xml\n')
+    fd.write('- url: /json\n')
+    fd.write('  static_dir: json\n')
     fd.close()
 
 
@@ -356,10 +356,14 @@ def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
       if not os.path.exists(srcFile):
         raise Exception('%s does not exist!' % srcFile)
 
-      dstFile = versionDir + 'xml/' + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8') + '.xml').replace('%', 'Z')
+      dstFile = versionDir + 'json/' + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8')).replace('%', 'Z')
+
       if not os.path.exists(os.path.dirname(dstFile)):
         os.makedirs(os.path.dirname(dstFile))
-      shutil.copy(srcFile, dstFile)
+
+      dstFd = open(dstFile, 'w')
+      dstFd.write(json.dumps(xmlToJson(word, open(srcFile).read())))
+      dstFd.close()
 
       wordCount += 1
   elif type(var) is type({}):
@@ -369,6 +373,56 @@ def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
     raise Exception('only [] or {} is allowed!')
 
   return wordCount
+
+
+def xmlToJson(word, xmlFiledata):
+  jsonData = {}
+  jsonData['word'] = word
+  jsonData['data'] = decodeXML(xmlFiledata)
+
+  return jsonData
+
+
+def decodeXML(xmlFiledata):
+  dom = xml.dom.minidom.parseString(xmlFiledata)
+
+  items = dom.getElementsByTagName("item")
+  result = []
+  for item in items:
+    dictstr, wordstr, explainstr = decodeItem(item)
+    result.append((dictstr, wordstr, explainstr))
+
+  # return valus is "list of 3-tuples"
+  return result
+
+
+def decodeItem(item):
+  dict = item.getElementsByTagName("dict")[0]
+  word = item.getElementsByTagName("word")[0]
+  explain = item.getElementsByTagName("explain")[0]
+
+  dictstr = dict.childNodes[0].data
+  wordstr = word.childNodes[0].data
+  explainstr = HexStringToString(explain.childNodes[0].data)
+
+  return dictstr, wordstr, explainstr
+
+
+def HexStringToString(hexString):
+  # convert hex string to utf8 string
+  # example: "%2c%e3%80" -> "\x2C\xE3\x80"
+  bytes = []
+  hexStr = ''.join( hexString.split("%") )
+  for i in range(0, len(hexStr), 2):
+    bytes.append( chr( int (hexStr[i:i+2], 16 ) ) )
+
+  # decode as utf8
+  try:
+    string = ''.join( bytes ).decode("utf-8")
+  except UnicodeDecodeError:
+    string = u"Sorry! Something wrong with the database. We cannot get explain of this word in this dictionary."
+
+  return string
 
 
 def buildJS(savedName, groupedSavedName, jsName):
@@ -446,7 +500,7 @@ if __name__ == '__main__':
     sys.exit(0)
 
   if sys.argv[1] == "cpdir":
-    buildXMLDeployDir(xmlDir, dpDirName, groupedSavedName)
+    buildJSONDeployDir(xmlDir, dpDirName, groupedSavedName)
     sys.exit(0)
 
   if sys.argv[1] == "js":
