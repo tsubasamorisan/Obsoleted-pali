@@ -343,8 +343,9 @@ Lookup.prototype.lookupByHTTPGet = function() {
         this.result_.innerHTML = xmlhttp.responseText;
         //this.JSONPCallback(eval('(' + xmlhttp.responseText + ')'));
       } else {
-        this.result_.innerHTML = 'In lookupByHTTPGet: XMLHttpRequest error!';
-        throw "In lookupByHTTPGet: XMLHttpRequest error!";
+        this.result_.innerHTML = getStringNoSuchWord();
+        //this.result_.innerHTML = 'In lookupByHTTPGet: XMLHttpRequest error!';
+        //throw "In lookupByHTTPGet: XMLHttpRequest error!";
       }
     }
   }.bind(this);
@@ -380,7 +381,7 @@ Lookup.prototype.getStaticUrl = function(word) {
   }
   if (version == -1) return 'NoWord'; 
 
-  var urlhost = 'http://version' + version + '.palidictionary.appspot.com/';
+  var urlhost = 'http://xml' + version + '.palidictionary.appspot.com/';
 
   /**
    * example:
@@ -391,10 +392,13 @@ Lookup.prototype.getStaticUrl = function(word) {
    *   ...
    * }
    */
-  var path = this.getStaticPath(word, groupInfo['dir'], 'static/', 1);
+  var path = this.getStaticPath(word, groupInfo['dir'], 'xml/', 1);
   if (path == null) return 'NoWord';
   var encodedPath = path + encodeURIComponent(word) + '.xml';
   encodedPath = encodedPath.replace(/%/g, 'Z');
+
+  return 'http://siongui.webfactional.com/' + encodedPath + '?v=xml' + version
+//  return 'http://siongui.pythonanywhere.com/' + encodedPath + '?v=xml' + version
   return urlhost + encodedPath;
 };
 
@@ -404,12 +408,16 @@ Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
     return prefix;
   } else if (typeof dirInfo == 'object') {
     for (var key in dirInfo) {
+      // if word startswith key
       if (word.indexOf(key) == 0 && key.length == digit) {
         if (word.length == digit) {
+          if (dirInfo[key].length == 0) {
+            return (prefix + encodeURIComponent(key) + '/');
+          }
           return (prefix + encodeURIComponent(key) + '/' +
                            encodeURIComponent(key) + '/');
         }
-        // if word startswith key
+
         return this.getStaticPath(word, dirInfo[key],
                                   prefix + encodeURIComponent(key) + '/',
                                   digit + 1);
