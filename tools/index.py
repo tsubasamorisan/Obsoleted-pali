@@ -184,6 +184,11 @@ def stats(savedName, groupedSavedName):
   for key in groupInfo['version'].keys():
     print('%s belongs to version #%d' % (key, groupInfo['version'][key]))
 
+  raw_input('press Enter...')
+  os.system('clear')
+
+  showRecursiveVariable(groupInfo['dir'])
+
 
 def buildWordsGroup(savedName, groupedSavedName, debug=False):
   # dicPrefixWordLists = {
@@ -264,18 +269,16 @@ def buildWordsGroup(savedName, groupedSavedName, debug=False):
   fd.close()
 
 
-def showRecursiveVariable(var):
+def showRecursiveVariable(var, space=1):
   if type(var) is type([]):
     print(': %d' % len(var))
   elif type(var) is type({}):
     for key in var.keys():
       if type(var[key]) is type([]):
-        sys.stdout.write('%s ' % key)
+        sys.stdout.write('  '*space + '%s ' % key)
       else:
-        print('< %s >' % key)
-      showRecursiveVariable(var[key])
-    raw_input('press Enter...')
-    os.system('clear')
+        print('  '*space + '%s + (over limit)' % key)
+      showRecursiveVariable(var[key], space + 1)
   else:
     raise Exception('only [] or {} is allowed!')
 
