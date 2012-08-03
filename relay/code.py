@@ -122,6 +122,7 @@ class xml:
     #web.debug(response.info()["Content-Type"])
     for headerItem in response.info().items():
       web.header(headerItem[0], headerItem[1])
+    web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
     return response.read()
 
 
