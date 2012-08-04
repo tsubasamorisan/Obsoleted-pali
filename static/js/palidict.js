@@ -30,7 +30,6 @@ function initService() {
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
-  var globalCache = {};
   // start lookup object and callback
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result',
                             'suggestedWordPreview', 'suggest',

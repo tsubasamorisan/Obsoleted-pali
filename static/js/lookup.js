@@ -63,7 +63,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @private
    */
   this.previewDiv_ = document.getElementById(previewDivId);
-  if (!this.previewDiv_) throw "Preview.NoWordPreviewDiv";
+  if (!this.previewDiv_) throw "Lookup.NoWordPreviewDiv";
 
   /**
    * DOM element of suggestion menu of words
@@ -72,7 +72,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @private
    */
   this.suggestDiv_ = document.getElementById(suggestDivId);
-  if (!this.suggestDiv_) throw "Preview.NoSuggestDiv";
+  if (!this.suggestDiv_) throw "Lookup.NoSuggestDiv";
 
   /**
    * The URL to look up word.
@@ -161,7 +161,7 @@ Lookup.prototype.previewCheck = function() {
       this.previewDiv_.style.display = 'none';
     }
     else {
-      this.showPreview(jsonData);
+      this.callbackPv(jsonData);
     }
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
@@ -406,9 +406,9 @@ Lookup.prototype.lookup = function() {
   var encodedPath = path + encodeURIComponent(word) + '.json';
   encodedPath = encodedPath.replace(/%/g, 'Z');
 
-//  var url = 'http://siongui.webfactional.com/' + encodedPath + '?v=json' + version
+  var url = 'http://siongui.webfactional.com/' + encodedPath + '?v=json' + version
 //  var url = 'http://siongui.pythonanywhere.com/' + encodedPath + '?v=json' + version
-  var url = urlhost + encodedPath;
+//  var url = urlhost + encodedPath;
 
   var xmlhttp;
 
