@@ -11,6 +11,7 @@ urls = (
   '/browse.*', 'index',
   '/statics/(.*)', 'static',
   '/json/.*', 'json',
+  '/robot.txt', 'robot',
   '/lookup', 'lookup'
 )
 
@@ -124,6 +125,11 @@ class json:
       web.header(headerItem[0], headerItem[1])
     web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
     return response.read()
+
+
+class robot:
+  def GET(self):
+    return 'User-agent: *\nDisallow: /'
 
 
 # To run on PythonAnywhere and WebFaction, see the following link:
