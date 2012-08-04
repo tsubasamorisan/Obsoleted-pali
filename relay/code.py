@@ -10,7 +10,7 @@ urls = (
   '/', 'index',
   '/browse.*', 'index',
   '/statics/(.*)', 'static',
-  '/xml/.*', 'xml',
+  '/json/.*', 'json',
   '/lookup', 'lookup'
 )
 
@@ -104,7 +104,7 @@ class static:
     return response.read()
 
 
-class xml:
+class json:
   def GET(self):
     v = parse_qs(web.ctx.query[1:])['v'][0]
     request = urllib2.Request('http://%s.palidictionary.appspot.com/%s' \

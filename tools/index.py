@@ -356,7 +356,7 @@ def iterateAllWordsInRecursiveVariable(var, prefix, versionDir, srcDir):
       if not os.path.exists(srcFile):
         raise Exception('%s does not exist!' % srcFile)
 
-      dstFile = versionDir + 'json/' + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8')).replace('%', 'Z')
+      dstFile = versionDir + 'json/' + urllib.quote(prefix.encode('utf-8') + '/' + word.encode('utf-8') + '.json').replace('%', 'Z')
 
       if not os.path.exists(os.path.dirname(dstFile)):
         os.makedirs(os.path.dirname(dstFile))
