@@ -1,5 +1,5 @@
 /**
- * @fileoverview Look up word in AJAX way
+ * @fileoverview Look up word and show preview of words in AJAX way
  * TODO: pass i18n string as parameters?
  * FIXME: This file is not modulized because of i18n string function
  */
@@ -8,7 +8,7 @@ pali.require('base');
 pali.require('data2dom');
 
 /**
- * Class to look up word in AJAX way.
+ * Class to look up word and show preview of words in AJAX way.
  *
  * @param {string} textInputId The id of DOM element which is the text input of
  *                             word to be lookup
@@ -20,7 +20,7 @@ pali.require('data2dom');
  *                              user input or selected word
  * @param {string} suggestDivId element id for suggestion Div Menu
  * @param {string} lookupUrl The URL to look up word
- * @param {boolean} useJSONP Use JSONP if true. use HTTP Post if false.
+ * @param {string} lookupMethod The method to look up word
  * @constructor
  */
 Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
@@ -43,6 +43,9 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
   this.form_ = document.getElementById(formId);
   if (!this.form_) throw "Lookup.NoForm";
 
+  this.form_.action = "javascript:void(0);";
+  this.form_.onsubmit = this.lookup.bind(this);
+
   /**
    * The DOM element to show the result of the word lookup.
    * (should be empty DIV or SPAN)
@@ -59,8 +62,8 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @type {DOM Element}
    * @private
    */
-  this.wordPvDiv_ = document.getElementById(previewDivId);
-  if (!this.wordPvDiv_) throw "Lookup.NoWordPreviewDiv";
+  this.previewDiv_ = document.getElementById(previewDivId);
+  if (!this.previewDiv_) throw "Preview.NoWordPreviewDiv";
 
   /**
    * DOM element of suggestion menu of words
@@ -69,7 +72,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @private
    */
   this.suggestDiv_ = document.getElementById(suggestDivId);
-  if (!this.suggestDiv_) throw "Lookup.NoSuggestDiv";
+  if (!this.suggestDiv_) throw "Preview.NoSuggestDiv";
 
   /**
    * The URL to look up word.
@@ -77,21 +80,22 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @type {string}
    * @private
    */
+  if (typeof lookupUrl != 'string')
+    throw 'Lookup.BadLookupUrlFormat'
   this.lookupUrl_ = lookupUrl;
 
-  if (lookupMethod == 'jsonp') {
-    /**
-     * The method to look up word.
-     * possible value: jsonp, postDynamic, getStatic
-     * @const
-     * @type {string}
-     * @private
-     */
-    this.lookupMethod_ = 'jsonp';
+  /**
+   * The method to look up word.
+   * {'jsonp' | 'post' | 'get'}
+   * @const
+   * @type {string}
+   * @private
+   */
+  if (typeof lookupMethod != 'string')
+    throw 'Lookup.BadLookupMethodFormat'
+  this.lookupMethod_ = lookupMethod;
 
-    this.form_.action = "javascript:void(0);";
-    this.form_.onsubmit = this.lookupByJSONP.bind(this);
-
+  if (this.lookupMethod_ == 'jsonp') {
     /**
      * The name of this object in global scope, i.e.,
      * window[this.globalName_] = this;
@@ -102,32 +106,18 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
     this.globalName_ = pali.setObjectGlobalName(this);
 
     // for closure compiler advance optimization
-    if (!this['JSONPCallback'])
-      this['JSONPCallback'] = this.JSONPCallback;
-    if (!this['previewCallback'])
-      this['previewCallback'] = this.previewCallback;
-
-  } else if (lookupMethod == 'postDynamic') {
-    this.lookupMethod_ = 'postDynamic';
-
-    this.form_.action = "javascript:void(0);";
-    this.form_.onsubmit = this.lookupByHTTPPost.bind(this);
-
-  } else {
-    this.lookupMethod_ = 'getStatic';
-
-    this.form_.action = "javascript:void(0);";
-    this.form_.onsubmit = this.lookupByHTTPGet.bind(this);
+    if (!this['callback']) this['callback'] = this.callback;
+    if (!this['callbackPv']) this['callbackPv'] = this.callbackPv;
   }
 
   /**
    * Cache for the json-format data of words
-   * this.wordCache_[word] = jsonData;
+   * this.cache_[word] = jsonData;
    * @const
    * @type {object}
    * @private
    */
-  this.wordCache_ = {};
+  this.cache_ = {};
 
   // start to periodically check whether preview should be shown
   this.previewCheck();
@@ -141,7 +131,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
 Lookup.prototype.previewCheck = function() {
   // check if suggestion menu exists
   if (this.suggestDiv_.style.display == 'none') {
-    this.wordPvDiv_.style.display = 'none';
+    this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
@@ -155,7 +145,7 @@ Lookup.prototype.previewCheck = function() {
    */
   var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '');
   if (userInputStr.length == 0) {
-    this.wordPvDiv_.style.display = 'none';
+    this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
@@ -165,10 +155,10 @@ Lookup.prototype.previewCheck = function() {
    * Check whether there is already json data of this word in the cache,
    * if yes, use the cached data.
    */
-  if (this.wordCache_.hasOwnProperty(userInputStr)) {
-    var jsonData = this.wordCache_[userInputStr];
+  if (this.cache_.hasOwnProperty(userInputStr)) {
+    var jsonData = this.cache_[userInputStr];
     if (jsonData['data'] == null) {
-      this.wordPvDiv_.style.display = 'none';
+      this.previewDiv_.style.display = 'none';
     }
     else {
       this.showPreview(jsonData);
@@ -178,9 +168,10 @@ Lookup.prototype.previewCheck = function() {
     return;
   }
 
+  // FIXME: bad practice: call of dicPrefixWordLists
   // check if dicPrefixWordLists exists
   if (!dicPrefixWordLists) {
-    this.wordPvDiv_.style.display = 'none';
+    this.previewDiv_.style.display = 'none';
     console.log('No dicPrefixWordLists');
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
@@ -196,8 +187,9 @@ Lookup.prototype.previewCheck = function() {
       break;
     }
   }
+  // no words start with 'prefix'
   if (prefix == '') {
-    this.wordPvDiv_.style.display = 'none';
+    this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
@@ -210,22 +202,23 @@ Lookup.prototype.previewCheck = function() {
       break;
     }
   }
+  // no matched word
   if (matchedWord == '') {
-    this.wordPvDiv_.style.display = 'none';
+    this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
   }
 
+  // start to look up the word
   if (this.lookupMethod_ == 'jsonp') {
     // get lookup data of a word from the server by JSONP
     var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
-              encodeURIComponent(this.globalName_ + '["previewCallback"]');
+              encodeURIComponent(this.globalName_ + '["callbackPv"]');
     var ext = document.createElement('script');
     ext.setAttribute('src', this.lookupUrl_ + qry);
     document.getElementsByTagName("head")[0].appendChild(ext);
-
-  } else if (this.lookupMethod_ == 'postDynamic') {
+  } else if (this.lookupMethod_ == 'post') {
     // get lookup data of a word from the server by HTTP Post
     var xmlhttp;
 
@@ -241,10 +234,116 @@ Lookup.prototype.previewCheck = function() {
           //this.result_.innerHTML = xmlhttp.status;
           //this.result_.innerHTML = xmlhttp.statusText;
           //this.result_.innerHTML = xmlhttp.responseText;
-          this.previewCallback(eval('(' + xmlhttp.responseText + ')'));
+          this.callbackPv(eval('(' + xmlhttp.responseText + ')'));
         } else {
-          this.result_.innerHTML = 'In previewCheck: XMLHttpRequest error!';
-          throw "In previewCheck: XMLHttpRequest error!";
+          this.result_.innerHTML = 'previewCheck: XMLHttpRequest Post Err!';
+          throw "previewCheck: XMLHttpRequest Post Err!";
+        }
+      }
+    }.bind(this);
+
+    xmlhttp.open("POST", this.lookupUrl_, true);
+    xmlhttp.setRequestHeader("Content-type",
+                             "application/x-www-form-urlencoded");
+    xmlhttp.send("word=" + encodeURIComponent(word));
+  } else {
+    // get lookup data of a word from the server by HTTP Get (Default)
+  }
+
+  // check again in 1000 ms
+  setTimeout(this.previewCheck.bind(this), 1000);
+};
+
+/**
+ * Common preview callback function
+ * @param {object} jsonData The JSON-format data which contains the result of
+ *                          word lookup. "list of 3-tuple" in Python
+ * @private
+ */
+Lookup.prototype.callbackPv = function(jsonData) {
+  if (!this.cache_.hasOwnProperty(jsonData['word'])) {
+    // add lookup json data to cache
+    this.cache_[jsonData['word']] = jsonData;
+  }
+
+  if (jsonData['data'] == null) {
+    this.previewDiv_.style.display = 'none';
+    return;
+  }
+
+  if (jsonData['word'] != 
+      this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '')) {
+    this.previewDiv_.style.display = 'none';
+    return;
+  }
+
+  // Show preview of the word
+  this.previewDiv_.style.left = (pali.getOffset(this.textInput_).left +
+    this.suggestDiv_.offsetWidth + 3) + "px";
+  this.previewDiv_.style.width = '30em';
+  this.previewDiv_.style.display = 'block';
+  this.previewDiv_.style.textAlign = 'left';
+  this.previewDiv_.innerHTML = '';
+  this.previewDiv_.appendChild(Data2dom.createPreview(jsonData));
+};
+
+
+/**
+ * Look up word
+ * @private
+ */
+Lookup.prototype.lookup = function() {
+  this.result_.innerHTML = getStringLookingUp();
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
+  var word = this.textInput_.value;
+
+  // Remove whitespace in the beginning and end of user input string
+  word = word.replace(/(^\s+)|(\s+$)/g, "");
+
+  if (word.length == 0) {
+    this.result_.innerHTML = getStringNoSuchWord();
+    return;
+  }
+
+  if (this.cache_.hasOwnProperty(word)) {
+    this.callback(this.cache_[word])
+    return;
+  }
+
+  if (this.lookupMethod_ == 'jsonp') {
+    // get lookup data of a word from the server by JSONP
+    var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
+              encodeURIComponent(this.globalName_ + '["callback"]');
+    var ext = document.createElement('script');
+    ext.setAttribute('src', this.lookupUrl_ + qry);
+    document.getElementsByTagName("head")[0].appendChild(ext);
+
+    return;
+  }
+
+  if (this.lookupMethod_ == 'post') {
+    // get lookup data of a word from the server by HTTP Post
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+      xmlhttp=new XMLHttpRequest();
+    } else {
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          //this.result_.innerHTML = xmlhttp.status;
+          //this.result_.innerHTML = xmlhttp.statusText;
+          //this.result_.innerHTML = xmlhttp.responseText;
+          this.callback(eval('(' + xmlhttp.responseText + ')'));
+        } else {
+          this.result_.innerHTML = 'Lookup Post: XMLHttpRequest error!';
+          throw "Lookup Post: XMLHttpRequest error!";
         }
       }
     }.bind(this);
@@ -254,114 +353,18 @@ Lookup.prototype.previewCheck = function() {
                              "application/x-www-form-urlencoded");
     xmlhttp.send("word=" + encodeURIComponent(word));
 
-  } else {
-
-  }
-
-  // check again in 1000 ms
-  setTimeout(this.previewCheck.bind(this), 1000);
-};
-
-
-Lookup.prototype.previewCallback = function(jsonData) {
-  if (!this.wordCache_.hasOwnProperty(jsonData['word'])) {
-    // add lookup json data to cache
-    this.wordCache_[jsonData['word']] = jsonData;
-  }
-
-  if (jsonData['data'] == null) {
-    this.wordPvDiv_.style.display = 'none';
     return;
   }
 
-  if (jsonData['word'] != 
-      this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '')) {
-    this.wordPvDiv_.style.display = 'none';
-    return;
-  }
-  this.showPreview(jsonData);
-};
+  // get lookup data of a word from the server by HTTP Get (Default)
 
-
-/**
- * Show preview of a word
- * @param {object} jsonData The json format lookup data of word
- * @private
- */
-Lookup.prototype.showPreview = function(jsonData) {
-  this.wordPvDiv_.style.left = (pali.getOffset(this.textInput_).left +
-    this.suggestDiv_.offsetWidth + 3) + "px";
-  this.wordPvDiv_.style.width = '30em';
-  this.wordPvDiv_.style.display = 'block';
-  this.wordPvDiv_.style.textAlign = 'left';
-  this.wordPvDiv_.innerHTML = '';
-  this.wordPvDiv_.appendChild(Data2dom.createPreview(jsonData));
-};
-
-
-/**
- * Look up word by HTTP Get method
- * @private
- */
-Lookup.prototype.lookupByHTTPGet = function() {
-  this.result_.innerHTML = getStringLookingUp();
   /**
-   * Check whether there is already json data of this word in the cache,
-   * if yes, use the cached data.
+   * Resolve the URL of the word to issue HTTP Get by information provided by
+   * groupInfo global variable.
    */
-  var word = this.textInput_.value;
-  if (this.wordCache_.hasOwnProperty(word)) {
-    this.JSONPCallback(this.wordCache_[word])
-    return;
-  }
 
-  var url = this.getStaticUrl(word);
-  if (url == null) {
-    // TODO: show more decriptive message here
-    this.result_.innerHTML = '';
-    return;
-  }
-  if (url == 'NoWord') {
-    this.result_.innerHTML = getStringNoSuchWord();
-    return;
-  }
-  console.log(url);
-
-  var xmlhttp;
-
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  } else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200 || xmlhttp.status == 304) {
-        //this.result_.innerHTML = xmlhttp.status;
-        //this.result_.innerHTML = xmlhttp.statusText;
-        //this.result_.innerHTML = xmlhttp.responseText;
-        this.JSONPCallback(eval('(' + xmlhttp.responseText + ')'));
-      } else {
-        this.result_.innerHTML = getStringNoSuchWord();
-        //this.result_.innerHTML = 'In lookupByHTTPGet: XMLHttpRequest error!';
-        //throw "In lookupByHTTPGet: XMLHttpRequest error!";
-      }
-    }
-  }.bind(this);
-
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
-};
-
-
-Lookup.prototype.getStaticUrl = function(word) {
-  if (!groupInfo) return null;
-
-  // Remove whitespace in the beginning and end of user input string
-  word = word.replace(/(^\s+)|(\s+$)/g, "");
-
-  if (word.length == 0) return 'NoWord';
+  // FIXME: bad practice: call of groupInfo
+  if (!groupInfo) return;
 
   /**
    * example:
@@ -379,7 +382,10 @@ Lookup.prototype.getStaticUrl = function(word) {
       break;
     }
   }
-  if (version == -1) return 'NoWord'; 
+  if (version == -1) { 
+    this.result_.innerHTML = getStringNoSuchWord();
+    return;
+  }
 
   var urlhost = 'http://json' + version + '.palidictionary.appspot.com/';
 
@@ -393,16 +399,70 @@ Lookup.prototype.getStaticUrl = function(word) {
    * }
    */
   var path = this.getStaticPath(word, groupInfo['dir'], 'json/', 1);
-  if (path == null) return 'NoWord';
+  if (path == null) {
+    this.result_.innerHTML = getStringNoSuchWord();
+    return;
+  }
   var encodedPath = path + encodeURIComponent(word) + '.json';
   encodedPath = encodedPath.replace(/%/g, 'Z');
 
-  return 'http://siongui.webfactional.com/' + encodedPath + '?v=json' + version
-//  return 'http://siongui.pythonanywhere.com/' + encodedPath + '?v=json' + version
-  return urlhost + encodedPath;
+//  var url = 'http://siongui.webfactional.com/' + encodedPath + '?v=json' + version
+//  var url = 'http://siongui.pythonanywhere.com/' + encodedPath + '?v=json' + version
+  var url = urlhost + encodedPath;
+
+  var xmlhttp;
+
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
+  } else {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200 || xmlhttp.status == 304) {
+        //this.result_.innerHTML = xmlhttp.status;
+        //this.result_.innerHTML = xmlhttp.statusText;
+        //this.result_.innerHTML = xmlhttp.responseText;
+        this.callback(eval('(' + xmlhttp.responseText + ')'));
+      } else {
+        this.result_.innerHTML = getStringNoSuchWord();
+      }
+    }
+  }.bind(this);
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
 };
 
 
+/**
+ * Common callback function
+ * @param {object} jsonData The JSON-format data which contains the result of
+ *                          word lookup. "list of 3-tuple" in Python
+ * @private
+ */
+Lookup.prototype.callback = function(jsonData) {
+  if (!this.cache_.hasOwnProperty(jsonData['word'])) {
+    // add lookup json data to cache
+    this.cache_[jsonData['word']] = jsonData;
+  }
+
+  this.result_.innerHTML = "";
+  // Show lookup data
+  this.result_.appendChild(Data2dom.createLookupTable(jsonData));
+};
+
+
+/**
+ * Recursive function to resolve the path of the URL of the word.
+ * @param {string} word The word to resolve the path of the URL
+ * @param {object|array} dirInfo
+ * @param {string} prefix
+ * @param {number} digit
+ * @return
+ * @private
+ */
 Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
   if (dirInfo.length == 0) {
     return prefix;
@@ -427,93 +487,4 @@ Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
   } else {
     throw 'only object or empty array is allowed!';
   }
-};
-
-
-/**
- * Look up word by HTTP Post method
- * @private
- */
-Lookup.prototype.lookupByHTTPPost = function() {
-  this.result_.innerHTML = getStringLookingUp();
-  /**
-   * Check whether there is already json data of this word in the cache,
-   * if yes, use the cached data.
-   */
-  var word = this.textInput_.value;
-  if (this.wordCache_.hasOwnProperty(word)) {
-    this.JSONPCallback(this.wordCache_[word])
-    return;
-  }
-
-  var xmlhttp;
-
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  } else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        //this.result_.innerHTML = xmlhttp.status;
-        //this.result_.innerHTML = xmlhttp.statusText;
-        //this.result_.innerHTML = xmlhttp.responseText;
-        this.JSONPCallback(eval('(' + xmlhttp.responseText + ')'));
-      } else {
-        this.result_.innerHTML = 'In lookupByHTTPPost: XMLHttpRequest error!';
-        throw "In lookupByHTTPPost: XMLHttpRequest error!";
-      }
-    }
-  }.bind(this);
-
-  xmlhttp.open("POST", this.lookupUrl_, true);
-  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send("word=" + encodeURIComponent(word));
-};
-
-
-/**
- * Look up word by JSOP
- * @private
- * References:
- * @see http://www.onlinesolutionsdevelopment.com/blog/web-development/javascript/jsonp-example/
- * @see http://www.slideshare.net/andymckay/cross-domain-webmashups-with-jquery-and-google-app-engine
- */
-Lookup.prototype.lookupByJSONP = function() {
-  this.result_.innerHTML = getStringLookingUp();
-  /**
-   * Check whether there is already json data of this word in the cache,
-   * if yes, use the cached data.
-   */
-  var word = this.textInput_.value;
-  if (this.wordCache_.hasOwnProperty(word)) {
-    this.JSONPCallback(this.wordCache_[word])
-    return;
-  }
-
-  var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
-            encodeURIComponent(this.globalName_ + '["JSONPCallback"]');
-  var ext = document.createElement('script');
-  ext.setAttribute('src', this.lookupUrl_ + qry);
-  document.getElementsByTagName("head")[0].appendChild(ext);
-};
-
-
-/**
- * Callback function of JSONP lookup
- * @param {string} result The JSON-format data which contains the result of word
- *                        lookup. "list of 3-tuple" in Python
- * @private
- */
-Lookup.prototype.JSONPCallback = function(jsonData) {
-  if (!this.wordCache_.hasOwnProperty(jsonData['word'])) {
-    // add lookup json data to cache
-    this.wordCache_[jsonData['word']] = jsonData;
-  }
-
-  this.result_.innerHTML = "";
-  // Show lookup data
-  this.result_.appendChild(Data2dom.createLookupTable(jsonData));
 };

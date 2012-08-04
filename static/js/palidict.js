@@ -30,10 +30,11 @@ function initService() {
   var langDropdown = new pali.Dropdown('lang-dropdown', 'menuDiv-lang-dropdown');
   var siteDropdown = new pali.Dropdown('site-dropdown', 'menuDiv-site-dropdown');
 
+  var globalCache = {};
   // start lookup object and callback
   var myLookup = new Lookup('PaliInput', 'inputForm', 'result',
                             'suggestedWordPreview', 'suggest',
-                            getLookupUrl(), 'getStatic');
+                            getLookupUrl(), getLookupMethod());
 
   // check which site user is at, and fill site innerHTML
   if (window.location.host == 'siongui.pythonanywhere.com')
@@ -233,7 +234,6 @@ function onLocaleClick() {
 
 function getLookupUrl() {
   var lookupUrl = "/lookup";
-  if (queryURL['jsonp'] == "no") return lookupUrl;
   if (queryURL['lookup'] == "gae") {
     lookupUrl = "http://palidictionary.appspot.com" + lookupUrl;
   }
@@ -244,4 +244,10 @@ function getLookupUrl() {
     lookupUrl = "http://siongui.webfactional.com" + lookupUrl;
   }
   return lookupUrl;
+}
+
+function getLookupMethod() {
+  if (queryURL['method'] == "jsonp") return 'jsonp';
+  if (queryURL['method'] == "post") return 'post';
+  return 'get';
 }
