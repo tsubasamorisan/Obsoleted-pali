@@ -172,6 +172,21 @@ Lookup.prototype.getProcessedUserInput = function() {
 
 
 /**
+ * Get lookup data of a word from the server by JSONP
+ * @param {string} word The word to be looked up
+ * @param {string} callbackName The name of callback function
+ * @private
+ */
+Lookup.prototype.jsonp = function(word, callbackName) {
+  var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
+            encodeURIComponent(this.globalName_ + '[' + callbackName + ']');
+  var ext = document.createElement('script');
+  ext.setAttribute('src', this.lookupUrl_ + qry);
+  document.getElementsByTagName("head")[0].appendChild(ext);
+};
+
+
+/**
  * Check whether preview should be shown periodically
  * @private
  */
@@ -211,12 +226,7 @@ Lookup.prototype.previewCheck = function() {
 
   // start to look up the word
   if (this.lookupMethod_ == 'jsonp') {
-    // get lookup data of a word from the server by JSONP
-    var qry = '?word=' + encodeURIComponent(matchedWord) + '&callback=' +
-              encodeURIComponent(this.globalName_ + '["callbackPv"]');
-    var ext = document.createElement('script');
-    ext.setAttribute('src', this.lookupUrl_ + qry);
-    document.getElementsByTagName("head")[0].appendChild(ext);
+    this.jsonp(word, 'callbackPv');
   } else if (this.lookupMethod_ == 'post') {
     // get lookup data of a word from the server by HTTP Post
     var xmlhttp;
@@ -310,13 +320,7 @@ Lookup.prototype.lookup = function() {
   }
 
   if (this.lookupMethod_ == 'jsonp') {
-    // get lookup data of a word from the server by JSONP
-    var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
-              encodeURIComponent(this.globalName_ + '["callback"]');
-    var ext = document.createElement('script');
-    ext.setAttribute('src', this.lookupUrl_ + qry);
-    document.getElementsByTagName("head")[0].appendChild(ext);
-
+    this.jsonp(word, 'callback');
     return;
   }
 
@@ -378,10 +382,7 @@ Lookup.prototype.lookup = function() {
       break;
     }
   }
-  if (version == -1) { 
-    this.result_.innerHTML = getStringNoSuchWord();
-    return;
-  }
+  if (version == -1) throw 'no version (should not happen here)';
 
   /**
    * example:
