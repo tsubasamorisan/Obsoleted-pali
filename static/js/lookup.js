@@ -179,7 +179,7 @@ Lookup.prototype.getProcessedUserInput = function() {
  */
 Lookup.prototype.jsonp = function(word, callbackName) {
   var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
-            encodeURIComponent(this.globalName_ + '[' + callbackName + ']');
+            encodeURIComponent(this.globalName_ + '["' + callbackName + '"]');
   var ext = document.createElement('script');
   ext.setAttribute('src', this.lookupUrl_ + qry);
   document.getElementsByTagName("head")[0].appendChild(ext);
@@ -390,12 +390,12 @@ Lookup.prototype.previewCheck = function() {
   }
 
   // start to look up the word
-  if (this.lookupMethod_ == 'jsonp') {
-    this.jsonp(word, 'callbackPv');
+  if (this.lookupMethod_ == 'get') {
+    this.httpget(word, 'callbackPv', true);
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callbackPv');
   } else {
-    this.httpget(word, 'callbackPv', true);
+    this.jsonp(word, 'callbackPv');
   }
 
   // check again in 1000 ms
@@ -458,12 +458,12 @@ Lookup.prototype.lookup = function() {
     return;
   }
 
-  if (this.lookupMethod_ == 'jsonp') {
-    this.jsonp(word, 'callback');
+  if (this.lookupMethod_ == 'get') {
+    this.httpget(word, 'callback', false);
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callback');
   } else {
-    this.httpget(word, 'callback', false);
+    this.jsonp(word, 'callback');
   }
 };
 
