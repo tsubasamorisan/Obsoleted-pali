@@ -460,15 +460,11 @@ Lookup.prototype.lookup = function() {
 
   if (this.lookupMethod_ == 'jsonp') {
     this.jsonp(word, 'callback');
-    return;
-  }
-
-  if (this.lookupMethod_ == 'post') {
+  } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callback');
-    return;
+  } else {
+    this.httpget(word, 'callback', false);
   }
-
-  this.httpget(word, 'callback', true);
 };
 
 
