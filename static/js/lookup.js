@@ -187,6 +187,41 @@ Lookup.prototype.jsonp = function(word, callbackName) {
 
 
 /**
+ * Get lookup data of a word from the server by HTTP Post
+ * @param {string} word The word to be looked up
+ * @param {string} callbackName The name of callback function
+ * @private
+ */
+Lookup.prototype.httppost = function(word, callbackName) {
+  var xmlhttp;
+
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
+  } else {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        //this.result_.innerHTML = xmlhttp.status;
+        //this.result_.innerHTML = xmlhttp.statusText;
+        //this.result_.innerHTML = xmlhttp.responseText;
+        this[callbackName](eval('(' + xmlhttp.responseText + ')'));
+      } else {
+        this.result_.innerHTML = 'XMLHttpRequest Post Err!';
+        throw "XMLHttpRequest Post Err!";
+      }
+    }
+  }.bind(this);
+
+  xmlhttp.open("POST", this.lookupUrl_, true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.send("word=" + encodeURIComponent(word));
+};
+
+
+/**
  * Check whether preview should be shown periodically
  * @private
  */
@@ -228,33 +263,7 @@ Lookup.prototype.previewCheck = function() {
   if (this.lookupMethod_ == 'jsonp') {
     this.jsonp(word, 'callbackPv');
   } else if (this.lookupMethod_ == 'post') {
-    // get lookup data of a word from the server by HTTP Post
-    var xmlhttp;
-
-    if (window.XMLHttpRequest) {
-      xmlhttp=new XMLHttpRequest();
-    } else {
-      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          //this.result_.innerHTML = xmlhttp.status;
-          //this.result_.innerHTML = xmlhttp.statusText;
-          //this.result_.innerHTML = xmlhttp.responseText;
-          this.callbackPv(eval('(' + xmlhttp.responseText + ')'));
-        } else {
-          this.result_.innerHTML = 'previewCheck: XMLHttpRequest Post Err!';
-          throw "previewCheck: XMLHttpRequest Post Err!";
-        }
-      }
-    }.bind(this);
-
-    xmlhttp.open("POST", this.lookupUrl_, true);
-    xmlhttp.setRequestHeader("Content-type",
-                             "application/x-www-form-urlencoded");
-    xmlhttp.send("word=" + encodeURIComponent(word));
+    this.httppost(word, 'callbackPv');
   } else {
     // get lookup data of a word from the server by HTTP Get (Default)
   }
@@ -325,34 +334,7 @@ Lookup.prototype.lookup = function() {
   }
 
   if (this.lookupMethod_ == 'post') {
-    // get lookup data of a word from the server by HTTP Post
-    var xmlhttp;
-
-    if (window.XMLHttpRequest) {
-      xmlhttp=new XMLHttpRequest();
-    } else {
-      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          //this.result_.innerHTML = xmlhttp.status;
-          //this.result_.innerHTML = xmlhttp.statusText;
-          //this.result_.innerHTML = xmlhttp.responseText;
-          this.callback(eval('(' + xmlhttp.responseText + ')'));
-        } else {
-          this.result_.innerHTML = 'Lookup Post: XMLHttpRequest error!';
-          throw "Lookup Post: XMLHttpRequest error!";
-        }
-      }
-    }.bind(this);
-
-    xmlhttp.open("POST", this.lookupUrl_, true);
-    xmlhttp.setRequestHeader("Content-type",
-                             "application/x-www-form-urlencoded");
-    xmlhttp.send("word=" + encodeURIComponent(word));
-
+    this.httppost(word, 'callback');
     return;
   }
 
