@@ -125,6 +125,53 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
 
 
 /**
+ * Before looking up the word, the word needs to be processed. For example,
+ * strip beginning and ending white spaces of the word, and validity of the
+ * word.
+ * @return {string|null} The processed word to be looked up, or null if invalid
+ *                       word
+ * @private
+ */
+Lookup.prototype.getProcessedUserInput = function() {
+  /**
+   * Remove whitespace in the beginning and end of user input string
+   * @const
+   * @type {string}
+   * @private
+   */
+  var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '');
+  if (userInputStr.length == 0) return null;
+
+  // FIXME: bad practice: call of dicPrefixWordLists
+  // check if dicPrefixWordLists exists
+  if (!dicPrefixWordLists) return null;
+
+  // check if user input is a valid word
+  var prefix = '';
+  for (var key in dicPrefixWordLists) {
+    if (userInputStr[0] == key) {
+      prefix = key;
+      break;
+    }
+  }
+  // if no words start with 'prefix'
+  if (prefix == '') return null;
+
+  var matchedWord = '';
+  for (var index in dicPrefixWordLists[prefix]) {
+    if (dicPrefixWordLists[prefix][index] == userInputStr) {
+      matchedWord = dicPrefixWordLists[prefix][index];
+      break;
+    }
+  }
+  // if no matched word
+  if (matchedWord == '') return null;
+
+  return matchedWord;
+};
+
+
+/**
  * Check whether preview should be shown periodically
  * @private
  */
@@ -137,14 +184,8 @@ Lookup.prototype.previewCheck = function() {
     return;
   }
 
-  /**
-   * Remove whitespace in the beginning and end of user input string
-   * @const
-   * @type {string}
-   * @private
-   */
-  var userInputStr = this.textInput_.value.replace(/(^\s+)|(\s+$)/g, '');
-  if (userInputStr.length == 0) {
+  var word = this.getProcessedUserInput();
+  if (word == null) {
     this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
@@ -155,56 +196,14 @@ Lookup.prototype.previewCheck = function() {
    * Check whether there is already json data of this word in the cache,
    * if yes, use the cached data.
    */
-  if (this.cache_.hasOwnProperty(userInputStr)) {
-    var jsonData = this.cache_[userInputStr];
+  if (this.cache_.hasOwnProperty(word)) {
+    var jsonData = this.cache_[word];
     if (jsonData['data'] == null) {
       this.previewDiv_.style.display = 'none';
     }
     else {
       this.callbackPv(jsonData);
     }
-    // check again in 1000 ms
-    setTimeout(this.previewCheck.bind(this), 1000);
-    return;
-  }
-
-  // FIXME: bad practice: call of dicPrefixWordLists
-  // check if dicPrefixWordLists exists
-  if (!dicPrefixWordLists) {
-    this.previewDiv_.style.display = 'none';
-    console.log('No dicPrefixWordLists');
-    // check again in 1000 ms
-    setTimeout(this.previewCheck.bind(this), 1000);
-    return;
-  }
-
-  // suggestion menu exists & dicPrefixWordLists exists &
-  // stripped user input string != ''. check if user input is a valid word
-  var prefix = '';
-  for (var key in dicPrefixWordLists) {
-    if (userInputStr[0] == key) {
-      prefix = key;
-      break;
-    }
-  }
-  // no words start with 'prefix'
-  if (prefix == '') {
-    this.previewDiv_.style.display = 'none';
-    // check again in 1000 ms
-    setTimeout(this.previewCheck.bind(this), 1000);
-    return;
-  }
-
-  var matchedWord = '';
-  for (var index in dicPrefixWordLists[prefix]) {
-    if (dicPrefixWordLists[prefix][index] == userInputStr) {
-      matchedWord = dicPrefixWordLists[prefix][index];
-      break;
-    }
-  }
-  // no matched word
-  if (matchedWord == '') {
-    this.previewDiv_.style.display = 'none';
     // check again in 1000 ms
     setTimeout(this.previewCheck.bind(this), 1000);
     return;
