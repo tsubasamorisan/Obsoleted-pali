@@ -248,5 +248,6 @@ function getLookupUrl() {
 function getLookupMethod() {
   if (queryURL['method'] == "jsonp") return 'jsonp';
   if (queryURL['method'] == "post") return 'post';
-  return 'get';
+  if (queryURL['method'] == "get") return 'get';
+  return 'jsonp';
 }
