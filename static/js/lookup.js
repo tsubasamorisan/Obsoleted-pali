@@ -293,20 +293,17 @@ Lookup.prototype.callbackPv = function(jsonData) {
  */
 Lookup.prototype.lookup = function() {
   this.result_.innerHTML = getStringLookingUp();
-  /**
-   * Check whether there is already json data of this word in the cache,
-   * if yes, use the cached data.
-   */
-  var word = this.textInput_.value;
 
-  // Remove whitespace in the beginning and end of user input string
-  word = word.replace(/(^\s+)|(\s+$)/g, "");
-
-  if (word.length == 0) {
+  var word = this.getProcessedUserInput();
+  if (word == null) {
     this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
 
+  /**
+   * Check whether there is already json data of this word in the cache,
+   * if yes, use the cached data.
+   */
   if (this.cache_.hasOwnProperty(word)) {
     this.callback(this.cache_[word])
     return;
