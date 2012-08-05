@@ -387,8 +387,6 @@ Lookup.prototype.lookup = function() {
     return;
   }
 
-  var urlhost = 'http://json' + version + '.palidictionary.appspot.com/';
-
   /**
    * example:
    * groupInfo['dir'] = {
@@ -406,9 +404,18 @@ Lookup.prototype.lookup = function() {
   var encodedPath = path + encodeURIComponent(word) + '.json';
   encodedPath = encodedPath.replace(/%/g, 'Z');
 
-  var url = 'http://siongui.webfactional.com/' + encodedPath + '?v=json' + version
-//  var url = 'http://siongui.pythonanywhere.com/' + encodedPath + '?v=json' + version
-//  var url = urlhost + encodedPath;
+  if (window.location.host == 'localhost:8080' ||
+      window.location.host == 'pali.googlecode.com' ||
+      window.location.host == 'siongui.webfactional.com') {
+    var url = 'http://siongui.webfactional.com/' +
+              encodedPath + '?v=json' + version;
+  } else if (window.location.host == 'siongui.pythonanywhere.com') {
+    var url = 'http://siongui.pythonanywhere.com/' +
+              encodedPath + '?v=json' + version;
+  } else {
+    var url = 'http://json' + version + '.palidictionary.appspot.com/'
+              + encodedPath;
+  }
 
   var xmlhttp;
 
