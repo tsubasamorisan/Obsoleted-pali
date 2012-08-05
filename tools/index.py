@@ -345,6 +345,9 @@ def buildJSONDeployDir(xmlDir, dpDirName, groupedSavedName):
     fd.write('handlers:\n')
     fd.write('- url: /json\n')
     fd.write('  static_dir: json\n')
+    fd.write('  mime_type: application/json\n')
+    fd.write('  http_headers:\n')
+    fd.write('    Access-Control-Allow-Origin: "*"\n')
     fd.close()
 
 
