@@ -275,9 +275,7 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
   var encodedPath = path + encodeURIComponent(word) + '.json';
   encodedPath = encodedPath.replace(/%/g, 'Z');
 
-  if (window.location.host == 'localhost:8080' ||
-      window.location.host == 'pali.googlecode.com' ||
-      window.location.host == 'siongui.webfactional.com') {
+  if (window.location.host == 'siongui.webfactional.com') {
     var url = 'http://siongui.webfactional.com/' +
               encodedPath + '?v=json' + version;
   } else if (window.location.host == 'siongui.pythonanywhere.com') {

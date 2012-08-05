@@ -232,22 +232,18 @@ function onLocaleClick() {
 }
 
 function getLookupUrl() {
-  var lookupUrl = "/lookup";
-  if (queryURL['lookup'] == "gae") {
-    lookupUrl = "http://palidictionary.appspot.com" + lookupUrl;
-  }
-  if (queryURL['lookup'] == "paw") {
-    lookupUrl = "http://siongui.pythonanywhere.com" + lookupUrl;
-  }
-  if (queryURL['lookup'] == "wfn") {
-    lookupUrl = "http://siongui.webfactional.com" + lookupUrl;
-  }
-  return lookupUrl;
+  if (queryURL['lookup'] == "gae")
+    return "http://palidictionary.appspot.com/lookup";
+  if (queryURL['lookup'] == "paw")
+    return "http://siongui.pythonanywhere.com/lookup";
+  if (queryURL['lookup'] == "wfn")
+    return "http://siongui.webfactional.com/lookup";
+  return "/lookup";
 }
 
 function getLookupMethod() {
   if (queryURL['method'] == "jsonp") return 'jsonp';
   if (queryURL['method'] == "post") return 'post';
   if (queryURL['method'] == "get") return 'get';
-  return 'jsonp';
+  return 'get';
 }
