@@ -222,6 +222,136 @@ Lookup.prototype.httppost = function(word, callbackName) {
 
 
 /**
+ * Get lookup data of a word from the server by HTTP Get
+ * @param {string} word The word to be looked up
+ * @param {string} callbackName The name of callback function
+ * @param {boolean} isPvCall Does Preview call this function?
+ * @private
+ */
+Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
+  /**
+   * Resolve the URL of the word to issue HTTP Get by information provided by
+   * groupInfo global variable.
+   */
+
+  // FIXME: bad practice: call of groupInfo
+  if (!groupInfo) throw 'groupInfo not ready';
+
+  /**
+   * example:
+   * groupInfo['version'] = {
+   *   'a' : 0,
+   *   'b' : 0,
+   *   'c' : 1,
+   *   ...
+   * }
+   */
+  var version = -1;
+  for (var prefix in groupInfo['version']) {
+    if (prefix == word[0]) {
+      version = groupInfo['version'][prefix];
+      break;
+    }
+  }
+  if (version == -1) {
+    this.result_.innerHTML = getStringNoSuchWord();
+    throw 'no version (should not happen here)';
+  }
+
+  /**
+   * example:
+   * groupInfo['dir'] = {
+   *   'a' : { ... },
+   *   'b' : [],
+   *   'c' : [],
+   *   ...
+   * }
+   */
+  var path = this.getStaticPath(word, groupInfo['dir'], 'json/', 1);
+  if (path == null) {
+    this.result_.innerHTML = getStringNoSuchWord();
+    throw 'no path (should not happen here)';
+  }
+  var encodedPath = path + encodeURIComponent(word) + '.json';
+  encodedPath = encodedPath.replace(/%/g, 'Z');
+
+  if (window.location.host == 'localhost:8080' ||
+      window.location.host == 'pali.googlecode.com' ||
+      window.location.host == 'siongui.webfactional.com') {
+    var url = 'http://siongui.webfactional.com/' +
+              encodedPath + '?v=json' + version;
+  } else if (window.location.host == 'siongui.pythonanywhere.com') {
+    var url = 'http://siongui.pythonanywhere.com/' +
+              encodedPath + '?v=json' + version;
+  } else {
+    var url = 'http://json' + version + '.palidictionary.appspot.com/'
+              + encodedPath;
+  }
+
+  var xmlhttp;
+
+  if (window.XMLHttpRequest) {
+    xmlhttp=new XMLHttpRequest();
+  } else {
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200 || xmlhttp.status == 304) {
+        //this.result_.innerHTML = xmlhttp.status;
+        //this.result_.innerHTML = xmlhttp.statusText;
+        //this.result_.innerHTML = xmlhttp.responseText;
+        this[callbackName](eval('(' + xmlhttp.responseText + ')'));
+      } else {
+        if (!isPvCall)
+          this.result_.innerHTML = getStringNoSuchWord();
+      }
+    }
+  }.bind(this);
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+};
+
+
+/**
+ * Recursive function to resolve the path of the URL of the word.
+ * @param {string} word The word to resolve the path of the URL
+ * @param {object|array} dirInfo
+ * @param {string} prefix
+ * @param {number} digit
+ * @return
+ * @private
+ */
+Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
+  if (dirInfo.length == 0) {
+    // dirInfo is an empty array
+    return prefix;
+  } else if (typeof dirInfo == 'object') {
+    // dirInfo is an object containing prefixes of words.
+    for (var key in dirInfo) {
+      // if word startswith key
+      if (word.indexOf(key) == 0 && key.length == digit) {
+        var suffix = encodeURIComponent(key) + '/';
+
+        if (word.length == digit) {
+          if (dirInfo[key].length == 0) return (prefix + suffix);
+          return (prefix + suffix + suffix);
+        }
+        // recursively call self to resolve path
+        return this.getStaticPath(word, dirInfo[key],
+                                  prefix + suffix, digit + 1);
+      }
+    }
+    return null;
+  } else {
+    throw 'only {...} or [] is allowed!';
+  }
+};
+
+
+/**
  * Check whether preview should be shown periodically
  * @private
  */
@@ -265,7 +395,7 @@ Lookup.prototype.previewCheck = function() {
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callbackPv');
   } else {
-    // get lookup data of a word from the server by HTTP Get (Default)
+    this.httpget(word, 'callbackPv', true);
   }
 
   // check again in 1000 ms
@@ -338,87 +468,7 @@ Lookup.prototype.lookup = function() {
     return;
   }
 
-  // get lookup data of a word from the server by HTTP Get (Default)
-
-  /**
-   * Resolve the URL of the word to issue HTTP Get by information provided by
-   * groupInfo global variable.
-   */
-
-  // FIXME: bad practice: call of groupInfo
-  if (!groupInfo) return;
-
-  /**
-   * example:
-   * groupInfo['version'] = {
-   *   'a' : 0,
-   *   'b' : 0,
-   *   'c' : 1,
-   *   ...
-   * }
-   */
-  var version = -1;
-  for (var prefix in groupInfo['version']) {
-    if (prefix == word[0]) {
-      version = groupInfo['version'][prefix];
-      break;
-    }
-  }
-  if (version == -1) throw 'no version (should not happen here)';
-
-  /**
-   * example:
-   * groupInfo['dir'] = {
-   *   'a' : { ... },
-   *   'b' : [],
-   *   'c' : [],
-   *   ...
-   * }
-   */
-  var path = this.getStaticPath(word, groupInfo['dir'], 'json/', 1);
-  if (path == null) {
-    this.result_.innerHTML = getStringNoSuchWord();
-    return;
-  }
-  var encodedPath = path + encodeURIComponent(word) + '.json';
-  encodedPath = encodedPath.replace(/%/g, 'Z');
-
-  if (window.location.host == 'localhost:8080' ||
-      window.location.host == 'pali.googlecode.com' ||
-      window.location.host == 'siongui.webfactional.com') {
-    var url = 'http://siongui.webfactional.com/' +
-              encodedPath + '?v=json' + version;
-  } else if (window.location.host == 'siongui.pythonanywhere.com') {
-    var url = 'http://siongui.pythonanywhere.com/' +
-              encodedPath + '?v=json' + version;
-  } else {
-    var url = 'http://json' + version + '.palidictionary.appspot.com/'
-              + encodedPath;
-  }
-
-  var xmlhttp;
-
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  } else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200 || xmlhttp.status == 304) {
-        //this.result_.innerHTML = xmlhttp.status;
-        //this.result_.innerHTML = xmlhttp.statusText;
-        //this.result_.innerHTML = xmlhttp.responseText;
-        this.callback(eval('(' + xmlhttp.responseText + ')'));
-      } else {
-        this.result_.innerHTML = getStringNoSuchWord();
-      }
-    }
-  }.bind(this);
-
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
+  this.httpget(word, 'callback', true);
 };
 
 
@@ -437,40 +487,4 @@ Lookup.prototype.callback = function(jsonData) {
   this.result_.innerHTML = "";
   // Show lookup data
   this.result_.appendChild(Data2dom.createLookupTable(jsonData));
-};
-
-
-/**
- * Recursive function to resolve the path of the URL of the word.
- * @param {string} word The word to resolve the path of the URL
- * @param {object|array} dirInfo
- * @param {string} prefix
- * @param {number} digit
- * @return
- * @private
- */
-Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
-  if (dirInfo.length == 0) {
-    return prefix;
-  } else if (typeof dirInfo == 'object') {
-    for (var key in dirInfo) {
-      // if word startswith key
-      if (word.indexOf(key) == 0 && key.length == digit) {
-        if (word.length == digit) {
-          if (dirInfo[key].length == 0) {
-            return (prefix + encodeURIComponent(key) + '/');
-          }
-          return (prefix + encodeURIComponent(key) + '/' +
-                           encodeURIComponent(key) + '/');
-        }
-
-        return this.getStaticPath(word, dirInfo[key],
-                                  prefix + encodeURIComponent(key) + '/',
-                                  digit + 1);
-      }
-    }
-    return null;
-  } else {
-    throw 'only object or empty array is allowed!';
-  }
 };
