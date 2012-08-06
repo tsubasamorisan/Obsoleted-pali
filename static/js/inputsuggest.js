@@ -481,6 +481,10 @@ pali.InputSuggest.prototype.handleKeyEvent = function(e) {
          (this.input_.value != "")) {
       this.prefixMatch();
     }
+    if (code == pali.InputSuggest.KeyCode.ESC) {
+      // clear user input if no suggestion menu and ESC key pressed
+      this.input_.value = '';
+    }
 
     return;
   }
