@@ -13,6 +13,16 @@ handlers:
   static_files: static/robot.txt
   upload: static/robot\.txt
 
+- url: /js/jsonPrefixWords\.js
+  static_files: static/jsonPrefixWords.js
+  upload: static/jsonPrefixWords\.js
+
+- url: /js
+  static_dir: static/js
+
+- url: /css
+  static_dir: static/css
+
 - url: /static
   static_dir: static
 
