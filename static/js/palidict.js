@@ -198,6 +198,7 @@ function onSiteClick() {
   if (window.location.host == 'localhost:8080' ||
       window.location.host == 'pali.googlecode.com') {
     queryURL['track'] = 'no';
+    queryURL['redirect'] = 'no';
   }
 
   var count = 0;

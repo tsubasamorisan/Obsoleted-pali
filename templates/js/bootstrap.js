@@ -3,7 +3,7 @@ function LoadJS(url) {
   var ext = document.createElement('script');
   ext.setAttribute("type","text/javascript");
   ext.setAttribute("src", url);
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
+  document.getElementsByTagName("head")[0].appendChild(ext);
 }
 
 function LoadCSS(url) {
@@ -11,14 +11,14 @@ function LoadCSS(url) {
   ext.setAttribute("type", "text/css");
   ext.setAttribute("rel", "stylesheet");
   ext.setAttribute("href", url);
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
+  document.getElementsByTagName("head")[0].appendChild(ext);
 }
 
 function LoadFavicon(url) {
   var ext = document.createElement('link');
   ext.setAttribute("rel", "shortcut icon");
   ext.setAttribute("href", url);
-  if (typeof ext != "undefined") {document.getElementsByTagName("head")[0].appendChild(ext);}
+  document.getElementsByTagName("head")[0].appendChild(ext);
 }
 
 /*
@@ -46,6 +46,18 @@ window['queryURL'] = function() {
   }
   return queryPairs;
 } ();
+
+if (window.location.host == 'siongui.pythonanywhere.com' || window.location.host == 'siongui.webfactional.com') {
+  if (queryURL['redirect'] != 'no') {
+    var cb = function() {
+      window.location = 'http://palidictionary.appspot.com' + window.location.pathname + window.location.search;
+    };
+    var qry = '?callback=' + encodeURIComponent('('+cb.toString()+')');
+    var ext = document.createElement('script');
+    ext.setAttribute('src', 'http://palidictionary.appspot.com/lookup' + qry);
+    document.getElementsByTagName("head")[0].appendChild(ext);
+  }
+}
 
 /* Load Google Web Fonts */
 LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
