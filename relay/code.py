@@ -9,10 +9,12 @@ from urlparse import parse_qs
 urls = (
   '/', 'index',
   '/browse.*', 'index',
-  '/statics/(.*)', 'static',
+  '/js/.*', 'index',
+  '/css/.*', 'index',
   '/json/.*', 'json',
+  '/favicon.icon', 'index',
   '/robot.txt', 'robot',
-  '/lookup', 'lookup'
+  '/lookup', 'index'
 )
 
 http_header_string = {
@@ -29,27 +31,8 @@ http_header_string = {
 
 class index:
   def GET(self):
-    request = urllib2.Request('http://palidictionary.appspot.com/%s%s' \
+    request = urllib2.Request('http://palidictionary.appspot.com%s%s' \
       % (urllib2.quote(web.ctx.path.encode('utf-8')), web.ctx.query))
-    for headerItem in web.ctx.env:
-      try:
-        if http_header_string[headerItem] != None:
-          if http_header_string[headerItem] == 'User-Agent':
-            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
-          else:
-            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
-      except KeyError:
-        pass
-    response = urllib2.urlopen(request)
-    #web.debug(response.info()["Content-Type"])
-    for headerItem in response.info().items():
-      web.header(headerItem[0], headerItem[1])
-    return response.read()
-
-
-class lookup:
-  def GET(self):
-    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath)
     for headerItem in web.ctx.env:
       try:
         if http_header_string[headerItem] != None:
@@ -86,25 +69,6 @@ class lookup:
     return response.read()
 
 
-class static:
-  def GET(self, path):
-    request = urllib2.Request('http://palidictionary.appspot.com/%s' % web.ctx.fullpath.replace("/statics", "/static", 1))
-    for headerItem in web.ctx.env:
-      try:
-        if http_header_string[headerItem] != None:
-          if http_header_string[headerItem] == 'User-Agent':
-            request.add_header(http_header_string[headerItem], "".join([web.ctx.env[headerItem], " from: %s" % web.ctx.host]))
-          else:
-            request.add_header(http_header_string[headerItem], web.ctx.env[headerItem])
-      except KeyError:
-        pass
-    response = urllib2.urlopen(request)
-    #web.debug(response.info()["Content-Type"])
-    for headerItem in response.info().items():
-      web.header(headerItem[0], headerItem[1])
-    return response.read()
-
-
 class json:
   def GET(self):
     v = parse_qs(web.ctx.query[1:])['v'][0]
@@ -123,7 +87,7 @@ class json:
     #web.debug(response.info()["Content-Type"])
     for headerItem in response.info().items():
       web.header(headerItem[0], headerItem[1])
-    web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
+    web.header('Access-Control-Allow-Origin', '*')
     return response.read()
 
 

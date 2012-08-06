@@ -64,45 +64,21 @@ LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subs
 /* Load JS, CSS and Favicon */
 if (queryURL['ugcfh'] == "yes") {
   /* use google code to serve files */
-  prefix = 'http://pali.googlecode.com/git/';
-  LoadCSS(    prefix + "static/css/palidict.css");
-  LoadFavicon(prefix + "static/favicon.ico");
-  LoadJS(     prefix + "static/jsonPrefixWords.js");
-  LoadJS(     prefix + "static/js/jsdeploader.js");
-} else if (window.location.host == 'localhost:8080') {
-  /*
-  * NOT use google code to serve files
-  * host is "localhost:8080"
-  */
-  LoadCSS(    "/static/css/palidict.css");
+  var prefix = 'http://pali.googlecode.com/git/static/';
+  LoadCSS(    prefix + "css/palidict.css");
+  LoadFavicon(prefix + "favicon.ico");
+  LoadJS(     prefix + "jsonPrefixWords.js");
+  LoadJS(     prefix + "js/jsdeploader.js");
+} else {
+  LoadCSS(    "/css/palidict.css");
   LoadFavicon("/favicon.ico");
-  LoadJS(     "/static/jsonPrefixWords.js");
-  if (queryURL['compiledjs'] == 'yes') {
-    LoadJS(   "/static/js/pali-prd.js");
+  LoadJS(     "/js/jsonPrefixWords.js");
+  if (queryURL['compiledjs'] == 'yes' || window.location.host != 'localhost:8080') {
+    LoadJS(   "/js/pali-prd.js");
   }
   else {
-    LoadJS(   "/static/js/jsdeploader.js");
+    LoadJS(   "/js/jsdeploader.js");
   }
-} else if (window.location.host == 'palidictionary.appspot.com') {
-  /*
-  * NOT use google code to serve files
-  * host is NOT "localhost:8080"
-  * host is "palidictionary.appspot.com"
-  */
-  LoadCSS(    "/static/css/palidict.css");
-  LoadFavicon("/favicon.ico");
-  LoadJS(     "/static/jsonPrefixWords.js");
-  LoadJS(     "/static/js/pali-prd.js");
-} else {
-  /*
-  * NOT use google code to serve files
-  * host is NOT "localhost:8080"
-  * host is NOT "palidictionary.appspot.com"
-  */
-  LoadCSS(    "/statics/css/palidict.css");
-  LoadFavicon("/statics/favicon.ico");
-  LoadJS(     "/statics/jsonPrefixWords.js");
-  LoadJS(     "/statics/js/pali-prd.js");
 }
 
 if (queryURL['track'] != "no") {

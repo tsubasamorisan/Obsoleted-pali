@@ -255,12 +255,9 @@ var startLoader = (function() {
    * The locations of JavaScript files, usually are URLs
    */
   var jsLocations = (function() {
-    var host = 'http://pali.googlecode.com/git/';
-    var path = '/static/js/';
-    var prefix = path;
-    if (window.location.host == 'pali.googlecode.com') {
-      prefix = host + path;
-    }
+    var prefix = '/js/';
+    if (window.location.host == 'pali.googlecode.com')
+      prefix = 'http://pali.googlecode.com/git/static/js';
 
     var locationObj = {};
     for (var i=0; i < jsNames.length; i++) {
