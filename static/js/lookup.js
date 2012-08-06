@@ -286,13 +286,7 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
               + encodedPath;
   }
 
-  var xmlhttp;
-
-  if (window.XMLHttpRequest) {
-    xmlhttp=new XMLHttpRequest();
-  } else {
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
+  var xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4) {

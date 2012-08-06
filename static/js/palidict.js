@@ -245,6 +245,11 @@ function getLookupUrl() {
 function getLookupMethod() {
   if (queryURL['method'] == "jsonp") return 'jsonp';
   if (queryURL['method'] == "post") return 'post';
+  if (isMSIE()) return 'jsonp';
   if (queryURL['method'] == "get") return 'get';
   return 'get';
+}
+
+function isMSIE() {
+  return navigator.userAgent.indexOf('MSIE') != -1;
 }
