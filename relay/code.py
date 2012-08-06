@@ -31,6 +31,8 @@ http_header_string = {
 
 class index:
   def GET(self):
+    if 'Googlebot' in web.ctx.env['HTTP_USER_AGENT']:
+      return
     request = urllib2.Request('http://palidictionary.appspot.com%s%s' \
       % (urllib2.quote(web.ctx.path.encode('utf-8')), web.ctx.query))
     for headerItem in web.ctx.env:
