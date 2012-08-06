@@ -257,7 +257,7 @@ var startLoader = (function() {
   var jsLocations = (function() {
     var prefix = '/js/';
     if (window.location.host == 'pali.googlecode.com')
-      prefix = 'http://pali.googlecode.com/git/static/js';
+      prefix = 'http://pali.googlecode.com/git/static/js/';
 
     var locationObj = {};
     for (var i=0; i < jsNames.length; i++) {
