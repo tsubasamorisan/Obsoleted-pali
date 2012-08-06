@@ -12,7 +12,7 @@ urls = (
   '/js/.*', 'index',
   '/css/.*', 'index',
   '/json/.*', 'json',
-  '/favicon.icon', 'index',
+  '/favicon.ico', 'index',
   '/robots.txt', 'robot',
   '/lookup', 'index'
 )
