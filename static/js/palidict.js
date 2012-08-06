@@ -139,6 +139,7 @@ function initBrowseLinks() {
     prefixes[i].onclick = onBrowsePrefixClick;
   }
 
+  if (isMSIE()) return;
   var prefixWordsList = document.getElementById('prefixWordsList');
   if (!prefixWordsList) return;
   var prefixWords = prefixWordsList.getElementsByTagName('a');
@@ -157,9 +158,12 @@ function onBrowsePrefixClick() {
     throw "Impossible Case in onBrowsePrefixClick";
 
   var container = Data2dom.createWordsList(dicPrefixWordLists[this.innerHTML]);
-  var aElems = container.getElementsByTagName('a');
-  for (var i=0; i < aElems.length; i++) {
-    aElems[i].onclick = onBrowseWordClick;
+  if (!isMSIE()) {
+    var aElems = container.getElementsByTagName('a');
+    for (var i=0; i < aElems.length; i++) {
+      aElems[i].href = 'javascript:void(0);';
+      aElems[i].onclick = onBrowseWordClick;
+    }
   }
 
   document.getElementById('result').innerHTML = '';
@@ -173,7 +177,8 @@ function onBrowseWordClick() {
   document.getElementById('result').innerHTML = getStringLookingUp();
   // get lookup data of a word from the server by JSONP
   var qry = '?word=' + encodeURIComponent(this.innerHTML) +
-            '&callback=onBrowseWordClickCallback';
+            '&callback=(' + encodeURIComponent(
+            onBrowseWordClickCallback.toString()) + ')';
   var ext = document.createElement('script');
   ext.setAttribute('src', getLookupUrl() + qry);
   document.getElementsByTagName("head")[0].appendChild(ext);

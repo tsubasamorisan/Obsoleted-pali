@@ -223,7 +223,7 @@ Data2dom.createWordsList = function(wordsArray) {
     var tdElem = document.createElement('td');
 
     var aElem = document.createElement('a');
-    aElem.href = 'javascript:void(0);';
+    aElem.href = '/browse/' + word[0] + '/' + word;
     aElem.style.margin = '.5em';
     aElem.style.textDecoration = 'none';
     aElem.appendChild(document.createTextNode(word));
