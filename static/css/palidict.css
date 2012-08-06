@@ -151,3 +151,13 @@ a.menuItem:hover {
   color: blue;
   cursor: pointer;
 }
+
+span.historyArrow {
+  color: blue;
+  cursor: pointer;
+}
+
+span.historyArrow:hover {
+  font-size: 120%;
+  background-color: #F0F8FF;
+}
