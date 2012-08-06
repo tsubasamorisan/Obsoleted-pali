@@ -173,8 +173,7 @@ function onBrowseWordClick() {
   document.getElementById('result').innerHTML = getStringLookingUp();
   // get lookup data of a word from the server by JSONP
   var qry = '?word=' + encodeURIComponent(this.innerHTML) +
-            '&callback=(' + encodeURIComponent(
-              onBrowseWordClickCallback.toString()) + ')';
+            '&callback=onBrowseWordClickCallback';
   var ext = document.createElement('script');
   ext.setAttribute('src', getLookupUrl() + qry);
   document.getElementsByTagName("head")[0].appendChild(ext);
