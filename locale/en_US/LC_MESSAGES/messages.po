@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-27 03:42+0800\n"
+"POT-Creation-Date: 2012-08-07 23:46+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -98,7 +98,15 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: templates/index.html:35
+#: templates/index.html:34
+msgid "'Previous Word History'"
+msgstr ""
+
+#: templates/index.html:34
+msgid "'Next Word History'"
+msgstr ""
+
+#: templates/index.html:36
 msgid "Show Pāli Keypad"
 msgstr ""
 
@@ -115,22 +123,30 @@ msgid "Browse"
 msgstr ""
 
 #: templates/mainMenu.html:5
-msgid "About"
+msgid "Setting"
 msgstr ""
 
 #: templates/mainMenu.html:6
+msgid "About"
+msgstr ""
+
+#: templates/mainMenu.html:7
 msgid "Link"
 msgstr ""
 
-#: templates/mainMenu.html:27
+#: templates/mainMenu.html:20
+msgid "Input Word Explanation Preview"
+msgstr ""
+
+#: templates/mainMenu.html:32
 msgid "Main Site"
 msgstr ""
 
-#: templates/mainMenu.html:28
+#: templates/mainMenu.html:33
 msgid "Backup Site #1"
 msgstr ""
 
-#: templates/mainMenu.html:29
+#: templates/mainMenu.html:34
 msgid "Backup Site #2"
 msgstr ""
 

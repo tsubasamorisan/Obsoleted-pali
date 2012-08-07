@@ -12,8 +12,8 @@
   function LoadJS(b){var a=document.createElement("script");a.setAttribute("type","text/javascript");a.setAttribute("src",b);document.getElementsByTagName("head")[0].appendChild(a)}function LoadCSS(b){var a=document.createElement("link");a.setAttribute("type","text/css");a.setAttribute("rel","stylesheet");a.setAttribute("href",b);document.getElementsByTagName("head")[0].appendChild(a)}
 function LoadFavicon(b){var a=document.createElement("link");a.setAttribute("rel","shortcut icon");a.setAttribute("href",b);document.getElementsByTagName("head")[0].appendChild(a)}window.queryURL=function(){var b={};if(!window.location.search)return b;for(var a=window.location.search.substring(1).split("&"),d=0;d<a.length;d++){var c=decodeURIComponent(a[d]).split("=");2!=c.length?console.log("strange query string: "+a[d]):"undefined"!=typeof c[0]&&null!=typeof c[0]&&(b[c[0]]=c[1])}return b}();
 if(("siongui.pythonanywhere.com"==window.location.host||"siongui.webfactional.com"==window.location.host)&&"no"!=queryURL.redirect){var cb=function(){window.location="http://palidictionary.appspot.com"+window.location.pathname+window.location.search},qry="?callback="+encodeURIComponent("("+cb.toString()+")"),ext=document.createElement("script");ext.setAttribute("src","http://palidictionary.appspot.com/lookup"+qry);document.getElementsByTagName("head")[0].appendChild(ext)}LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
-"yes"==queryURL.ugcfh?(prefix="http://pali.googlecode.com/git/",LoadCSS(prefix+"static/css/palidict.css"),LoadFavicon(prefix+"static/favicon.ico"),LoadJS(prefix+"static/jsonPrefixWords.js"),LoadJS(prefix+"static/js/jsdeploader.js")):(LoadCSS("/css/palidict.css"),LoadFavicon("/favicon.ico"),LoadJS("/js/jsonPrefixWords.js"),"yes"==queryURL.compiledjs||"localhost:8080"!=window.location.host?LoadJS("/js/pali-prd.js"):LoadJS("/js/jsdeploader.js"));
-if("no"!=queryURL.track&&"localhost:8080"!=window.location.host){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-32179549-1"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})()};
+if("yes"==queryURL.ugcfh){var prefix="http://pali.googlecode.com/git/static/";LoadCSS(prefix+"css/palidict.css");LoadFavicon(prefix+"favicon.ico");LoadJS(prefix+"jsonPrefixWords.js");LoadJS(prefix+"js/jsdeploader.js")}else LoadCSS("/css/palidict.css"),LoadFavicon("/favicon.ico"),LoadJS("/js/jsonPrefixWords.js"),"yes"==queryURL.compiledjs||"localhost:8080"!=window.location.host?LoadJS("/js/pali-prd.js"):LoadJS("/js/jsdeploader.js");
+if("no"!=queryURL.track&&"localhost:8080"!=window.location.host){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-32179549-1"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})()};
 
 </script>
 <script type="text/javascript">function getStringShowKeypad() { return '显示巴利语键盘'; }
@@ -66,6 +66,7 @@ function getStringBackupSite2() { return '备用站二'; } </script>
  <div class="left-main-menu">
   <a id="linkHome" href="/">首页</a>
   <a id="linkBrowse" href="/browse">浏览</a>
+  <a id="linkSetting" href="/">设定</a>
   <a id="linkAbout" href="/about">关于</a>
   <a id="linkLink" href="/link">连结</a>
  </div>
@@ -77,6 +78,10 @@ function getStringBackupSite2() { return '备用站二'; } </script>
    <span id="site" style="text-decoration:underline"></span><span style="font-size:.75em;">&#9660;</span>
   </span>
  </div>
+</div>
+
+<div id="setting-menu">
+<input type="checkbox" id="word-preview-option" />输入单字解释预览<br />
 </div>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
@@ -111,6 +116,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
          <!-- input pāli word -->
          <form id="inputForm" style="text-align: center;" autocomplete="off">
            <div>
+            <span class="historyArrow" title='上一个单字历史'>&#9668;</span><span class="historyArrow" title='下一个单字历史'>&#9658;</span>
             <input id="PaliInput" type="text" name="word" value="" />
             <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">显示巴利语键盘</span></sub>
             <div id="suggest" class="suggest" style="display: none;"></div><div id="suggestedWordPreview" class='suggest' style="display: none;"></div>
