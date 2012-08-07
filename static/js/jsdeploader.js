@@ -221,6 +221,7 @@ var startLoader = (function() {
    * The file names of JavaScript files to be loaded
    */
   var jsNames = ['base.js',
+                 'customevent.js',
                  'data2dom.js',
                  'dropdown.js',
                  'draggable.js',
@@ -243,6 +244,7 @@ var startLoader = (function() {
    */
   var jsDependencies = {
     'base.js' : null,
+    'customevent.js': null,
     'data2dom.js': null,
     'dropdown.js': 'base.js',
     'draggable.js': 'base.js',

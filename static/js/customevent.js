@@ -60,7 +60,7 @@ PaliCustomEvent.prototype.dispatchCustomEvent = function(type) {
     // fire events of 'type'
     try {
       this.typeHandlers_[type][i];
-    } catch {err}
+    } catch (err) {}
   }
 };
 
