@@ -59,7 +59,7 @@ PaliCustomEvent.prototype.dispatchCustomEvent = function(type) {
   for (var i=0; i < this.typeHandlers_[type].length; i++) {
     // fire events of 'type'
     try {
-      this.typeHandlers_[type][i];
+      setTimeout(this.typeHandlers_[type][i], 0);
     } catch (err) {}
   }
 };
