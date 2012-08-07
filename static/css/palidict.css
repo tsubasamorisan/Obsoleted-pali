@@ -175,3 +175,13 @@ span.historyArrow:hover {
   text-align: center;
   font-family: Gentium Basic, arial, serif;
 }
+
+#brdic {
+  border-top: 1px solid #E0E0E0;
+  border-bottom: 1px solid #E0E0E0;
+  line-height: 1.5em;
+  text-align: left;
+  padding: 1em;
+  margin: 1em;
+  font-family: Gentium Basic, arial, serif;
+}
