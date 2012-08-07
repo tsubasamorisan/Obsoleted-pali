@@ -185,3 +185,13 @@ span.historyArrow:hover {
   margin: 1em;
   font-family: Gentium Basic, arial, serif;
 }
+
+#prefixesDiv {
+  word-spacing: .4em;
+  font-size:1.5em;
+  line-height: 3em;
+}
+
+#prefixesDiv a {
+  text-decoration: none;
+}
