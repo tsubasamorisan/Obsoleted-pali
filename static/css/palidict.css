@@ -57,6 +57,7 @@ div.right-main-menu > .dropdown {
   cursor: move;
   z-index: 21;
   text-align: center;
+  background-color: #F0F8FF;
 }
 #keyboard input {
   cursor: pointer;
@@ -167,4 +168,10 @@ span.historyArrow:hover {
   display: none;
   padding: 1em;
   background-color: #F0F8FF;
+  font-family: Gentium Basic, arial, serif;
+}
+
+#result {
+  text-align: center;
+  font-family: Gentium Basic, arial, serif;
 }
