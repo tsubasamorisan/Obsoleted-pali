@@ -99,7 +99,9 @@ function initService() {
     if (st.style.display == 'block') st.style.display = 'none';
     else st.style.display = 'block';
   };
-  document.getElementById('linkSetting').onchange = function() {
+  document.getElementById('word-preview-option').onchange = function() {
+    if (this.checked) myLookup.enableWordPreview();
+    else myLookup.disableWordPreview();
   };
 
   document.getElementById('linkAbout').href = "javascript:void(0);";

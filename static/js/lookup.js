@@ -119,8 +119,33 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    */
   this.cache_ = {};
 
+  /**
+   * flag to enable word preview. disabled by default
+   * @type {boolean}
+   * @private
+   */
+  this.isWordPreviewEnabled_ = false;
+};
+
+
+/**
+ * enable word preview
+ * @private
+ */
+Lookup.prototype.enableWordPreview = function() {
+  this.isWordPreviewEnabled_ = true;
+
   // start to periodically check whether preview should be shown
   this.previewCheck();
+};
+
+
+/**
+ * disable word preview
+ * @private
+ */
+Lookup.prototype.disableWordPreview = function() {
+  this.isWordPreviewEnabled_ = false;
 };
 
 
@@ -348,6 +373,11 @@ Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
  * @private
  */
 Lookup.prototype.previewCheck = function() {
+  if (!this.isWordPreviewEnabled_) {
+    this.previewDiv_.style.display = 'none';
+    return;
+  }
+
   // check if suggestion menu exists
   if (this.suggestDiv_.style.display == 'none') {
     this.previewDiv_.style.display = 'none';
