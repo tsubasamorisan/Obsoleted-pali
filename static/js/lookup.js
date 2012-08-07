@@ -447,6 +447,7 @@ Lookup.prototype.lookup = function() {
    */
   if (this.cache_.hasOwnProperty(word)) {
     this.callback(this.cache_[word])
+    this.textInput_.blur();
     return;
   }
 
@@ -457,6 +458,8 @@ Lookup.prototype.lookup = function() {
   } else {
     this.jsonp(word, 'callback');
   }
+
+  this.textInput_.blur();
 };
 
 
