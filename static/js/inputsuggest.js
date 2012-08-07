@@ -421,10 +421,10 @@ pali.InputSuggest.prototype.suggestionMenu = function(userInputStr) {
     // add mouse event listener for DOM element of suggested word
     pali.addEventListener(word, 'click',
                           this.onItemClick.bind(this));
-    pali.addEventListener(word, 'mouseover',
-                          this.onItemMouseOver.bind(this));
-    pali.addEventListener(word, 'mouseout',
-                          this.onItemMouseOut.bind(this));
+    pali.addMouseEnterEventListener(word,
+                          this.onItemMouseEnter.bind(this, word));
+    pali.addMouseLeaveEventListener(word,
+                          this.onItemMouseLeave.bind(this, word));
 
     // append the DOM element of the suggested word to suggestion menu
     this.suggestDiv_.appendChild(word);
@@ -676,40 +676,20 @@ pali.InputSuggest.prototype.onItemClick = function(e) {
 
 
 /**
- * Handle the mouse over event of the suggested word in the suggestion menu.
- * @param {DOM event} event The DOM event object, in W3C compliant browser,
- *                      this is passed by browser implicitly. For IE, we have
- *                      to use window.event manually. Please see the code. 
- * @private
- */
-pali.InputSuggest.prototype.onItemMouseOver = function(e) {
-  var evt = e || window.event;
-  var targetElement = evt.target || evt.srcElement;
-  currentWord = this.getWordElement(targetElement);
-
-  // check if mouse moves inside the word element, if yes, return.
-  var relTarg = evt.relatedTarget || evt.fromElement;
-  if (pali.checkParent(relTarg, currentWord)) return;
-
-  this.onItemMouseEnter(currentWord);
-};
-
-
-/**
  * Event called when mouse enters the word element.
  * @param {DOM event} word The word element which mouse enters.
  * @private
  */
 pali.InputSuggest.prototype.onItemMouseEnter = function(word) {
   var currentWordPosition = this.getWordElementIndexNumber(word);
-  // If user does not choose suggested word before the mouse over event
+  // If user does not choose suggested word before the mouse enter event
   if (this.suggestedWordPosition_ == null) {
     this.suggestedWordPosition_ = currentWordPosition;
     this.setItemStyle(word);
     this.input_.value = word.title;
   } else {
     /**
-     * If the suggested word user chooses before mouse over event is not
+     * If the suggested word user chooses before mouse enter event is not
      * the same as the suggested word in the mouse over event.
      */
     if (this.suggestedWordPosition_ != currentWordPosition) {
@@ -717,31 +697,11 @@ pali.InputSuggest.prototype.onItemMouseEnter = function(word) {
       this.removeItemStyle(previousWord);
       this.suggestedWordPosition_ = currentWordPosition;
       this.setItemStyle(word);
-      this.input_.value = currentWord.title;
+      this.input_.value = word.title;
     } else {
       this.setItemStyle(word);
     }
   }
-};
-
-
-/**
- * Handle the mouse out event of the suggested word in the suggestion menu.
- * @param {DOM event} event The DOM event object, in W3C compliant browser,
- *                      this is passed by browser implicitly. For IE, we have
- *                      to use window.event manually. Please see the code. 
- * @private
- */
-pali.InputSuggest.prototype.onItemMouseOut = function(e) {
-  var evt = e || window.event;
-  var targetElement = evt.target || evt.srcElement;
-  currentWord = this.getWordElement(targetElement);
-
-  // check if mouse moves inside the word element, if yes, return.
-  var relTarg = evt.relatedTarget || evt.toElement;
-  if (pali.checkParent(relTarg, currentWord)) return;
-
-  this.onItemMouseLeave(currentWord);
 };
 
 

@@ -203,4 +203,52 @@ pali.checkParent = function(target, element) {
 };
 
 
+/**
+ * Cross-browser add mouse enter event listener. The mouse enter event only 
+ * fired if mouse enters the element, not fired if mouse enters child element(s)
+ * of the registered element.
+ *
+ * @param {DOM element} element The element to add mouse enter event listener.
+ * @param {function} fn The callback function when the mouse enter event occurs.
+ */
+pali.addMouseEnterEventListener = function(element, fn) {
+  var wrapper = function(e) {
+    var evt = e || window.event;
+    var targetElement = evt.target || evt.srcElement;
+
+    // check if mouse moves inside the element, if yes, return.
+    var relTarg = evt.relatedTarget || evt.fromElement;
+    if (pali.checkParent(relTarg, element)) return;
+
+    setTimeout(fn, 0);
+  };
+
+  pali.addEventListener(element, 'mouseover', wrapper);
+};
+
+
+/**
+ * Cross-browser add mouse leave event listener. The mouse leave event only 
+ * fired if mouse leaves the element, not fired if mouse leaves child element(s)
+ * of the registered element.
+ *
+ * @param {DOM element} element The element to add mouse leave event listener.
+ * @param {function} fn The callback function when the mouse leave event occurs.
+ */
+pali.addMouseLeaveEventListener = function(element, fn) {
+  var wrapper = function(e) {
+    var evt = e || window.event;
+    var targetElement = evt.target || evt.srcElement;
+
+    // check if mouse moves inside the element, if yes, return.
+    var relTarg = evt.relatedTarget || evt.toElement;
+    if (pali.checkParent(relTarg, element)) return;
+
+    setTimeout(fn, 0);
+  };
+
+  pali.addEventListener(element, 'mouseout', wrapper);
+};
+
+
 /*                              width: 80                                     */
