@@ -82,7 +82,7 @@ function onDiv1MouseOut(evt) {
 
   // check if mouse moves inside div1, if yes, return.
   var div1 = _getParentElement(target, 'div1');
-  var relTarg = evt.relatedTarget || evt.fromElement;
+  var relTarg = evt.relatedTarget || evt.toElement;
   if (_getParentElement(relTarg, 'div1') == div1) return;
 
   // mouse moves out from inside div1. This is a true 'mouse leave' event
