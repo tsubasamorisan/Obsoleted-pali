@@ -93,6 +93,15 @@ function initService() {
     document.getElementById("result").innerHTML = "";
   };
 
+  document.getElementById('linkSetting').href = "javascript:void(0);";
+  document.getElementById('linkSetting').onclick = function() {
+    var st = document.getElementById("setting-menu");
+    if (st.style.display == 'block') st.style.display = 'none';
+    else st.style.display = 'block';
+  };
+  document.getElementById('linkSetting').onchange = function() {
+  };
+
   document.getElementById('linkAbout').href = "javascript:void(0);";
   document.getElementById('linkAbout').onclick = function() {
     document.getElementById("result").innerHTML =

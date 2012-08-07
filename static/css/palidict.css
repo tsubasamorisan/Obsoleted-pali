@@ -155,9 +155,15 @@ a.menuItem:hover {
 span.historyArrow {
   color: blue;
   cursor: pointer;
+  display: none;
 }
 
 span.historyArrow:hover {
   font-size: 120%;
   background-color: #F0F8FF;
+}
+
+#setting-menu {
+  display: none;
+  padding: 1em;
 }
