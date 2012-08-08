@@ -13,7 +13,6 @@
 function LoadFavicon(b){var a=document.createElement("link");a.setAttribute("rel","shortcut icon");a.setAttribute("href",b);document.getElementsByTagName("head")[0].appendChild(a)}window.queryURL=function(){var b={};if(!window.location.search)return b;for(var a=window.location.search.substring(1).split("&"),d=0;d<a.length;d++){var c=decodeURIComponent(a[d]).split("=");2!=c.length?console.log("strange query string: "+a[d]):"undefined"!=typeof c[0]&&null!=typeof c[0]&&(b[c[0]]=c[1])}return b}();
 if(("siongui.pythonanywhere.com"==window.location.host||"siongui.webfactional.com"==window.location.host)&&"no"!=queryURL.redirect){var cb=function(){window.location="http://palidictionary.appspot.com"+window.location.pathname+window.location.search},qry="?callback="+encodeURIComponent("("+cb.toString()+")"),ext=document.createElement("script");ext.setAttribute("src","http://palidictionary.appspot.com/lookup"+qry);document.getElementsByTagName("head")[0].appendChild(ext)}LoadCSS("http://fonts.googleapis.com/css?family=Gentium+Basic|Special+Elite&subset=latin,latin-ext");
 if("yes"==queryURL.ugcfh){var prefix="http://pali.googlecode.com/git/static/";LoadCSS(prefix+"css/palidict.css");LoadFavicon(prefix+"favicon.ico");LoadJS(prefix+"jsonPrefixWords.js");LoadJS(prefix+"js/jsdeploader.js")}else LoadCSS("/css/palidict.css"),LoadFavicon("/favicon.ico"),LoadJS("/js/jsonPrefixWords.js"),"yes"==queryURL.compiledjs||"localhost:8080"!=window.location.host?LoadJS("/js/pali-prd.js"):LoadJS("/js/jsdeploader.js");
-if("no"!=queryURL.track&&"localhost:8080"!=window.location.host){var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-32179549-1"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})()};
 
 </script>
 <script type="text/javascript">function getStringShowKeypad() { return '顯示巴利語鍵盤'; }
@@ -176,38 +175,38 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 
 </div>
          <br style="line-height: 2em;" />
-         <div id="result" style="text-align: center; font-family: Gentium Basic, arial, serif;"></div>
-         <div id="brdic" style="border-top: 1px solid #E0E0E0; border-bottom: 1px solid #E0E0E0; line-height: 1.5em; text-align: left; padding: 1em; margin: 1em; font-family: Gentium Basic, arial, serif;">
+         <div id="result"></div>
+         <div id="brdic">
 <b>瀏覽字典</b><br />
-<div style="word-spacing: .4em; font-size:1.5em; line-height: 3em;">
-<a style="text-decoration: none;" href="/browse/a">a</a>
-<a style="text-decoration: none;" href="/browse/ā">ā</a>
-<a style="text-decoration: none;" href="/browse/b">b</a>
-<a style="text-decoration: none;" href="/browse/c">c</a>
-<a style="text-decoration: none;" href="/browse/d">d</a>
-<a style="text-decoration: none;" href="/browse/ḍ">ḍ</a>
-<a style="text-decoration: none;" href="/browse/e">e</a>
-<a style="text-decoration: none;" href="/browse/g">g</a>
-<a style="text-decoration: none;" href="/browse/h">h</a>
-<a style="text-decoration: none;" href="/browse/i">i</a>
-<a style="text-decoration: none;" href="/browse/ī">ī</a>
-<a style="text-decoration: none;" href="/browse/j">j</a>
-<a style="text-decoration: none;" href="/browse/k">k</a>
-<a style="text-decoration: none;" href="/browse/l">l</a>
-<a style="text-decoration: none;" href="/browse/ḷ">ḷ</a>
-<a style="text-decoration: none;" href="/browse/m">m</a>
-<a style="text-decoration: none;" href="/browse/n">n</a>
-<a style="text-decoration: none;" href="/browse/ñ">ñ</a>
-<a style="text-decoration: none;" href="/browse/o">o</a>
-<a style="text-decoration: none;" href="/browse/p">p</a>
-<a style="text-decoration: none;" href="/browse/r">r</a>
-<a style="text-decoration: none;" href="/browse/s">s</a>
-<a style="text-decoration: none;" href="/browse/t">t</a>
-<a style="text-decoration: none;" href="/browse/ṭ">ṭ</a>
-<a style="text-decoration: none;" href="/browse/u">u</a>
-<a style="text-decoration: none;" href="/browse/ū">ū</a>
-<a style="text-decoration: none;" href="/browse/v">v</a>
-<a style="text-decoration: none;" href="/browse/y">y</a>
+<div id="prefixesDiv">
+<a href="/browse/a">a</a>
+<a href="/browse/ā">ā</a>
+<a href="/browse/b">b</a>
+<a href="/browse/c">c</a>
+<a href="/browse/d">d</a>
+<a href="/browse/ḍ">ḍ</a>
+<a href="/browse/e">e</a>
+<a href="/browse/g">g</a>
+<a href="/browse/h">h</a>
+<a href="/browse/i">i</a>
+<a href="/browse/ī">ī</a>
+<a href="/browse/j">j</a>
+<a href="/browse/k">k</a>
+<a href="/browse/l">l</a>
+<a href="/browse/ḷ">ḷ</a>
+<a href="/browse/m">m</a>
+<a href="/browse/n">n</a>
+<a href="/browse/ñ">ñ</a>
+<a href="/browse/o">o</a>
+<a href="/browse/p">p</a>
+<a href="/browse/r">r</a>
+<a href="/browse/s">s</a>
+<a href="/browse/t">t</a>
+<a href="/browse/ṭ">ṭ</a>
+<a href="/browse/u">u</a>
+<a href="/browse/ū">ū</a>
+<a href="/browse/v">v</a>
+<a href="/browse/y">y</a>
 </div>
 </div>
        </td>
@@ -227,7 +226,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
    </table>
  </div>
 </div>
-<div id="locale" style="display:none">zh_TW</div>
+<div id="locale" style="display:none">zh_TW&None</div>
 <div id="about" style="display:none"><br /><br />
 <div style="padding-left: 30px; padding-right: 30px;">
 字典來自 <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">巴利語-漢語-英語 字典</a>. 版本是 "Pali Dict Linux Web Ver 1.0". 本站仍在開發中 所以可能會遭遇錯誤. 如果有任何問題或建議, 請 <a href="mailto:siongui@gmail.com">聯絡我</a>.
