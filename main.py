@@ -22,13 +22,7 @@ jinja_environment = jinja2.Environment(
 
 jinja_environment.install_gettext_translations(i18n)
 
-
-memcache.set('en_US', open('production/index-en_US.html', 'r').read())
-memcache.set('zh_TW', open('production/index-zh_TW.html', 'r').read())
-memcache.set('zh_CN', open('production/index-zh_CN.html', 'r').read())
-
 dicPrefixWordLists = json.loads(open('jsonPrefixWords').read())
-dicWordExpTemplate = jinja_environment.get_template('dicWordExp.html')
 
 class MainPage(webapp2.RequestHandler):
   def get(self, prefix=None, word=None):
@@ -46,41 +40,17 @@ class MainPage(webapp2.RequestHandler):
             resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
         else:
           # build word HTML here
-          resultDivInnerHTML = getWordHTML(word, jsonpLookup(word),
-                                 dicWordExpTemplate)
-          #resultDivInnerHTML = getWordHTML2(word, jsonpLookup(word), i18n)
+          resultDivInnerHTML = getWordHTML(word, jsonpLookup(word), i18n)
       else:
         self.error(404)
         self.response.out.write("Page Not Found!")
-        return
-
-    useMemcache = self.request.GET.get('memcache', 'yes')
-    if resultDivInnerHTML != None:
-      useMemcache = 'no'
-    if (useMemcache == 'yes'):
-      # https://developers.google.com/appengine/docs/python/runtime#The_Environment
-      if os.environ['SERVER_SOFTWARE'].startswith("Development"):
-        #self.response.headers.add_header("Access-Control-Allow-Origin", "http://localhost:8080")
-        #self.response.headers.add_header("Access-Control-Allow-Origin", "*")
-        pass
-      else:
-        # if (memcache=yes) and (not Development Server)
-        data = memcache.get(locale)
-        if data is not None:
-          # memcache data does NOT expire
-          self.response.out.write(data)
-        else:
-          # memcache data expires, set memcache again
-          memcache.set(locale, open('production/index-%s.html' % locale, 'r').read())
-          data = memcache.get(locale)
-          self.response.out.write(data)
         return
 
     compiledBootstrapJS = self.request.GET.get('compiledBootstrapJS')
     if compiledBootstrapJS not in ['yes', 'no']:
       compiledBootstrapJS = None
     if (compiledBootstrapJS == None):
-      if (os.environ['SERVER_SOFTWARE'].startswith("Development") is True):
+      if os.environ['SERVER_SOFTWARE'].startswith("Development"):
         compiledBootstrapJS = 'no'
       else:
         compiledBootstrapJS = 'yes'
