@@ -16,7 +16,12 @@ Data2dom.createLookupTable = function(jsonData) {
     return document.createTextNode(getStringNoSuchWord());
   }
 
-  // The word exist. Build DOM elements.
+  // The word exist. Get dictionary explanations sorted according to user
+  // browser accept-language header info
+  var sortedDicWordExps = Data2dom.getSortedDicWordExpsbyLangs(
+                            jsonData['data']);
+
+  // Build DOM elements.
   var resultOuterTable = document.createElement("table");
   resultOuterTable.className = "resultCurvedEdges";
 
@@ -27,11 +32,11 @@ Data2dom.createLookupTable = function(jsonData) {
   titleWord.style.color = 'GoldenRod';
   resultOuterTable.appendChild(titleWord);
 
-  for (var index in jsonData['data']) {
+  for (var index in sortedDicWordExps) {
     var tr = document.createElement("tr");
     var td = document.createElement("td");
     td.appendChild(Data2dom.createDictionaryWordExplanationTable(
-                     jsonData['data'][index]));
+                     sortedDicWordExps[index]));
     td.appendChild(Data2dom.createBackToTop());
 
     tr.appendChild(td);
@@ -260,5 +265,105 @@ Data2dom.getParsedAcceptLangs = function() {
     if (pair.length == 1) result.push( [pair[0], '1'] );
     else result.push( [pair[0], pair[1].split('=')[1] ] );
   }
+  return result;
+};
+
+
+/**
+ * Sort [dic, word, explanation]s according http accept-languages header
+ * @param {Array} The unsorted array of one or more [dic, word, explanation]
+ * @return {Array} The sorted array of one or more [dic, word, explanation]
+ *                 according to http accept-languages header
+ */
+Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
+  // put dictionaries of the same lang into the same array
+  var ja = [];
+  var zh = [];
+  var en = [];
+  var unknown = [];
+  for (var i=0; i < dicWordExps.length; i++) {
+    var dicWordExp = dicWordExps[i];
+    if (dicWordExp[0].indexOf('《パーリ语辞典》') > 0) {
+      // Pali to Japanese dictionary
+      ja.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('パーリ语辞典 增补改订') > 0) {
+      // Pali to Japanese dictionary
+      ja.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('Buddhist Dictionary') > 0) {
+      // Pali to English dictionary
+      en.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('Pali-English') > 0) {
+      // Pali to English dictionary
+      en.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('《巴汉词典》') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('《巴利语字汇》') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('巴利文-汉文') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('汉译パーリ') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('巴利语入门') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('巴利新音译') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else if (dicWordExp[0].indexOf('巴英术语汇编') > 0) {
+      // Pali to Chinese dictionary
+      zh.push(dicWordExp);
+    } else {
+      // Pali to ?(unknown)
+      unknown.push(dicWordExp);
+      console.log('unknown: ' + dicWordExp[0]);
+    }
+  }
+
+  var isLangArrayEmpty = {
+    'en' : false,
+    'ja' : false,
+    'zh' : false,
+    'unknown' : false
+  };
+
+  var result = [];
+  var langq_pairs = Data2dom.getParsedAcceptLangs();
+
+  for (var i=0; i<langq_pairs.length; i++) {
+    if (langq_pairs[i][0].toLowerCase().indexOf('ja') == 0) {
+      if (!isLangArrayEmpty['ja']) {
+        isLangArrayEmpty['ja'] = true;
+        result = result.concat(ja);
+      }
+    }
+    if (langq_pairs[i][0].toLowerCase().indexOf('en') == 0) {
+      if (!isLangArrayEmpty['en']) {
+        isLangArrayEmpty['en'] = true;
+        result = result.concat(en);
+      }
+    }
+    if (langq_pairs[i][0].toLowerCase().indexOf('zh') == 0) {
+      if (!isLangArrayEmpty['zh']) {
+        isLangArrayEmpty['zh'] = true;
+        result = result.concat(zh);
+      }
+    }
+  }
+
+  if (!isLangArrayEmpty['en']) {
+    result = result.concat(en);
+  }
+  if (!isLangArrayEmpty['ja']) {
+    result = result.concat(ja);
+  }
+  if (!isLangArrayEmpty['zh']) {
+    result = result.concat(zh);
+  }
+  result = result.concat(unknown);
+
   return result;
 };
