@@ -58,7 +58,7 @@ function initService() {
   document.getElementById('site').style.wordSpacing = "normal";
 
   // check user's locale, and fill lang innerHTML
-  var locale = document.getElementById('locale').innerHTML.split('&')[0];
+  var locale = document.getElementById('locale').innerHTML.split('~')[0];
   if (locale == 'zh_CN') {document.getElementById('lang').innerHTML = '中文 (简体)';}
   else if (locale == 'zh_TW') {document.getElementById('lang').innerHTML = '中文 (繁體)';}
   else {document.getElementById('lang').innerHTML = 'English';}

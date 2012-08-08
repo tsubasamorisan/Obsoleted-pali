@@ -56,7 +56,7 @@ class MainPage(webapp2.RequestHandler):
         compiledBootstrapJS = 'yes'
 
     template_values = {
-      'locale' : '%s&%s' % (locale, self.request.headers.get('accept_language')),
+      'locale' : '%s~%s' % (locale, self.request.headers.get('accept_language')),
       'compiledBootstrapJS' : compiledBootstrapJS,
       'resultDivInnerHTML' : resultDivInnerHTML
     }

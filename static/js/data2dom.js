@@ -244,3 +244,21 @@ Data2dom.createWordsList = function(wordsArray) {
   container.appendChild(tableElem);
   return container;
 };
+
+
+/**
+ * Get Parsed HTTP accept-languages header of the user browser. The header is
+ * embedded by server in 'locale' DIV of '/' page.
+ * @return {Array} Array of language-quality pairs
+ */
+Data2dom.getParsedAcceptLangs = function() {
+  var hdr = document.getElementById('locale').innerHTML.split('~')[1];
+  var pairs = hdr.split(',');
+  var result = [];
+  for (var i=0; i < pairs.length; i++) {
+    var pair = pairs[i].split(';');
+    if (pair.length == 1) result.push( [pair[0], '1'] );
+    else result.push( [pair[0], pair[1].split('=')[1] ] );
+  }
+  return result;
+};
