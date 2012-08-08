@@ -251,4 +251,13 @@ pali.addMouseLeaveEventListener = function(element, fn) {
 };
 
 
+/**
+ * Check whether user browser is MSIE
+ * @return {boolean} true if user browser is MSIE. false otherwise.
+ */
+pali.isMSIE = function() {
+  return navigator.userAgent.indexOf('MSIE') != -1;
+};
+
+
 /*                              width: 80                                     */
