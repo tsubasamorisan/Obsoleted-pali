@@ -27,7 +27,7 @@ http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-paramete
 http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
 http://papermashup.com/read-url-get-variables-withjavascript/
 */
-window['queryURL'] = function() {
+window['queryURL'] = (function() {
   // This function is anonymous, is executed immediately and the return value is assigned to queryURL
   var queryPairs = {};
   if (!window.location.search) {return queryPairs;}
@@ -45,7 +45,7 @@ window['queryURL'] = function() {
     }
   }
   return queryPairs;
-} ();
+})();
 
 if (window.location.host == 'siongui.pythonanywhere.com' || window.location.host == 'siongui.webfactional.com') {
   if (queryURL['redirect'] != 'no') {
@@ -78,19 +78,5 @@ if (queryURL['ugcfh'] == "yes") {
   }
   else {
     LoadJS(   "/js/jsdeploader.js");
-  }
-}
-
-if (queryURL['track'] != "no") {
-  if (window.location.host != 'localhost:8080') {
-  /* Load Google Analytics Code */
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-32179549-1']);
-_gaq.push(['_trackPageview']);
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
   }
 }
