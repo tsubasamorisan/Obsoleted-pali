@@ -18,6 +18,24 @@
 
 <div id="setting-menu">
 <input type="checkbox" id="word-preview-option" />{{_("Input Word Explanation Preview")}}<br />
+<br />
+<div style="border: 1px dotted aqua; padding: 5px">
+{{_("What languages of dictionaries to show?")}}<br />
+<input type="checkbox" id="p2en" checked="checked" />{{_("Pāli-English")}}<br />
+<input type="checkbox" id="p2ja" checked="checked" />{{_("Pāli-Japanese")}}<br />
+<input type="checkbox" id="p2zh" checked="checked" />{{_("Pāli-Chinese")}}<br />
+</div>
+<br />
+{{_("The order of languages of dictionaries to show?")}}<br />
+<select>
+  <option value="hdr" selected="selected">{{_("according to language settings in browser")}}</option>
+  <option value="en2ja2zh">{{_("English")}} - {{_("Japanese")}} - {{_("Chinese")}}</option>
+  <option value="en2zh2ja">{{_("English")}} - {{_("Chinese")}} - {{_("Japanese")}}</option>
+  <option value="ja2en2zh">{{_("Japanese")}} - {{_("English")}} - {{_("Chinese")}}</option>
+  <option value="ja2zh2en">{{_("Japanese")}} - {{_("Chinese")}} - {{_("English")}}</option>
+  <option value="zh2en2ja">{{_("Chinese")}} - {{_("English")}} - {{_("Japanese")}}</option>
+  <option value="zh2ja2en">{{_("Chinese")}} - {{_("Japanese")}} - {{_("English")}}</option>
+</select>
 </div>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">

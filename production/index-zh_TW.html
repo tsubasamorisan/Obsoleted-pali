@@ -81,6 +81,24 @@ function getStringBackupSite2() { return '備用站二'; } </script>
 
 <div id="setting-menu">
 <input type="checkbox" id="word-preview-option" />輸入單字解釋預覽<br />
+<br />
+<div style="border: 1px dotted aqua; padding: 5px">
+What languages of dictionaries to show?<br />
+<input type="checkbox" id="p2en" checked="checked" />Pāli-English<br />
+<input type="checkbox" id="p2ja" checked="checked" />Pāli-Japanese<br />
+<input type="checkbox" id="p2zh" checked="checked" />Pāli-Chinese<br />
+</div>
+<br />
+The order of languages of dictionaries to show?<br />
+<select>
+  <option value="hdr" selected="selected">according to language settings in browser</option>
+  <option value="en2ja2zh">English - Japanese - Chinese</option>
+  <option value="en2zh2ja">English - Chinese - Japanese</option>
+  <option value="ja2en2zh">Japanese - English - Chinese</option>
+  <option value="ja2zh2en">Japanese - Chinese - English</option>
+  <option value="zh2en2ja">Chinese - English - Japanese</option>
+  <option value="zh2ja2en">Chinese - Japanese - English</option>
+</select>
 </div>
 
 <div class="menuDiv instance0" id="menuDiv-lang-dropdown" style="position: absolute; display: none; width: 95px; ">
@@ -226,7 +244,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
    </table>
  </div>
 </div>
-<div id="locale" style="display:none">zh_TW&None</div>
+<div id="locale" style="display:none">zh_TW~None</div>
 <div id="about" style="display:none"><br /><br />
 <div style="padding-left: 30px; padding-right: 30px;">
 字典來自 <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">巴利語-漢語-英語 字典</a>. 版本是 "Pali Dict Linux Web Ver 1.0". 本站仍在開發中 所以可能會遭遇錯誤. 如果有任何問題或建議, 請 <a href="mailto:siongui@gmail.com">聯絡我</a>.
