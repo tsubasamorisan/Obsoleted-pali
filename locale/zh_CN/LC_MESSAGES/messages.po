@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-07 23:46+0800\n"
+"POT-Creation-Date: 2012-08-09 13:14+0800\n"
 "PO-Revision-Date: 2012-06-09 09:21+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr "原始码"
 msgid "project on Google Code"
 msgstr "Google Code专桉"
 
-#: templates/info.html:26 templates/dicWordExp.html:3
+#: templates/info.html:26
 msgid "Dictionary"
 msgstr "字典"
 
@@ -138,25 +138,59 @@ msgstr "连结"
 msgid "Input Word Explanation Preview"
 msgstr "输入单字解释预览"
 
-#: templates/mainMenu.html:32
+#: templates/mainMenu.html:23
+msgid "What languages of dictionaries to show?"
+msgstr "显示哪种语言的字典?"
+
+#: templates/mainMenu.html:24
+msgid "Pāli-English"
+msgstr "巴利语-英文"
+
+#: templates/mainMenu.html:25
+msgid "Pāli-Japanese"
+msgstr "巴利语-日文"
+
+#: templates/mainMenu.html:26
+msgid "Pāli-Chinese"
+msgstr "巴利语-中文"
+
+#: templates/mainMenu.html:29
+msgid "The order of languages of dictionaries to show?"
+msgstr "显示语言顺序?"
+
+#: templates/mainMenu.html:31
+msgid "according to language settings in browser"
+msgstr "根据浏览器语言设定"
+
+#: templates/mainMenu.html:32 templates/mainMenu.html:33
+#: templates/mainMenu.html:34 templates/mainMenu.html:35
+#: templates/mainMenu.html:36 templates/mainMenu.html:37
+msgid "English"
+msgstr "英文"
+
+#: templates/mainMenu.html:32 templates/mainMenu.html:33
+#: templates/mainMenu.html:34 templates/mainMenu.html:35
+#: templates/mainMenu.html:36 templates/mainMenu.html:37
+msgid "Japanese"
+msgstr "日文"
+
+#: templates/mainMenu.html:32 templates/mainMenu.html:33
+#: templates/mainMenu.html:34 templates/mainMenu.html:35
+#: templates/mainMenu.html:36 templates/mainMenu.html:37
+msgid "Chinese"
+msgstr "中文"
+
+#: templates/mainMenu.html:50
 msgid "Main Site"
 msgstr "主站"
 
-#: templates/mainMenu.html:33
+#: templates/mainMenu.html:51
 msgid "Backup Site #1"
 msgstr "备用站一"
 
-#: templates/mainMenu.html:34
+#: templates/mainMenu.html:52
 msgid "Backup Site #2"
 msgstr "备用站二"
-
-#: templates/dicWordExp.html:7
-msgid "Pāli Word"
-msgstr "巴利语单字"
-
-#: templates/dicWordExp.html:11
-msgid "Explanation"
-msgstr "解释"
 
 #: templates/js/potI18N.js:1
 msgid "'Show Pāli Keypad'"

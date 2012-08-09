@@ -79,11 +79,11 @@ def getWordHTML(word, lookupData, i18n):
     tmpHTML = '<table class="dicTable"><tr><th>%s</th><td>%s</td></tr>' + \
              '<tr><th>%s</th><td>%s</td></tr>' + \
              '<tr><th>%s</th><td>%s</td></tr></table><br />'
-    tmpHTML = tmpHTML % (i18n.gettext(u'Dictionary').encode('utf-8'),
+    tmpHTML = tmpHTML % (i18n.gettext('Dictionary').encode('utf-8'),
                        item[0].encode('utf-8'),
-                       i18n.gettext(u'Pāli Word').encode('utf-8'),
+                       i18n.gettext(u"'Pāli Word'").encode('utf-8')[1:-1],
                        item[1].encode('utf-8'),
-                       i18n.gettext(u'Explanation').encode('utf-8'),
+                       i18n.gettext("'Explanation'").encode('utf-8')[1:-1],
                        item[2].encode('utf-8'))
     tableHTML += tmpHTML.decode('utf-8')
 
