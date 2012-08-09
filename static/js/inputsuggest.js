@@ -750,6 +750,7 @@ pali.InputSuggest.prototype.clearSuggestionMenu = function() {
   this.originalUserPaliInput_ = "";
   this.oldInput_ = "";
   delete this.prefixMatchedPaliWords_;
+  // fire event listeners when suggestion menu is cleared.
   PaliCustomEvent.dispatchCustomEvent(
     PaliCustomEvent.CUSTOM_EVENT_TYPE.ON_SUGGESTION_MENU_CLOSED);
 };

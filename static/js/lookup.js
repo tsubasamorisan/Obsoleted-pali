@@ -127,6 +127,7 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    */
   this.isWordPreviewEnabled_ = false;
 
+  // close preview div when suggestion div closes
   PaliCustomEvent.addCustomEvent(
     PaliCustomEvent.CUSTOM_EVENT_TYPE.ON_SUGGESTION_MENU_CLOSED,
     function(){this.previewDiv_.style.display='none';}.bind(this));
