@@ -154,6 +154,8 @@ function initService() {
   initBrowseLinks();
 
   document.getElementById('PaliInput').focus();
+  if (window.location.host == 'localhost:8080')
+    document.getElementById('toTraditionalCht').checked = true;
 }
 
 /**
