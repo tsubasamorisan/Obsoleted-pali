@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-09 13:14+0800\n"
+"POT-Creation-Date: 2012-08-10 01:22+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -138,57 +138,61 @@ msgstr ""
 msgid "Input Word Explanation Preview"
 msgstr ""
 
-#: templates/mainMenu.html:23
-msgid "What languages of dictionaries to show?"
-msgstr ""
-
-#: templates/mainMenu.html:24
-msgid "Pāli-English"
+#: templates/mainMenu.html:22
+msgid "Translate Pāli-Chinese Dictionaries to Traditional Chinese"
 msgstr ""
 
 #: templates/mainMenu.html:25
-msgid "Pāli-Japanese"
+msgid "What languages of dictionaries to show?"
 msgstr ""
 
 #: templates/mainMenu.html:26
+msgid "Pāli-English"
+msgstr ""
+
+#: templates/mainMenu.html:27
+msgid "Pāli-Japanese"
+msgstr ""
+
+#: templates/mainMenu.html:28
 msgid "Pāli-Chinese"
 msgstr ""
 
-#: templates/mainMenu.html:29
+#: templates/mainMenu.html:31
 msgid "The order of languages of dictionaries to show?"
 msgstr ""
 
-#: templates/mainMenu.html:31
+#: templates/mainMenu.html:33
 msgid "according to language settings in browser"
 msgstr ""
 
-#: templates/mainMenu.html:32 templates/mainMenu.html:33
 #: templates/mainMenu.html:34 templates/mainMenu.html:35
 #: templates/mainMenu.html:36 templates/mainMenu.html:37
+#: templates/mainMenu.html:38 templates/mainMenu.html:39
 msgid "English"
 msgstr ""
 
-#: templates/mainMenu.html:32 templates/mainMenu.html:33
 #: templates/mainMenu.html:34 templates/mainMenu.html:35
 #: templates/mainMenu.html:36 templates/mainMenu.html:37
+#: templates/mainMenu.html:38 templates/mainMenu.html:39
 msgid "Japanese"
 msgstr ""
 
-#: templates/mainMenu.html:32 templates/mainMenu.html:33
 #: templates/mainMenu.html:34 templates/mainMenu.html:35
 #: templates/mainMenu.html:36 templates/mainMenu.html:37
+#: templates/mainMenu.html:38 templates/mainMenu.html:39
 msgid "Chinese"
 msgstr ""
 
-#: templates/mainMenu.html:50
+#: templates/mainMenu.html:52
 msgid "Main Site"
 msgstr ""
 
-#: templates/mainMenu.html:51
+#: templates/mainMenu.html:53
 msgid "Backup Site #1"
 msgstr ""
 
-#: templates/mainMenu.html:52
+#: templates/mainMenu.html:54
 msgid "Backup Site #2"
 msgstr ""
 
@@ -235,10 +239,4 @@ msgstr ""
 #: templates/js/potI18N.js:11
 msgid "'Backup Site #2'"
 msgstr ""
-
-#~ msgid "Pāli Word"
-#~ msgstr ""
-
-#~ msgid "Explanation"
-#~ msgstr ""
 

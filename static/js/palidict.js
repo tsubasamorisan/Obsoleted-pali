@@ -19,6 +19,11 @@ _gaq.push(['_trackPageview']);
   }
 }
 
+// @see http://tongwen.openfoundry.org/web.htm
+LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_core.js");
+LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_table_s2t.js");
+LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_table_ps2t.js");
+
 // check if dom is ready enough to do initService()
 if (window.opera) {
   checkOpera();
@@ -60,8 +65,10 @@ function initService() {
   // check user's locale, and fill lang innerHTML
   var locale = document.getElementById('locale').innerHTML.split('~')[0];
   if (locale == 'zh_CN') {document.getElementById('lang').innerHTML = '中文 (简体)';}
-  else if (locale == 'zh_TW') {document.getElementById('lang').innerHTML = '中文 (繁體)';}
-  else {document.getElementById('lang').innerHTML = 'English';}
+  else if (locale == 'zh_TW') {
+    document.getElementById('lang').innerHTML = '中文 (繁體)';
+    document.getElementById('toTraditionalCht').checked = true;
+  } else {document.getElementById('lang').innerHTML = 'English';}
   document.getElementById('lang').style.wordSpacing = "normal";
 
   /**
