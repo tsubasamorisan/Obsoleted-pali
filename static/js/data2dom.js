@@ -330,7 +330,61 @@ Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
     'unknown' : false
   };
 
+  // include language of dictionaries by setting
+  if (!document.getElementById('p2en').checked)
+    isLangArrayEmpty['en'] = true;
+  if (!document.getElementById('p2ja').checked)
+    isLangArrayEmpty['ja'] = true;
+  if (!document.getElementById('p2zh').checked)
+    isLangArrayEmpty['zh'] = true;
+
   var result = [];
+  var order = document.getElementById('dicLangOrder').value;
+  if (order == 'en2ja2zh') {
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    result = result.concat(unknown);
+    return result;
+  }
+  if (order == 'en2zh2ja') {
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    result = result.concat(unknown);
+    return result;
+  }
+  if (order == 'ja2en2zh') {
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    result = result.concat(unknown);
+    return result;
+  }
+  if (order == 'ja2zh2en') {
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    result = result.concat(unknown);
+    return result;
+  }
+  if (order == 'zh2en2ja') {
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    result = result.concat(unknown);
+    return result;
+  }
+  if (order == 'zh2ja2en') {
+    if (!isLangArrayEmpty['zh']) result = result.concat(zh);
+    if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+    if (!isLangArrayEmpty['en']) result = result.concat(en);
+    result = result.concat(unknown);
+    return result;
+  }
+
+  // show the order of language of dictionaries according to accept-languages
+  // http header (default)
   var langq_pairs = Data2dom.getParsedAcceptLangs();
 
   for (var i=0; i<langq_pairs.length; i++) {
@@ -354,15 +408,9 @@ Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
     }
   }
 
-  if (!isLangArrayEmpty['en']) {
-    result = result.concat(en);
-  }
-  if (!isLangArrayEmpty['ja']) {
-    result = result.concat(ja);
-  }
-  if (!isLangArrayEmpty['zh']) {
-    result = result.concat(zh);
-  }
+  if (!isLangArrayEmpty['en']) result = result.concat(en);
+  if (!isLangArrayEmpty['ja']) result = result.concat(ja);
+  if (!isLangArrayEmpty['zh']) result = result.concat(zh);
   result = result.concat(unknown);
 
   return result;
