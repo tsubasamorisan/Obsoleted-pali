@@ -483,7 +483,6 @@ Lookup.prototype.lookup = function() {
    */
   if (this.cache_.hasOwnProperty(word)) {
     this.callback(this.cache_[word])
-    this.textInput_.blur();
     return;
   }
 
@@ -494,8 +493,6 @@ Lookup.prototype.lookup = function() {
   } else {
     this.jsonp(word, 'callback');
   }
-
-  this.textInput_.blur();
 };
 
 
@@ -514,4 +511,7 @@ Lookup.prototype.callback = function(jsonData) {
   this.result_.innerHTML = "";
   // Show lookup data
   this.result_.appendChild(Data2dom.createLookupTable(jsonData));
+  this.textInput_.blur();
+  window.scrollTo(0, pali.getOffset(
+    document.getElementById('upperAD')).top);
 };
