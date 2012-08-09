@@ -248,8 +248,8 @@ var startLoader = (function() {
     'data2dom.js': null,
     'dropdown.js': 'base.js',
     'draggable.js': 'base.js',
-    'inputsuggest.js': 'base.js',
-    'lookup.js': 'base.js, data2dom.js',
+    'inputsuggest.js': 'base.js, customevent.js',
+    'lookup.js': 'base.js, data2dom.js, customevent.js',
     'palidict.js': 'base.js, data2dom.js, dropdown.js, draggable.js, inputsuggest.js, lookup.js'
   };
 

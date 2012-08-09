@@ -5,6 +5,7 @@
  */
 
 pali.require('base');
+pali.require('customevent');
 pali.require('data2dom');
 
 /**
@@ -125,6 +126,10 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
    * @private
    */
   this.isWordPreviewEnabled_ = false;
+
+  PaliCustomEvent.addCustomEvent(
+    PaliCustomEvent.CUSTOM_EVENT_TYPE.ON_SUGGESTION_MENU_CLOSED,
+    function(){this.previewDiv_.style.display='none';}.bind(this));
 };
 
 

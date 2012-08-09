@@ -9,6 +9,7 @@
 
 
 pali.require('base');
+pali.require('customevent');
 
 
 /**
@@ -749,6 +750,8 @@ pali.InputSuggest.prototype.clearSuggestionMenu = function() {
   this.originalUserPaliInput_ = "";
   this.oldInput_ = "";
   delete this.prefixMatchedPaliWords_;
+  PaliCustomEvent.dispatchCustomEvent(
+    PaliCustomEvent.CUSTOM_EVENT_TYPE.ON_SUGGESTION_MENU_CLOSED);
 };
 
 
