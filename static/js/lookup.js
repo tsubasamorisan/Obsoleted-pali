@@ -256,11 +256,11 @@ Lookup.prototype.httppost = function(word, callbackName) {
 /**
  * Get lookup data of a word from the server by HTTP Get
  * @param {string} word The word to be looked up
- * @param {string} callbackName The name of callback function
- * @param {boolean} isPvCall Does Preview call this function?
+ * @param {function} callback The callback function
+ * @param {function} failCallback The callback function if http get fails
  * @private
  */
-Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
+Lookup.httpget = function(word, callback, failCallback) {
   /**
    * Resolve the URL of the word to issue HTTP Get by information provided by
    * groupInfo global variable.
@@ -286,8 +286,9 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
     }
   }
   if (version == -1) {
-    this.result_.innerHTML = getStringNoSuchWord();
-    throw 'no version (should not happen here)';
+    setTimeout(failCallback, 0);
+    console.log('no version (should not happen here)');
+    return;
   }
 
   /**
@@ -299,7 +300,7 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
    *   ...
    * }
    */
-  var path = this.getStaticPath(word, groupInfo['dir'], 'json/', 1);
+  var path = Lookup.getStaticPath(word, groupInfo['dir'], 'json/', 1);
   if (path == null) {
     this.result_.innerHTML = getStringNoSuchWord();
     throw 'no path (should not happen here)';
@@ -326,10 +327,9 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
         //this.result_.innerHTML = xmlhttp.status;
         //this.result_.innerHTML = xmlhttp.statusText;
         //this.result_.innerHTML = xmlhttp.responseText;
-        this[callbackName](eval('(' + xmlhttp.responseText + ')'));
+        setTimeout(callback(eval('(' + xmlhttp.responseText + ')')), 0);
       } else {
-        if (!isPvCall)
-          this.result_.innerHTML = getStringNoSuchWord();
+        setTimeout(failCallback, 0);
       }
     }
   }.bind(this);
@@ -348,7 +348,7 @@ Lookup.prototype.httpget = function(word, callbackName, isPvCall) {
  * @return
  * @private
  */
-Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
+Lookup.getStaticPath = function(word, dirInfo, prefix, digit) {
   if (dirInfo.length == 0) {
     // dirInfo is an empty array
     return prefix;
@@ -364,7 +364,7 @@ Lookup.prototype.getStaticPath = function(word, dirInfo, prefix, digit) {
           return (prefix + suffix + suffix);
         }
         // recursively call self to resolve path
-        return this.getStaticPath(word, dirInfo[key],
+        return Lookup.getStaticPath(word, dirInfo[key],
                                   prefix + suffix, digit + 1);
       }
     }
@@ -420,7 +420,7 @@ Lookup.prototype.previewCheck = function() {
 
   // start to look up the word
   if (this.lookupMethod_ == 'get') {
-    this.httpget(word, 'callbackPv', true);
+    Lookup.httpget(word, this.callbackPv.bind(this), function(){});
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callbackPv');
   } else {
@@ -495,7 +495,10 @@ Lookup.prototype.lookup = function() {
   }
 
   if (this.lookupMethod_ == 'get') {
-    this.httpget(word, 'callback', false);
+    var failCallback = function() {
+      this.result_.innerHTML = getStringNoSuchWord();
+    }.bind(this);
+    Lookup.httpget(word, this.callback.bind(this), failCallback);
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callback');
   } else {
