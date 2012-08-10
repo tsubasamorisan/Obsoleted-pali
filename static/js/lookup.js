@@ -221,10 +221,12 @@ Lookup.jsonp = function(word, url, callback) {
 /**
  * Get lookup data of a word from the server by HTTP Post
  * @param {string} word The word to be looked up
- * @param {string} callbackName The name of callback function
+ * @param {string} url The url to looked up the word
+ * @param {function} callback The callback function
+ * @param {function} failCallback The callback function if http post fails
  * @private
  */
-Lookup.prototype.httppost = function(word, callbackName) {
+Lookup.httppost = function(word, url, callback, failCallback) {
   var xmlhttp;
 
   if (window.XMLHttpRequest) {
@@ -239,15 +241,14 @@ Lookup.prototype.httppost = function(word, callbackName) {
         //this.result_.innerHTML = xmlhttp.status;
         //this.result_.innerHTML = xmlhttp.statusText;
         //this.result_.innerHTML = xmlhttp.responseText;
-        this[callbackName](eval('(' + xmlhttp.responseText + ')'));
+        setTimeout(callback(eval('(' + xmlhttp.responseText + ')')), 0);
       } else {
-        this.result_.innerHTML = 'XMLHttpRequest Post Err!';
-        throw "XMLHttpRequest Post Err!";
+        setTimeout(failCallback, 0);
       }
     }
-  }.bind(this);
+  }
 
-  xmlhttp.open("POST", this.lookupUrl_, true);
+  xmlhttp.open("POST", url, true);
   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xmlhttp.send("word=" + encodeURIComponent(word));
 };
@@ -332,7 +333,7 @@ Lookup.httpget = function(word, callback, failCallback) {
         setTimeout(failCallback, 0);
       }
     }
-  }.bind(this);
+  }
 
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
@@ -422,7 +423,8 @@ Lookup.prototype.previewCheck = function() {
   if (this.lookupMethod_ == 'get') {
     Lookup.httpget(word, this.callbackPv.bind(this), function(){});
   } else if (this.lookupMethod_ == 'post') {
-    this.httppost(word, 'callbackPv');
+    Lookup.httppost(word, this.lookupUrl_,
+                    this.callbackPv.bind(this), function(){});
   } else {
     Lookup.jsonp(word, this.lookupUrl_, this.globalName_ + '["callbackPv"]');
   }
@@ -500,7 +502,12 @@ Lookup.prototype.lookup = function() {
     }.bind(this);
     Lookup.httpget(word, this.callback.bind(this), failCallback);
   } else if (this.lookupMethod_ == 'post') {
-    this.httppost(word, 'callback');
+    var failCallback = function() {
+      this.result_.innerHTML = 'XMLHttpRequest Post Err!';
+      throw "XMLHttpRequest Post Err!";
+    }.bind(this);
+    Lookup.httppost(word, this.lookupUrl_,
+                    this.callback.bind(this), failCallback);
   } else {
     Lookup.jsonp(word, this.lookupUrl_, this.globalName_ + '["callback"]');
   }
