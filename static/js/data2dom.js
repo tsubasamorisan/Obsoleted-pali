@@ -17,7 +17,7 @@ Data2dom.createLookupTable = function(jsonData) {
   }
 
   // The word exist. Get dictionary explanations sorted according to user
-  // browser accept-language header info
+  // browser accept-language header info or setting
   var sortedDicWordExps = Data2dom.getSortedDicWordExpsbyLangs(
                             jsonData['data']);
 
@@ -125,9 +125,12 @@ Data2dom.createPreview = function(jsonData) {
 
   container.appendChild(wordName);
 
-  for (var index in jsonData['data']) {
+  var sortedDicWordExps = Data2dom.getSortedDicWordExpsbyLangs(
+                            jsonData['data']);
+
+  for (var index in sortedDicWordExps) {
     container.appendChild(Data2dom.createDicWordExp(
-      jsonData['data'][index]));
+      sortedDicWordExps[index]));
   }
 
   return container;
@@ -270,11 +273,11 @@ Data2dom.getParsedAcceptLangs = function() {
 
 
 /**
- * Sort [dic, word, explanation]s according http accept-languages header and
+ * Sort [dic, word, explanation]s according http accept-languages header or
  * setting
  * @param {Array} The unsorted array of one or more [dic, word, explanation]
  * @return {Array} The sorted array of one or more [dic, word, explanation]
- *                 according to http accept-languages header and setting
+ *                 according to http accept-languages header or setting
  */
 Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
   // put dictionaries of the same lang into the same array
@@ -345,41 +348,33 @@ Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
     if (!isLangArrayEmpty['en']) result = result.concat(en);
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
-    result = result.concat(unknown);
-    return result;
   }
   if (order == 'en2zh2ja') {
     if (!isLangArrayEmpty['en']) result = result.concat(en);
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
-    result = result.concat(unknown);
-    return result;
   }
   if (order == 'ja2en2zh') {
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
     if (!isLangArrayEmpty['en']) result = result.concat(en);
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
-    result = result.concat(unknown);
-    return result;
   }
   if (order == 'ja2zh2en') {
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
     if (!isLangArrayEmpty['en']) result = result.concat(en);
-    result = result.concat(unknown);
-    return result;
   }
   if (order == 'zh2en2ja') {
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
     if (!isLangArrayEmpty['en']) result = result.concat(en);
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
-    result = result.concat(unknown);
-    return result;
   }
   if (order == 'zh2ja2en') {
     if (!isLangArrayEmpty['zh']) result = result.concat(zh);
     if (!isLangArrayEmpty['ja']) result = result.concat(ja);
     if (!isLangArrayEmpty['en']) result = result.concat(en);
+  }
+  if (order != 'hdr') {
     result = result.concat(unknown);
     return result;
   }
