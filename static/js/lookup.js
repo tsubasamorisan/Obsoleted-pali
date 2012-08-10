@@ -499,6 +499,7 @@ Lookup.prototype.lookup = function() {
   if (this.lookupMethod_ == 'get') {
     var failCallback = function() {
       this.result_.innerHTML = getStringNoSuchWord();
+      console.log('In lookup: http get failed');
     }.bind(this);
     Lookup.httpget(word, this.callback.bind(this), failCallback);
   } else if (this.lookupMethod_ == 'post') {

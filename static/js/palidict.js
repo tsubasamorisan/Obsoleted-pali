@@ -214,10 +214,17 @@ function onBrowseWordClick() {
   if (method == 'jsonp') {
     Lookup.jsonp(this.innerHTML, getLookupUrl(), 
       '('+ onBrowseWordClickCallback.toString() +')');
+  } else if (method == 'post') {
+    var failCallback = function() {
+      document.getElementById('result').innerHTML = 'XMLHttpRequest Post Err!';
+      throw "XMLHttpRequest Post Err!";
+    };
+    Lookup.httppost(this.innerHTML, getLookupUrl(),
+                    onBrowseWordClickCallback, failCallback);
   } else {
     var failCallback = function() {
       document.getElementById('result').innerHTML = getStringNoSuchWord();
-      throw 'onBrowseWordClick httpget fails';
+      throw 'In onBrowseWordClick: http get failed';
     };
     Lookup.httpget(this.innerHTML, onBrowseWordClickCallback, failCallback);
   }
