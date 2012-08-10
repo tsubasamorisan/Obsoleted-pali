@@ -210,9 +210,17 @@ function onBrowsePrefixClick() {
  */
 function onBrowseWordClick() {
   document.getElementById('result').innerHTML = getStringLookingUp();
-  // get lookup data of a word from the server by JSONP
-  Lookup.jsonp(this.innerHTML, getLookupUrl(), 
-               '('+ onBrowseWordClickCallback.toString() +')');
+  var method = getLookupMethod();
+  if (method == 'jsonp') {
+    Lookup.jsonp(this.innerHTML, getLookupUrl(), 
+      '('+ onBrowseWordClickCallback.toString() +')');
+  } else {
+    var failCallback = function() {
+      document.getElementById('result').innerHTML = getStringNoSuchWord();
+      throw 'onBrowseWordClick httpget fails';
+    };
+    Lookup.httpget(this.innerHTML, onBrowseWordClickCallback, failCallback);
+  }
 }
 
 var onBrowseWordClickCallback = function(jsonData) {
