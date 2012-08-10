@@ -194,14 +194,9 @@ function onBrowsePrefixClick() {
   if (!dicPrefixWordLists.hasOwnProperty(this.innerHTML))
     throw "Impossible Case in onBrowsePrefixClick";
 
-  var container = Data2dom.createWordsList(dicPrefixWordLists[this.innerHTML]);
-  if (!pali.isMSIE()) {
-    var aElems = container.getElementsByTagName('a');
-    for (var i=0; i < aElems.length; i++) {
-      aElems[i].href = 'javascript:void(0);';
-      aElems[i].onclick = onBrowseWordClick;
-    }
-  }
+  var container = Data2dom.createWordsList(
+                    dicPrefixWordLists[this.innerHTML],
+                    onBrowseWordClick);
 
   document.getElementById('result').innerHTML = '';
   document.getElementById('result').appendChild(container);
