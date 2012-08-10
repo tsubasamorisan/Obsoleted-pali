@@ -468,8 +468,6 @@ Lookup.prototype.callbackPv = function(jsonData) {
   this.previewDiv_.style.textAlign = 'left';
   this.previewDiv_.innerHTML = '';
   this.previewDiv_.appendChild(Data2dom.createPreview(jsonData));
-  if (document.getElementById('toTraditionalCht').checked)
-    TongWen.trans2Trad(document);
 };
 
 
@@ -523,6 +521,4 @@ Lookup.prototype.callback = function(jsonData) {
   this.textInput_.blur();
   window.scrollTo(0, pali.getOffset(
     document.getElementById('upperAD')).top);
-  if (document.getElementById('toTraditionalCht').checked)
-    TongWen.trans2Trad(document);
 };
