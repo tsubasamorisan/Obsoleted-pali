@@ -270,10 +270,11 @@ Data2dom.getParsedAcceptLangs = function() {
 
 
 /**
- * Sort [dic, word, explanation]s according http accept-languages header
+ * Sort [dic, word, explanation]s according http accept-languages header and
+ * setting
  * @param {Array} The unsorted array of one or more [dic, word, explanation]
  * @return {Array} The sorted array of one or more [dic, word, explanation]
- *                 according to http accept-languages header
+ *                 according to http accept-languages header and setting
  */
 Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
   // put dictionaries of the same lang into the same array

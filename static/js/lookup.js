@@ -453,6 +453,13 @@ Lookup.prototype.callbackPv = function(jsonData) {
     return;
   }
 
+  if (this.previewDiv_.style.display == 'block' ) {
+    try {
+      if (this.previewDiv_.firstChild.firstChild.innerHTML == jsonData['word'])
+        return;
+    } catch (err) {}
+  }
+
   // Show preview of the word
   this.previewDiv_.style.left = (pali.getOffset(this.textInput_).left +
     this.suggestDiv_.offsetWidth + 3) + "px";
