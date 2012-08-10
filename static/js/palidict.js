@@ -120,6 +120,9 @@ function initService() {
     if (st.style.display == 'block') st.style.display = 'none';
     else st.style.display = 'block';
   };
+  /**
+   * @this {DOM Element} Here refer to the checkbox element
+   */
   document.getElementById('word-preview-option').onchange = function() {
     if (this.checked) myLookup.enableWordPreview();
     else myLookup.disableWordPreview();
@@ -208,12 +211,8 @@ function onBrowsePrefixClick() {
 function onBrowseWordClick() {
   document.getElementById('result').innerHTML = getStringLookingUp();
   // get lookup data of a word from the server by JSONP
-  var qry = '?word=' + encodeURIComponent(this.innerHTML) +
-            '&callback=(' + encodeURIComponent(
-            onBrowseWordClickCallback.toString()) + ')';
-  var ext = document.createElement('script');
-  ext.setAttribute('src', getLookupUrl() + qry);
-  document.getElementsByTagName("head")[0].appendChild(ext);
+  Lookup.jsonp(this.innerHTML, getLookupUrl(), 
+               '('+ onBrowseWordClickCallback.toString() +')');
 }
 
 var onBrowseWordClickCallback = function(jsonData) {

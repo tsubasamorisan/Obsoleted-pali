@@ -205,14 +205,15 @@ Lookup.prototype.getProcessedUserInput = function() {
 /**
  * Get lookup data of a word from the server by JSONP
  * @param {string} word The word to be looked up
- * @param {string} callbackName The name of callback function
+ * @param {string} url The url to looked up the word
+ * @param {string} callback The callback function
  * @private
  */
-Lookup.prototype.jsonp = function(word, callbackName) {
-  var qry = '?word=' + encodeURIComponent(word) + '&callback=' +
-            encodeURIComponent(this.globalName_ + '["' + callbackName + '"]');
+Lookup.jsonp = function(word, url, callback) {
+  var qry = '?word=' + encodeURIComponent(word) + '&callback=' + 
+            encodeURIComponent(callback);
   var ext = document.createElement('script');
-  ext.setAttribute('src', this.lookupUrl_ + qry);
+  ext.setAttribute('src', url + qry);
   document.getElementsByTagName("head")[0].appendChild(ext);
 };
 
@@ -423,7 +424,7 @@ Lookup.prototype.previewCheck = function() {
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callbackPv');
   } else {
-    this.jsonp(word, 'callbackPv');
+    Lookup.jsonp(word, this.lookupUrl_, this.globalName_ + '["callbackPv"]');
   }
 
   // check again in 1000 ms
@@ -498,7 +499,7 @@ Lookup.prototype.lookup = function() {
   } else if (this.lookupMethod_ == 'post') {
     this.httppost(word, 'callback');
   } else {
-    this.jsonp(word, 'callback');
+    Lookup.jsonp(word, this.lookupUrl_, this.globalName_ + '["callback"]');
   }
 };
 
