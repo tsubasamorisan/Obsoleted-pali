@@ -322,6 +322,24 @@ Lookup.httpget = function(word, callback, failCallback) {
 
   var xmlhttp = new XMLHttpRequest();
 
+  // @see http://blogs.msdn.com/b/ie/archive/2012/02/09/cors-for-xhr-in-ie10.aspx
+  // @see http://bionicspirit.com/blog/2011/03/24/cross-domain-requests.html
+  // @see http://msdn.microsoft.com/en-us/library/ie/cc288060(v=vs.85).aspx
+  if ("withCredentials" in xmlhttp) {
+  } else {
+    var xdr = new XDomainRequest();
+    xdr.onerror = function(){setTimeout(failCallback, 0);};
+    xdr.ontimeout = function(){setTimeout(failCallback, 0);};
+    xdr.onload = function() {
+      // FIXME: IE will complain the following code
+      setTimeout(callback(eval('(' + xdr.responseText + ')')), 0);
+    };
+
+    xdr.open("get", url);
+    xdr.send();
+    return;
+  }
+
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4) {
       if (xmlhttp.status == 200 || xmlhttp.status == 304) {

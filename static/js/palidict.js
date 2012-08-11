@@ -174,7 +174,6 @@ function initBrowseLinks() {
     prefixes[i].onclick = onBrowsePrefixClick;
   }
 
-  if (pali.isMSIE()) return;
   var prefixWordsList = document.getElementById('prefixWordsList');
   if (!prefixWordsList) return;
   var prefixWords = prefixWordsList.getElementsByTagName('a');
@@ -294,7 +293,6 @@ function getLookupUrl() {
 function getLookupMethod() {
   if (queryURL['method'] == "jsonp") return 'jsonp';
   if (queryURL['method'] == "post") return 'post';
-  if (pali.isMSIE()) return 'jsonp';
   if (queryURL['method'] == "get") return 'get';
   return 'get';
 }
