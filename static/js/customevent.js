@@ -46,6 +46,7 @@ PaliCustomEvent.addCustomEvent = function(type, fn) {
  */
 PaliCustomEvent.dispatchCustomEvent = function(type) {
   // TODO: check whether type exist in PaliCustomEvent.CUSTOM_EVENT_TYPE
+  if (typeof PaliCustomEvent.typeHandlers_[type] == 'undefined') return;
   for (var i=0; i < PaliCustomEvent.typeHandlers_[type].length; i++) {
     // fire events of 'type'
     try {
@@ -64,6 +65,7 @@ PaliCustomEvent.dispatchCustomEvent = function(type) {
  */
 PaliCustomEvent.removeCustomEvent = function(type, fn) {
   // TODO: check whether type exist in PaliCustomEvent.CUSTOM_EVENT_TYPE
+  if (typeof PaliCustomEvent.typeHandlers_[type] == 'undefined') return;
   // iterate through all hanlder of the type
   for (var i=0; i < PaliCustomEvent.typeHandlers_[type].length; i++) {
     // remove the handler if matched with input function
