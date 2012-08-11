@@ -332,7 +332,7 @@ Lookup.httpget = function(word, callback, failCallback) {
     xdr.ontimeout = function(){setTimeout(failCallback, 0);};
     xdr.onload = function() {
       // FIXME: IE will complain the following code
-      setTimeout(callback(eval('(' + xdr.responseText + ')')), 0);
+      callback(eval('(' + xdr.responseText + ')'));
     };
 
     xdr.open("get", url);
@@ -346,7 +346,7 @@ Lookup.httpget = function(word, callback, failCallback) {
         //this.result_.innerHTML = xmlhttp.status;
         //this.result_.innerHTML = xmlhttp.statusText;
         //this.result_.innerHTML = xmlhttp.responseText;
-        setTimeout(callback(eval('(' + xmlhttp.responseText + ')')), 0);
+        callback(eval('(' + xmlhttp.responseText + ')'));
       } else {
         setTimeout(failCallback, 0);
       }
