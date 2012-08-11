@@ -89,10 +89,7 @@ Data2dom.createBackToTop = function() {
   backToTop.href = '/';
   backToTop.onclick = function(e){window.scrollTo(0,0);return false;};
 //  backToTop.href = "javascript:window.scrollTo(0,0);";
-  backToTop.style.textDecoration = "none";
-  backToTop.style.color = "#00C";
-  backToTop.style.fontSize = "small";
-  backToTop.style.cursor = "pointer";
+  backToTop.className = "backToTop";
   backToTop.innerHTML = '<span style="text-decoration:underline">' +
                         getStringBackToTop() +
                         '</span><span style="font-size:.75em;">&#9650;</span>';
@@ -117,10 +114,7 @@ Data2dom.createPreview = function(jsonData) {
   var container = document.createElement('div');
 
   var wordName = document.createElement('span');
-  wordName.style.color = 'GoldenRod';
-  wordName.style.fontWeight = 'bold';
-  wordName.style.fontSize = '1.5em';
-  wordName.style.margin = '.5em';
+  wordName.className = "previewWordName";
   wordName.appendChild(document.createTextNode(jsonData['word']));
 
   container.appendChild(wordName);
