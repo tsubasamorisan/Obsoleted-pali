@@ -243,10 +243,9 @@ Data2dom.createDicWordExp = function(dicWordExp) {
 /**
  * Create words list by HTML table
  * @param {Array} wordsArray The array of words
- * @param {function} fn Onclick function of word link
  * @return {DOM Element} elements for listing words
  */
-Data2dom.createWordsList = function(wordsArray, fn) {
+Data2dom.createWordsList = function(wordsArray) {
   var container = document.createElement('div');
   container.style.margin = '.5em';
   container.style.lineHeight = '1.5em';
@@ -262,8 +261,8 @@ Data2dom.createWordsList = function(wordsArray, fn) {
     var tdElem = document.createElement('td');
 
     var aElem = document.createElement('a');
-    aElem.href = 'javascript:void(0);';
-    aElem.onclick = fn;
+    aElem.href = '/browse/' + word[0] + '/' + word +
+                 window.location.search;
     aElem.style.margin = '.5em';
     aElem.style.textDecoration = 'none';
     aElem.appendChild(document.createTextNode(word));
