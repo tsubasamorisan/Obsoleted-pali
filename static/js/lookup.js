@@ -241,7 +241,7 @@ Lookup.httppost = function(word, url, callback, failCallback) {
         //this.result_.innerHTML = xmlhttp.status;
         //this.result_.innerHTML = xmlhttp.statusText;
         //this.result_.innerHTML = xmlhttp.responseText;
-        setTimeout(callback(eval('(' + xmlhttp.responseText + ')')), 0);
+        callback(eval('(' + xmlhttp.responseText + ')'));
       } else {
         setTimeout(failCallback, 0);
       }
