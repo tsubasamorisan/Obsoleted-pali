@@ -369,8 +369,8 @@ Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
     // translate simplified chinses to traditional chinese by TongWen library
     if (typeof TongWen != 'undefined') {
       for (var i=0; i < zh.length; i++) {
-        zh[i][0] = TongWen.convert(zh[i][0], "traditional");
-        zh[i][2] = TongWen.convert(zh[i][2], "traditional");
+        zh[i][0] = TongWen.convert(zh[i][0], TongWen.flagTrad);
+        zh[i][2] = TongWen.convert(zh[i][2], TongWen.flagTrad);
       }
     }
   }

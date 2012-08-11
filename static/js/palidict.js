@@ -19,11 +19,6 @@ _gaq.push(['_trackPageview']);
   }
 }
 
-// @see http://tongwen.openfoundry.org/web.htm
-LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_core.js");
-LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_table_s2t.js");
-LoadJS("http://tongwen.openfoundry.org/src/web/tongwen_table_ps2t.js");
-
 // check if dom is ready enough to do initService()
 if (window.opera) {
   checkOpera();
