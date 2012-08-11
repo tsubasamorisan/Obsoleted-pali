@@ -193,12 +193,10 @@ function onBrowsePrefixClick() {
     throw "Impossible Case in onBrowsePrefixClick";
 
   var container = Data2dom.createWordsList(dicPrefixWordLists[this.innerHTML]);
-  if (!pali.isMSIE()) {
-    var aElems = container.getElementsByTagName('a');
-    for (var i=0; i < aElems.length; i++) {
-      aElems[i].href = 'javascript:void(0);';
-      aElems[i].onclick = onBrowseWordClick;
-    }
+  var aElems = container.getElementsByTagName('a');
+  for (var i=0; i < aElems.length; i++) {
+    aElems[i].href = 'javascript:void(0);';
+    aElems[i].onclick = onBrowseWordClick;
   }
 
   document.getElementById('result').innerHTML = '';
@@ -210,23 +208,24 @@ function onBrowsePrefixClick() {
  */
 function onBrowseWordClick() {
   document.getElementById('result').innerHTML = getStringLookingUp();
+  var word = this.title;
   var method = getLookupMethod();
   if (method == 'jsonp') {
-    Lookup.jsonp(this.innerHTML, getLookupUrl(), 
+    Lookup.jsonp(word, getLookupUrl(), 
       '('+ onBrowseWordClickCallback.toString() +')');
   } else if (method == 'post') {
     var failCallback = function() {
       document.getElementById('result').innerHTML = 'XMLHttpRequest Post Err!';
       throw "XMLHttpRequest Post Err!";
     };
-    Lookup.httppost(this.innerHTML, getLookupUrl(),
+    Lookup.httppost(word, getLookupUrl(),
                     onBrowseWordClickCallback, failCallback);
   } else {
     var failCallback = function() {
       document.getElementById('result').innerHTML = getStringNoSuchWord();
       throw 'In onBrowseWordClick: http get failed';
     };
-    Lookup.httpget(this.innerHTML, onBrowseWordClickCallback, failCallback);
+    Lookup.httpget(word, onBrowseWordClickCallback, failCallback);
   }
 }
 

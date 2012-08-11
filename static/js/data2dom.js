@@ -261,6 +261,7 @@ Data2dom.createWordsList = function(wordsArray) {
     var tdElem = document.createElement('td');
 
     var aElem = document.createElement('a');
+    aElem.title = word;
     aElem.href = '/browse/' + word[0] + '/' + word +
                  window.location.search;
     aElem.style.margin = '.5em';
