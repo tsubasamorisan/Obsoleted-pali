@@ -128,6 +128,12 @@ a.menuItem:hover {
   margin-bottom: 1em;
 }
 
+.titleWord {
+  font-size: 2em;
+  font-weight: bold;
+  color: GoldenRod;
+}
+
 .dicTable {
   border: 1px solid #00FFFF;
   background-color: #CCFFFF;
@@ -203,9 +209,23 @@ span.historyArrow:hover {
   cursor: pointer;
 }
 
+#suggestedWordPreview {
+  width: 32em;
+  text-align: left;
+}
+
 .previewWordName {
   color: GoldenRod;
   font-weight: bold;
   font-size: 1.5em;
   margin: .5em;
+}
+
+div.shortDicExp:hover {
+  font-size: 150%;
+  background-color: #F0F8FF;
+  border: 1px dotted aqua;
+}
+div.shortDicExp span {
+  color: red;
 }

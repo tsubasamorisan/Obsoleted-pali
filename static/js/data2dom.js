@@ -26,10 +26,9 @@ Data2dom.createLookupTable = function(jsonData) {
   resultOuterTable.className = "resultCurvedEdges";
 
   var titleWord = document.createElement('span');
+  titleWord.className = 'titleWord';
   titleWord.innerHTML = jsonData['word'];
-  titleWord.style.fontSize = '2em';
-  titleWord.style.fontWeight = 'bold';
-  titleWord.style.color = 'GoldenRod';
+
   resultOuterTable.appendChild(titleWord);
 
   for (var index in sortedDicWordExps) {
@@ -208,10 +207,10 @@ Data2dom.createDicWordExp = function(dicWordExp) {
   }
 
   var shortDicExp = document.createElement('div');
+  shortDicExp.className = 'shortDicExp';
 
   // show short name of the dictionary in the preview
   var dicName = document.createElement('span');
-  dicName.style.color = 'red';
   dicName.appendChild(document.createTextNode(dicShortName));
 
   shortDicExp.appendChild(dicName);
@@ -224,9 +223,7 @@ Data2dom.createDicWordExp = function(dicWordExp) {
     var shortExp = dicWordExp[2].slice(0, breakPos);
   }
 
-  if (shortExp.length > 200) {
-    shortExp = shortExp.slice(0, 200) + '<span style="color: blue;">...[more]</span>';
-  }
+  if (shortExp.length > 200) shortExp = shortExp.slice(0, 150) + '...';
 
   shortDicExp.innerHTML += shortExp;
 

@@ -484,9 +484,7 @@ Lookup.prototype.callbackPv = function(jsonData) {
   // Show preview of the word
   this.previewDiv_.style.left = (pali.getOffset(this.textInput_).left +
     this.suggestDiv_.offsetWidth + 3) + "px";
-  this.previewDiv_.style.width = '30em';
   this.previewDiv_.style.display = 'block';
-  this.previewDiv_.style.textAlign = 'left';
   this.previewDiv_.innerHTML = '';
   this.previewDiv_.appendChild(Data2dom.createPreview(jsonData));
 };
