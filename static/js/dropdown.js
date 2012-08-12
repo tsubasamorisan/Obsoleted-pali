@@ -70,9 +70,9 @@ pali.Dropdown.prototype.onDocumentClick = function(e) {
   var evt = e || window.event; // For IE compatible
   var target = evt.target || evt.srcElement; // For IE compatible
 
-  if (!this.checkParent(target, this.dropdownMenuDiv_)) {
+  if (!pali.checkParent(target, this.dropdownMenuDiv_)) {
     // click outside the dropdown menu
-    if (this.checkParent(target, this.dropdown_)) {
+    if (pali.checkParent(target, this.dropdown_)) {
       // click outside the dropdown menu
       // AND
       // click on the dropdown link
@@ -102,26 +102,4 @@ pali.Dropdown.prototype.onDocumentClick = function(e) {
       this.dropdownMenuDiv_.style.display = "none";
     }
   }
-};
-
-
-/**
- * check if element is targer or the parent of target
- * @param {DOM Element} target
- * @param {DOM Element} element
- * @return {boolean} Return true if element is target or the parent of target
- *                   else return false.
- * @private
- */
-pali.Dropdown.prototype.checkParent = function(target, element) {
-  // Chrome and Firefox use parentNode, while Opera use offsetParent
-  while(target.parentNode) {
-    if( target == element ) return true;
-    target = target.parentNode;
-  }
-  while(target.offsetParent) {
-    if( target == element ) return true;
-    target = target.offsetParent;
-  }
-  return false;
 };
