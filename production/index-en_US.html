@@ -135,7 +135,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
          <!-- input pāli word -->
          <form id="inputForm" style="text-align: center;" autocomplete="off">
            <div>
-            <span class="historyArrow" title='Previous Word History'>&#9668;</span><span class="historyArrow" title='Next Word History'>&#9658;</span>
+            <span id="leftHistoryArrow" class="historyArrow" title='Previous Word History'>&#9668;</span><span id="rightHistoryArrow" class="historyArrow" title='Next Word History'>&#9658;</span>
             <input id="PaliInput" type="text" name="word" value="" />
             <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">Show Pāli Keypad</span></sub>
             <div id="suggest" class="suggest" style="display: none;"></div><div id="suggestedWordPreview" class='suggest' style="display: none;"></div>
@@ -275,5 +275,9 @@ Source Code : <a href="https://code.google.com/p/pali/">pali</a> project on Goog
 Dictionary : from "Pali Dict Linux Web Ver 1.0" on <a href="http://online-dhamma.net/anicca/pali-course/Pali-Chinese-English%20Dictionary.html">Pali-Chinese-English Dictionary</a>
 </div>
 </div>
+<!-- @see http://tongwen.openfoundry.org/web.htm -->
+<script type="text/javascript" src="http://tongwen.openfoundry.org/src/web/tongwen_core.js"></script>
+<script type="text/javascript" src="http://tongwen.openfoundry.org/src/web/tongwen_table_s2t.js"></script>
+<script type="text/javascript" src="http://tongwen.openfoundry.org/src/web/tongwen_table_ps2t.js"></script>
 </body>
 </html>
