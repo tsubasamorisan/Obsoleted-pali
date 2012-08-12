@@ -331,7 +331,6 @@ Lookup.httpget = function(word, callback, failCallback) {
     xdr.onerror = function(){setTimeout(failCallback, 0);};
     xdr.ontimeout = function(){setTimeout(failCallback, 0);};
     xdr.onload = function() {
-      // FIXME: IE will complain the following code
       callback(eval('(' + xdr.responseText + ')'));
     };
 
@@ -487,6 +486,11 @@ Lookup.prototype.callbackPv = function(jsonData) {
   this.previewDiv_.style.display = 'block';
   this.previewDiv_.innerHTML = '';
   this.previewDiv_.appendChild(Data2dom.createPreview(jsonData));
+  // http://stackoverflow.com/questions/4084780/how-should-i-fire-javascript-blur-event-after-click-event-that-causes-the-blur
+  this.previewDiv_.firstChild.onmousedown = function() {
+    this.result_.innerHTML = getStringLookingUp();
+    this.callback.call(this, jsonData);
+  }.bind(this);
 };
 
 
