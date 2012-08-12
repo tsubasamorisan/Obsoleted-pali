@@ -162,7 +162,6 @@ a.menuItem:hover {
 span.historyArrow {
   color: blue;
   cursor: pointer;
-  display: none;
 }
 
 span.historyArrow:hover {

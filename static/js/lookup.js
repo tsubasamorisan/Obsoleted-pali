@@ -22,10 +22,12 @@ pali.require('data2dom');
  * @param {string} suggestDivId element id for suggestion Div Menu
  * @param {string} lookupUrl The URL to look up word
  * @param {string} lookupMethod The method to look up word
+ * @param {string} leftHistoryArrowId Left history arrow id
+ * @param {string} rightHistoryArrowId Right history arrow id
  * @constructor
  */
 Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
-                  lookupUrl, lookupMethod) {
+           lookupUrl, lookupMethod, leftHistoryArrowId, rightHistoryArrowId) {
   /**
    * The DOM element which is the text input of word to be looked up.
    * @const
@@ -112,9 +114,59 @@ Lookup = function(textInputId, formId, resultId, previewDivId, suggestDivId,
   }
 
   /**
+   * DOM element of left history arrow
+   * @const
+   * @type {DOM Element}
+   * @private
+   */
+  this.leftArrow_ = document.getElementById(leftHistoryArrowId);
+  if (!this.leftArrow_) throw "Lookup.NoLeftHistoryArrow";
+
+  /**
+   * DOM element of right history arrow
+   * @const
+   * @type {DOM Element}
+   * @private
+   */
+  this.rightArrow_ = document.getElementById(rightHistoryArrowId);
+  if (!this.rightArrow_) throw "Lookup.NoRightHistoryArrow";
+
+  /**
+   * Store user looked up words
+   * @type {Array}
+   * @private
+   */
+  this.wordHistory_ = [];
+
+  /**
+   * Keep track of current position of selection of word(s) history.
+   * @type {number}
+   * @private
+   */
+  this.wordHistoryPosition_ = 0;
+
+  // show previous word in word(s) history
+  this.leftArrow_.onclick = function() {
+    if (this.wordHistory_.length == 0) return;
+    this.wordHistoryPosition_ += this.wordHistory_.length;
+    this.wordHistoryPosition_ --;
+    this.wordHistoryPosition_ %= this.wordHistory_.length;
+    this.textInput_.value = this.wordHistory_[this.wordHistoryPosition_];
+    this.textInput_.focus();
+  }.bind(this);
+
+  // show next word in word(s) history
+  this.rightArrow_.onclick = function() {
+    if (this.wordHistory_.length == 0) return;
+    this.wordHistoryPosition_ ++;
+    this.wordHistoryPosition_ %= this.wordHistory_.length;
+    this.textInput_.value = this.wordHistory_[this.wordHistoryPosition_];
+    this.textInput_.focus();
+  }.bind(this);
+
+  /**
    * Cache for the json-format data of words
    * this.cache_[word] = jsonData;
-   * @const
    * @type {object}
    * @private
    */
@@ -508,6 +560,9 @@ Lookup.prototype.lookup = function() {
     this.result_.innerHTML = getStringNoSuchWord();
     return;
   }
+
+  // push this word into word(s) history
+  this.wordHistory_.push(word);
 
   /**
    * Check whether there is already json data of this word in the cache,
