@@ -488,8 +488,10 @@ Lookup.prototype.callbackPv = function(jsonData) {
   this.previewDiv_.appendChild(Data2dom.createPreview(jsonData));
   // http://stackoverflow.com/questions/4084780/how-should-i-fire-javascript-blur-event-after-click-event-that-causes-the-blur
   this.previewDiv_.firstChild.onmousedown = function() {
-    this.result_.innerHTML = getStringLookingUp();
-    this.callback.call(this, jsonData);
+    this.result_.appendChild(Data2dom.createLookupTable(jsonData));
+    this.textInput_.blur();
+    window.scrollTo(0, pali.getOffset(
+      document.getElementById('upperAD')).top);
   }.bind(this);
 };
 

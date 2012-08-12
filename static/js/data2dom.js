@@ -122,7 +122,7 @@ Data2dom.createPreview = function(jsonData) {
                             jsonData['data']);
 
   for (var index in sortedDicWordExps) {
-    container.appendChild(Data2dom.createDicWordExp(
+    container.appendChild(Data2dom.createPreviewDicWordExp(
       sortedDicWordExps[index]));
   }
 
@@ -137,7 +137,7 @@ Data2dom.createPreview = function(jsonData) {
  *                       explanation.
  * @private
  */
-Data2dom.createDicWordExp = function(dicWordExp) {
+Data2dom.createPreviewDicWordExp = function(dicWordExp) {
   if (dicWordExp[0].indexOf('《パーリ语辞典》') > 0) {
     var dicShortName = '《パーリ语辞典》';
     var separator = ' -';
@@ -223,9 +223,18 @@ Data2dom.createDicWordExp = function(dicWordExp) {
     var shortExp = dicWordExp[2].slice(0, breakPos);
   }
 
-  if (shortExp.length > 200) shortExp = shortExp.slice(0, 150) + '...';
+  if (shortExp.length > 200) shortExp = shortExp.slice(0, 200) + '...';
 
   shortDicExp.innerHTML += shortExp;
+
+  // http://stackoverflow.com/questions/4084780/how-should-i-fire-javascript-blur-event-after-click-event-that-causes-the-blur
+  shortDicExp.onmousedown = function(e) {
+    var full = Data2dom.createDictionaryWordExplanationTable(dicWordExp);
+    full.style.marginBottom = '1em';
+    // FIXME: bad practice - document.getElementById('result')
+    document.getElementById('result').innerHTML = '';
+    document.getElementById('result').appendChild(full);
+  };
 
   return shortDicExp;
 };
