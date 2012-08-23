@@ -23,29 +23,21 @@
    <div class="title"><span>{{_("Pāli Dictionary")}}</span></div>
    {% include "mainMenu.html" %}
 
-   <table style="width: 100%; border-spacing:0; border-collapse:collapse;">
-     <tr>
-       <td style="vertical-align: top; text-align: left;">
-         <div id="upperAD">{% include "google_upper_ad_code" %}</div>
-         <br style="line-height: 2em;" />
-         <!-- input pāli word -->
-         <form id="inputForm" style="text-align: center;" autocomplete="off">
-           <div>
-            <span id="leftHistoryArrow" class="historyArrow" title={{_("'Previous Word History'"|safe)}}>&#9668;</span>&nbsp;<span id="rightHistoryArrow" class="historyArrow" title={{_("'Next Word History'"|safe)}}>&#9658;</span>
-            <input id="PaliInput" type="text" name="word" value="" />
-            <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">{{_("Show Pāli Keypad")}}</span></sub>
-            <div id="suggest" class="suggest" style="display: none;"></div><div id="suggestedWordPreview" class='suggest' style="display: none;"></div>
-           </div>
-         </form>
-         {% include "keyboard.html" %}
-         <br style="line-height: 2em;" />
-         <div id="result">{% if resultDivInnerHTML %}{{resultDivInnerHTML}}{% endif %}</div>
-         {% include "browse.html" %}
-       </td>
+     <br style="line-height: 2em;" />
+     <!-- input pāli word -->
+     <form id="inputForm" style="text-align: center;" autocomplete="off">
+       <div>
+        <span id="leftHistoryArrow" class="historyArrow" title={{_("'Previous Word History'"|safe)}}>&#9668;</span>&nbsp;<span id="rightHistoryArrow" class="historyArrow" title={{_("'Next Word History'"|safe)}}>&#9658;</span>
+        <input id="PaliInput" type="text" name="word" value="" />
+        <input type="submit" value="Search" /><sub><span id="displayText" class="fakeLink">{{_("Show Pāli Keypad")}}</span></sub>
+        <div id="suggest" class="suggest" style="display: none;"></div><div id="suggestedWordPreview" class='suggest' style="display: none;"></div>
+       </div>
+     </form>
+     {% include "keyboard.html" %}
+     <br style="line-height: 2em;" />
+     <div id="result">{% if resultDivInnerHTML %}{{resultDivInnerHTML}}{% endif %}</div>
+     {% include "browse.html" %}
 
-       <td id="rightAD">{% include "google_right_ad_code" %}</td>
-     </tr>
-   </table>
  </div>
 </div>
 <div id="locale" style="display:none">{{locale}}</div>

@@ -543,7 +543,7 @@ Lookup.prototype.callbackPv = function(jsonData) {
     this.result_.appendChild(Data2dom.createLookupTable(jsonData));
     this.textInput_.blur();
     window.scrollTo(0, pali.getOffset(
-      document.getElementById('upperAD')).top);
+      document.getElementById('linkHome')).top);
   }.bind(this);
 };
 
@@ -609,5 +609,5 @@ Lookup.prototype.callback = function(jsonData) {
   this.result_.appendChild(Data2dom.createLookupTable(jsonData));
   this.textInput_.blur();
   window.scrollTo(0, pali.getOffset(
-    document.getElementById('upperAD')).top);
+    document.getElementById('linkHome')).top);
 };
