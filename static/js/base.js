@@ -106,7 +106,7 @@ pali.getOffset = function(el) {
 /**
  * Generate random string
  * @param {number} length The length of the random string
- * @return {string} String of 5 random characters
+ * @return {string} String of random characters with length
  * @private
  */
 pali.randomString = function(length) {
