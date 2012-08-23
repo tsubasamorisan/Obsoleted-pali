@@ -138,67 +138,67 @@ Data2dom.createPreview = function(jsonData) {
  * @private
  */
 Data2dom.createPreviewDicWordExp = function(dicWordExp) {
-  if (dicWordExp[0].indexOf('《パーリ语辞典》') > 0) {
+  if (dicWordExp[0].indexOf('《パーリ语辞典》') >= 0) {
     var dicShortName = '《パーリ语辞典》';
     var separator = ' -';
-  } else if (dicWordExp[0].indexOf('巴汉词典》 Mahāñāṇo') > 0) {
+  } else if (dicWordExp[0].indexOf('巴汉词典》 Mahāñāṇo') >= 0) {
     var dicShortName = '《巴汉词典》';
     var separator = '~';
-  } else if (dicWordExp[0].indexOf('巴漢詞典》 Mahāñāṇo') > 0) {
+  } else if (dicWordExp[0].indexOf('巴漢詞典》 Mahāñāṇo') >= 0) {
     var dicShortName = '《巴漢詞典》';
     var separator = '~';
-  } else if (dicWordExp[0].indexOf('巴汉词典》 明法') > 0) {
+  } else if (dicWordExp[0].indexOf('巴汉词典》 明法') >= 0) {
     var dicShortName = '《巴汉词典》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴漢詞典》 明法') > 0) {
+  } else if (dicWordExp[0].indexOf('巴漢詞典》 明法') >= 0) {
     var dicShortName = '《巴漢詞典》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利语字汇') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利语字汇') >= 0) {
     var dicShortName = '《巴利语字汇》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利語字彙') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利語字彙') >= 0) {
     var dicShortName = '《巴利語字彙》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利文-汉文') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利文-汉文') >= 0) {
     var dicShortName = '《巴利文-汉文佛学名相辞汇》'
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利文-漢文') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利文-漢文') >= 0) {
     var dicShortName = '《巴利文-漢文佛學名相辭彙》'
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('Buddhist Dictionary') > 0) {
+  } else if (dicWordExp[0].indexOf('Buddhist Dictionary') >= 0) {
     var dicShortName = '《Buddhist Dictionary》';
     var separator = '<br>';
-  } else if (dicWordExp[0].indexOf('Concise Pali-English') > 0) {
+  } else if (dicWordExp[0].indexOf('Concise Pali-English') >= 0) {
     var dicShortName = '《Concise Pali-English Dictionary》';
     var separator = '<br>';
-  } else if (dicWordExp[0].indexOf('PTS Pali-English') > 0) {
+  } else if (dicWordExp[0].indexOf('PTS Pali-English') >= 0) {
     var dicShortName = '《PTS Pali-English Dictionary》';
     var separator = '<i>';
-  } else if (dicWordExp[0].indexOf('汉译パーリ') > 0) {
+  } else if (dicWordExp[0].indexOf('汉译パーリ') >= 0) {
     var dicShortName = '《汉译パーリ语辞典》';
     var separator = ' -';
-  } else if (dicWordExp[0].indexOf('漢譯パーリ') > 0) {
+  } else if (dicWordExp[0].indexOf('漢譯パーリ') >= 0) {
     var dicShortName = '《漢譯パーリ語辭典》';
     var separator = ' -';
-  } else if (dicWordExp[0].indexOf('パーリ语辞典 增补') > 0) {
+  } else if (dicWordExp[0].indexOf('パーリ语辞典 增补') >= 0) {
     var dicShortName = '《パーリ语辞典 增补改订》';
     var separator = ' -';
-  } else if (dicWordExp[0].indexOf('巴英术语汇编') > 0) {
+  } else if (dicWordExp[0].indexOf('巴英术语汇编') >= 0) {
     var dicShortName = '《巴英术语汇编》'
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴英術語彙編') > 0) {
+  } else if (dicWordExp[0].indexOf('巴英術語彙編') >= 0) {
     var dicShortName = '《巴英術語彙編》'
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利新音译') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利新音译') >= 0) {
     var dicShortName = '《巴利语汇解》与《巴利新音译》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利新音譯') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利新音譯') >= 0) {
     var dicShortName = '《巴利語彙解》與《巴利新音譯》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利语入门') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利语入门') >= 0) {
     var dicShortName = '《巴利语入门》';
     var separator = '。';
-  } else if (dicWordExp[0].indexOf('巴利語入門') > 0) {
+  } else if (dicWordExp[0].indexOf('巴利語入門') >= 0) {
     var dicShortName = '《巴利語入門》';
     var separator = '。';
   } else {
@@ -318,44 +318,44 @@ Data2dom.getSortedDicWordExpsbyLangs = function(dicWordExps) {
   var unknown = [];
   for (var i=0; i < dicWordExps.length; i++) {
     var dicWordExp = dicWordExps[i];
-    if (dicWordExp[0].indexOf('《パーリ语辞典》') > 0) {
+    if (dicWordExp[0].indexOf('《パーリ语辞典》') >= 0) {
       // Pali to Japanese dictionary
       ja.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('パーリ语辞典 增补改订') > 0) {
+    } else if (dicWordExp[0].indexOf('パーリ语辞典 增补改订') >= 0) {
       // Pali to Japanese dictionary
       ja.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('Buddhist Dictionary') > 0) {
+    } else if (dicWordExp[0].indexOf('Buddhist Dictionary') >= 0) {
       // Pali to English dictionary
       en.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('Pali-English') > 0) {
+    } else if (dicWordExp[0].indexOf('Pali-English') >= 0) {
       // Pali to English dictionary
       en.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('《巴汉词典》') > 0 ||
-               dicWordExp[0].indexOf('《巴漢詞典》') > 0) {
+    } else if (dicWordExp[0].indexOf('《巴汉词典》') >= 0 ||
+               dicWordExp[0].indexOf('《巴漢詞典》') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('《巴利语字汇》') > 0 ||
-               dicWordExp[0].indexOf('《巴利語字彙》') > 0) {
+    } else if (dicWordExp[0].indexOf('《巴利语字汇》') >= 0 ||
+               dicWordExp[0].indexOf('《巴利語字彙》') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('巴利文-汉文') > 0 ||
-               dicWordExp[0].indexOf('巴利文-漢文') > 0) {
+    } else if (dicWordExp[0].indexOf('巴利文-汉文') >= 0 ||
+               dicWordExp[0].indexOf('巴利文-漢文') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('汉译パーリ') > 0 ||
-               dicWordExp[0].indexOf('漢譯パーリ') > 0) {
+    } else if (dicWordExp[0].indexOf('汉译パーリ') >= 0 ||
+               dicWordExp[0].indexOf('漢譯パーリ') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('巴利语入门') > 0 ||
-               dicWordExp[0].indexOf('巴利語入門') > 0) {
+    } else if (dicWordExp[0].indexOf('巴利语入门') >= 0 ||
+               dicWordExp[0].indexOf('巴利語入門') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('巴利新音译') > 0 ||
-               dicWordExp[0].indexOf('巴利新音譯') > 0) {
+    } else if (dicWordExp[0].indexOf('巴利新音译') >= 0 ||
+               dicWordExp[0].indexOf('巴利新音譯') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
-    } else if (dicWordExp[0].indexOf('巴英术语汇编') > 0 ||
-               dicWordExp[0].indexOf('巴英術語彙編') > 0) {
+    } else if (dicWordExp[0].indexOf('巴英术语汇编') >= 0 ||
+               dicWordExp[0].indexOf('巴英術語彙編') >= 0) {
       // Pali to Chinese dictionary
       zh.push(dicWordExp);
     } else {
