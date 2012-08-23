@@ -107,18 +107,6 @@ a.menuItem:hover {
   position: absolute;
 }
 
-#upperAD {
-  text-align: left;
-  border-bottom:1px dotted black;
-  padding:10px;
-}
-
-#rightAD {
-  vertical-align: top;
-  padding-top:10px;
-  width: 160px;
-}
-
 .resultCurvedEdges {
   border:10px solid #98FB98;
   border-radius:13px;
