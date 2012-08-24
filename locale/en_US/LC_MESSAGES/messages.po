@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-10 01:22+0800\n"
+"POT-Creation-Date: 2012-08-25 07:43+0800\n"
 "PO-Revision-Date: 2012-06-09 08:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "The dictionary come from"
 msgstr ""
 
-#: templates/info.html:3 templates/info.html:26
+#: templates/info.html:3 templates/info.html:29
 msgid "Pali-Chinese-English Dictionary"
 msgstr ""
 
@@ -58,56 +58,72 @@ msgstr ""
 msgid "Pāli Canon"
 msgstr ""
 
-#: templates/info.html:16 templates/info.html:17 templates/info.html:18
+#: templates/info.html:17 templates/info.html:18 templates/info.html:19
 msgid "Tipiṭaka"
 msgstr ""
 
-#: templates/info.html:16
+#: templates/info.html:17
 msgid "Sri Lankan version"
 msgstr ""
 
-#: templates/info.html:17
+#: templates/info.html:18
 msgid "Thai version"
 msgstr ""
 
-#: templates/info.html:18
+#: templates/info.html:19
 msgid "Burmese version"
 msgstr ""
 
-#: templates/info.html:20
+#: templates/info.html:21
 msgid "Links about Buddhism"
 msgstr ""
 
-#: templates/info.html:25
+#: templates/info.html:28
 msgid "Source Code"
 msgstr ""
 
-#: templates/info.html:25
+#: templates/info.html:28
 msgid "project on Google Code"
 msgstr ""
 
-#: templates/info.html:26
+#: templates/info.html:29
 msgid "Dictionary"
 msgstr ""
 
-#: templates/info.html:26
+#: templates/info.html:29
 msgid "from"
 msgstr ""
 
-#: templates/info.html:26
+#: templates/info.html:29
 msgid "on"
 msgstr ""
 
-#: templates/index.html:34
+#: templates/index.html:30
 msgid "'Previous Word History'"
 msgstr ""
 
-#: templates/index.html:34
+#: templates/index.html:30
 msgid "'Next Word History'"
 msgstr ""
 
-#: templates/index.html:36
+#: templates/index.html:32
 msgid "Show Pāli Keypad"
+msgstr ""
+
+#: templates/index.html:38
+msgid "New"
+msgstr ""
+
+#: templates/index.html:38
+msgid "Online"
+msgstr ""
+
+#: templates/index.html:38
+msgid "Pāḷi Tipiṭaka"
+msgstr ""
+
+#: templates/index.html:38
+msgid " Integrated Instant-Lookup Feature is available now"
 msgstr ""
 
 #: templates/browse.html:2
@@ -127,72 +143,76 @@ msgid "Setting"
 msgstr ""
 
 #: templates/mainMenu.html:6
-msgid "About"
+msgid "Canon"
 msgstr ""
 
 #: templates/mainMenu.html:7
+msgid "About"
+msgstr ""
+
+#: templates/mainMenu.html:8
 msgid "Link"
 msgstr ""
 
-#: templates/mainMenu.html:20
+#: templates/mainMenu.html:21
 msgid "Input Word Explanation Preview"
 msgstr ""
 
-#: templates/mainMenu.html:22
+#: templates/mainMenu.html:23
 msgid "Translate Pāli-Chinese Dictionaries to Traditional Chinese"
 msgstr ""
 
-#: templates/mainMenu.html:25
+#: templates/mainMenu.html:26
 msgid "What languages of dictionaries to show?"
 msgstr ""
 
-#: templates/mainMenu.html:26
+#: templates/mainMenu.html:27
 msgid "Pāli-English"
 msgstr ""
 
-#: templates/mainMenu.html:27
+#: templates/mainMenu.html:28
 msgid "Pāli-Japanese"
 msgstr ""
 
-#: templates/mainMenu.html:28
+#: templates/mainMenu.html:29
 msgid "Pāli-Chinese"
 msgstr ""
 
-#: templates/mainMenu.html:31
+#: templates/mainMenu.html:32
 msgid "The order of languages of dictionaries to show?"
 msgstr ""
 
-#: templates/mainMenu.html:33
+#: templates/mainMenu.html:34
 msgid "according to language settings in browser"
 msgstr ""
 
-#: templates/mainMenu.html:34 templates/mainMenu.html:35
-#: templates/mainMenu.html:36 templates/mainMenu.html:37
-#: templates/mainMenu.html:38 templates/mainMenu.html:39
+#: templates/mainMenu.html:35 templates/mainMenu.html:36
+#: templates/mainMenu.html:37 templates/mainMenu.html:38
+#: templates/mainMenu.html:39 templates/mainMenu.html:40
 msgid "English"
 msgstr ""
 
-#: templates/mainMenu.html:34 templates/mainMenu.html:35
-#: templates/mainMenu.html:36 templates/mainMenu.html:37
-#: templates/mainMenu.html:38 templates/mainMenu.html:39
+#: templates/mainMenu.html:35 templates/mainMenu.html:36
+#: templates/mainMenu.html:37 templates/mainMenu.html:38
+#: templates/mainMenu.html:39 templates/mainMenu.html:40
 msgid "Japanese"
 msgstr ""
 
-#: templates/mainMenu.html:34 templates/mainMenu.html:35
-#: templates/mainMenu.html:36 templates/mainMenu.html:37
-#: templates/mainMenu.html:38 templates/mainMenu.html:39
+#: templates/mainMenu.html:35 templates/mainMenu.html:36
+#: templates/mainMenu.html:37 templates/mainMenu.html:38
+#: templates/mainMenu.html:39 templates/mainMenu.html:40
 msgid "Chinese"
 msgstr ""
 
-#: templates/mainMenu.html:52
+#: templates/mainMenu.html:53
 msgid "Main Site"
 msgstr ""
 
-#: templates/mainMenu.html:53
+#: templates/mainMenu.html:54
 msgid "Backup Site #1"
 msgstr ""
 
-#: templates/mainMenu.html:54
+#: templates/mainMenu.html:55
 msgid "Backup Site #2"
 msgstr ""
 

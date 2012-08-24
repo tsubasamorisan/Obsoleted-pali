@@ -35,7 +35,7 @@
      </form>
      {% include "keyboard.html" %}
      <br style="line-height: 2em;" />
-     <div id="result">{% if resultDivInnerHTML %}{{resultDivInnerHTML}}{% endif %}</div>
+     <div id="result">{% if resultDivInnerHTML %}{{resultDivInnerHTML}}{% else %}{{_("New")}}! {{_("Online")}} <a href="http://epalitipitaka.appspot.com/">{{_("Pāḷi Tipiṭaka")}}</a>{{_(" Integrated Instant-Lookup Feature is available now")}}.{% endif %}</div>
      {% include "browse.html" %}
 
  </div>
