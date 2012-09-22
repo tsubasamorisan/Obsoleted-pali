@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>JavaScript Width Percentage to Pixel Example</title>
+</head> 
+<body>
+ <div id="width" style="width: 100%">&nbsp;</div>
+ <div id="info" style=""></div>
+<script type="text/javascript">
+  var width = document.getElementById("width").offsetWidth;
+  var info = document.getElementById('info');
+  info.innerHTML = 'The 100% width of browser window is ' + width + ' pixels.<br />';
+  info.innerHTML += '1% = ' + width / 100 + 'pixels.';
+  document.getElementById("width").parentNode.removeChild(document.getElementById("width"));
+</script>
+</body>
+</html>
