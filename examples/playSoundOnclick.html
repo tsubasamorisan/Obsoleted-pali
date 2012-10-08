@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>JavaScript Play Sound on Click Event of DOM Element</title>
+
+<script type="text/javascript">
+
+function PlaySound(path) {
+  var audioElement = document.createElement('audio');
+  audioElement.setAttribute('src', path);
+  audioElement.play();
+}
+
+</script>
+
+</head>
+<body>
+ <button id="bt" type="button" onclick="javascript:PlaySound('https://pali.googlecode.com/git/examples/Wat_Metta_Buddha_Qualities.ogg');">Click Me to Play Sound</button>
+
+</body>
+</html>
