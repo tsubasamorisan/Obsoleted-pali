@@ -15,6 +15,16 @@
 {% endif %}
 </script>
 <script type="text/javascript">{% include "potI18N.js" %}</script>
+
+<script>
+  (function() {
+    var cx = '000759460633137666077:drd5sr9u6cw';
+    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 </head> 
 <body>
 <div style="width: 100%;">
@@ -36,6 +46,8 @@
      {% include "keyboard.html" %}
      <br style="line-height: 2em;" />
      <div id="result">{% if resultDivInnerHTML %}{{resultDivInnerHTML}}{% else %}{{_("New")}}! {{_("Online")}} <a href="http://epalitipitaka.appspot.com/">{{_("Pāḷi Tipiṭaka")}}</a>{{_(" Integrated Instant-Lookup Feature is available now")}}.{% endif %}</div>
+     <br style="line-height: 5em;" />
+<gcse:search></gcse:search>
      {% include "browse.html" %}
 
  </div>
