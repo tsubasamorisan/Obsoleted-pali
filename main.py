@@ -42,7 +42,7 @@ class MainPage(webapp2.RequestHandler):
             resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
         else:
           # build word HTML here
-          titleword = word.decode('utf-8') + u' - '
+          titleword = word.decode('utf-8') + u' - definition and meaning - '
           resultDivInnerHTML = getWordHTML(word, jsonpLookup(word), i18n)
       else:
         self.error(404)
