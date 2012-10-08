@@ -31,15 +31,18 @@ class MainPage(webapp2.RequestHandler):
     i18n.get_i18n().set_locale(locale)
     #browser = self.request.headers.get('user_agent')
 
+    titleword = u''
     resultDivInnerHTML = None
     if self.request.path.startswith('/browse'):
       if isValidPrefixAndWord(prefix, word, dicPrefixWordLists):
         if (word == None):
           if (prefix != None):
             # build prefix HTML here
+            titleword = u'browse words with prefix ' + prefix.decode('utf-8') + u' - '
             resultDivInnerHTML = getPrefixHTML(prefix, dicPrefixWordLists)
         else:
           # build word HTML here
+          titleword = word.decode('utf-8') + u' - '
           resultDivInnerHTML = getWordHTML(word, jsonpLookup(word), i18n)
       else:
         self.error(404)
@@ -56,6 +59,7 @@ class MainPage(webapp2.RequestHandler):
         compiledBootstrapJS = 'yes'
 
     template_values = {
+      'titleword' : titleword,
       'locale' : '%s~%s' % (locale, self.request.headers.get('accept_language')),
       'compiledBootstrapJS' : compiledBootstrapJS,
       'resultDivInnerHTML' : resultDivInnerHTML
