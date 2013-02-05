@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+
+<title>datepicker with AngularJS and jQuery</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+
+</head>
+<body ng-controller="myCtrl">
+
+<input type="text" ng-model="date" datepicker/>
+{{date}}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+<script>
+angular.module('myApp', []).directive('datepicker', function($parse) {
+  var directiveDefinitionObject = {
+    restrict: 'A',
+    link: function postLink(scope, iElement, iAttrs) {
+      iElement.datepicker({
+        dateFormat: 'yy-mm-dd',
+        onSelect: function(dateText, inst) {
+          scope.$apply(function(scope){
+            $parse(iAttrs.ngModel).assign(scope, dateText);
+          });
+        }
+      });
+    }
+  };
+  return directiveDefinitionObject;
+});
+
+function myCtrl($scope) {
+  $scope.date = "1212-12-12"
+}
+</script>
+</body>
+</html>
