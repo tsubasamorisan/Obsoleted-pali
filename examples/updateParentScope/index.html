@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+<title>Update Parent Scope</title>
+</head>
+<body>
+  <div ng-controller="parentCtrl">
+    The parentProperty value: {{ parentProperty }}
+    <div ng-controller="childCtrl">
+      <button ng-click="update()">click me to update parentProperty in parent scope</button>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.js"></script>
+<script>
+function parentCtrl($scope) {
+  $scope.parentProperty = 0;
+  $scope.$on('updateParentScopeEvent', function(event, data) {
+    $scope.parentProperty = data;
+  });
+}
+
+function childCtrl($scope) {
+  $scope.update = function() {
+    $scope.$emit('updateParentScopeEvent', 1)
+  };
+}
+</script>
+</body>
+</html>
