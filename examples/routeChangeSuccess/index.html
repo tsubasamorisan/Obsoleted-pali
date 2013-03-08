@@ -1,0 +1,48 @@
+<!doctype html>
+<html ng-app="routeChangeSuccess">
+<head>
+  <meta charset="utf-8">
+  <title>$routeChangeSuccess not working</title>
+</head>
+<body>
+<a href="/en_US/">English</a><br />
+<a href="/zh_TW/">Traditional Chinese</a><br />
+<a href="javascript:void(0);" ng-click="clicked('/en_US/')">English</a><br />
+<a href="javascript:void(0);" ng-click="clicked('/zh_TW/')">Traditional Chinese</a><br />
+<br />
+
+Is $routeChangeSuccess fired? {{ fired }}
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.js"></script>
+<script>
+'use strict';
+
+angular.module('routeChangeSuccess', []).
+  config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode(true);
+  }]).
+  config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/', {template: '<br />', controller: noopCtrl});
+    $routeProvider.when('/en_US/', {template: '<br />', controller: noopCtrl});
+    $routeProvider.when('/zh_TW/', {template: '<br />', controller: noopCtrl});
+    $routeProvider.otherwise({redirectTo: '/'});
+  }]).
+  run(['$rootScope', '$location', function($rootScope, $location) {
+    $rootScope.fired = 'no';
+
+    $rootScope.clicked = function(path) {
+      $location.path(path);
+    };
+
+    $rootScope.$on('$routeChangeSuccess', function() {
+      $rootScope.fired = 'yes';
+    });
+  }]);
+
+function noopCtrl($scope) {
+}
+noopCtrl.$inject = ['$scope'];
+
+</script>
+</body>
+</html>
