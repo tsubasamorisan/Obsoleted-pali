@@ -1,0 +1,95 @@
+<!doctype html>
+<html ng-app="dropdown">
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS draggable element</title>
+  <style>
+.dropdownLink {
+  text-decoration: none;
+}
+
+.dropdownMenu {
+  border-radius: 5px;
+  border-top-color: #C9D7F1;
+  border-right-color: #36C;
+  border-bottom-color: #36C;
+  border-left-color: #A2BAE7;
+  border-style: solid;
+  border-width: 1px;
+  z-index: 22;
+  padding: 0;
+  background-color: white;
+  overflow: hidden;
+  font-size: small;
+  font-family: Arial;
+  line-height: 2em;
+  word-spacing: 0;
+}
+
+.dropdownMenu a {
+  font-size: 1.25em;
+  color: #00C;
+  padding: .25em 2em .25em 1em;
+  text-decoration: none;
+  background: white;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdownMenu a:hover {
+  background: #00C;
+  color: white;
+}
+  </style>
+</head>
+<body style="padding: 5em;">
+
+<div dropdown classlink="dropdownLink" linktext='click me' classmenu="dropdownMenu">
+  <a href="http://www.google.com/">Google</a>
+  <a href="http://www.facebook.com/">Facebook</a>
+  <a href="http://www.amazon.com/">Amazon</a>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
+<script>
+'use strict';
+
+angular.module('dropdown', []).
+  directive('dropdown', ['$document', function($document) {
+    return {
+      restrict: 'A',
+      replace: true,
+      transclude: true,
+      scope: {
+        classmenu: '@',
+        classlink: '@',
+        linktext: '@'
+      },
+      template: '<span ng-init="isShowMenu = false">' +
+                  '<a ng-click="isShowMenu = !isShowMenu" ng-class="classlink" href="javascript:void(0);" ng-bind-html-unsafe="linktext"></a>' +
+                  '<span ng-show="isShowMenu" ng-click="isShowMenu = false" ng-class="classmenu" ng-style="menuStyle" ng-transclude></span>' +
+                '</span>',
+      link: function(scope, elm, attrs) {
+        scope.menuStyle = { 'position': 'absolute' };
+
+        elm.bind('mousedown', function() {
+          // mousedown event is called earlier than click event
+          scope.menuStyle['left'] =  elm.prop('offsetLeft') + 'px';
+          scope.menuStyle['top'] =  (elm.prop('offsetTop') + elm.prop('offsetHeight') + 5) + 'px';
+        });
+
+        elm.bind('click', function(event) {
+          event.stopPropagation();
+        });
+
+        $document.bind('click', function(e) {
+          scope.isShowMenu = false;
+          scope.$apply();
+        });
+      }
+    };
+  }]);
+
+</script>
+</body>
+</html>
